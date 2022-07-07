@@ -8,6 +8,8 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 
+import { EntypoGithub } from "react-entypo";
+
 import "./PagesCommon.css";
 import "./PageAccueil.css";
 
@@ -48,7 +50,7 @@ function PageAccueil() {
             Un réseau social français et open-source.
           </h2>
 
-          <InputGroup size="lg">
+          <InputGroup size="lg" id="main-seach-div" style={{ top: "40px" }}>
             <Form.Control
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
@@ -70,6 +72,16 @@ function PageAccueil() {
               <p>Surfer</p>
             </Button>
           </InputGroup>
+
+          <div style={{}} className="git-link" id="title-git-link-div">
+            <a href="http://github.com/ali-bennezia">
+              <EntypoGithub
+                color="white"
+                style={{ height: "24px", width: "24px" }}
+              />
+              &nbsp;Github
+            </a>
+          </div>
         </div>
       </div>
     </div>

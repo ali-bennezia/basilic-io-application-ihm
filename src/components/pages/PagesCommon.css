@@ -2,3 +2,12 @@
   height: 100%;
   width: 100%;
 }
+
+.git-link,
+.git-link a {
+  color: white;
+  text-decoration: none;
+
+  filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.329));
+  /**text-shadow: 2px 2px 6px black;**/
+}
