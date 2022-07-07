@@ -1,10 +1,10 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import PageAccueil from "./components/pages/PageAccueil";
 
 function App() {
-  //<div className="App">
   return (
     <Router>
       <Routes>
@@ -15,3 +15,5 @@ function App() {
 }
 
 export default App;
+
+//       <Route path="/search" element={<PageAccueil />} />

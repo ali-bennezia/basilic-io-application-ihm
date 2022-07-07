@@ -11,7 +11,7 @@
 
 #title-box-div {
   width: 700px;
-  height: 300px;
+  height: 440px;
 
   margin-left: 10%;
 }
@@ -35,4 +35,30 @@
   position: relative;
   left: 38px;
   bottom: 30px;
+}
+
+#main-input-search-button {
+  background-color: #3bd34d;
+  border: 1px solid #3bd34d;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+  max-height: 48px;
+  max-width: 85.69px;
+}
+
+#main-input-search-button p {
+  color: white;
+  text-shadow: -2px 2px 6px black;
+  font-family: Brush Script MT, cursive;
+  font-size: 16px;
+  vertical-align: middle;
+  margin-top: 12px;
+}
+
+#main-input-search-button:hover p {
+  font-size: 20px;
 }

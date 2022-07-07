@@ -1,20 +1,34 @@
-import React, { useEffect, useRef } from "react";
-import "./PagesCommon.css";
-import "./PageAccueil.css";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import * as THREE from "three";
 import WAVES from "vanta/dist/vanta.waves.min";
 
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import Button from "react-bootstrap/Button";
+
+import "./PagesCommon.css";
+import "./PageAccueil.css";
+
 function PageAccueil() {
-  const monElement = useRef();
+  //Valeur d'état du champ d'entrée de recherche, situé sous le logo.
+  const [searchInput, setSearchInput] = useState("");
+
+  //Hook de navigation.
+  const navigate = useNavigate();
+
+  //Gestion du fond de vagues.
+  const waveBackgroundElement = useRef();
   useEffect(() => {
     WAVES({
-      el: monElement.current,
+      el: waveBackgroundElement.current,
       THREE,
       mouseControls: false,
       touchControls: false,
       gyroControls: false,
-      minHeight: monElement.current.offsetWidth,
-      minWidth: monElement.current.offsetHeight,
+      minHeight: waveBackgroundElement.current.offsetWidth,
+      minWidth: waveBackgroundElement.current.offsetHeight,
       scale: 1,
       scaleMobile: 1.0,
       color: 0x2f3c2f,
@@ -23,17 +37,39 @@ function PageAccueil() {
       waveSpeed: 1.1,
       zoom: 0.2,
     });
-    console.log(monElement.current.getAttribute("width"));
   }, []);
 
   return (
     <div className="main-page-organizer">
-      <div id="waves-background-div" ref={monElement}>
+      <div id="waves-background-div" ref={waveBackgroundElement}>
         <div id="title-box-div">
           <img src="img/basilic_titre_mid_res.png" id="main-page-title-img" />
           <h2 id="main-subtitle-h2">
             Un réseau social français et open-source.
           </h2>
+
+          <InputGroup size="lg">
+            <Form.Control
+              aria-label="Large"
+              aria-describedby="inputGroup-sizing-sm"
+              placeholder="Chercher des pseudos, des mot-clés, etc..."
+              value={searchInput}
+              onInput={(e) => {
+                setSearchInput((val) => {
+                  return e.target.value;
+                });
+              }}
+            />
+            <Button
+              variant="outline-secondary"
+              id="main-input-search-button"
+              onClick={() => {
+                navigate(`/search?q=${encodeURI(searchInput)}`);
+              }}
+            >
+              <p>Surfer</p>
+            </Button>
+          </InputGroup>
         </div>
       </div>
     </div>
