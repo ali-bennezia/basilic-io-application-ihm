@@ -83,6 +83,16 @@ function PageAccueil() {
             </a>
           </div>
         </div>
+
+        <div id="title-menu-container-div">
+          <h4 id="menu-join-title">Rejoins-nous !</h4>
+          <button className="standard-button menu-join-button">
+            Se connecter
+          </button>
+          <button className="standard-button menu-join-button">
+            S'enregistrer
+          </button>
+        </div>
       </div>
     </div>
   );

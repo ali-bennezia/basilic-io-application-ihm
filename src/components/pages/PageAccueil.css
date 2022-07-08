@@ -4,6 +4,7 @@
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   overflow: hidden;
   box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.61);
@@ -13,7 +14,7 @@
   width: 700px;
   height: 440px;
 
-  margin-left: 10%;
+  margin-left: 14%;
 }
 
 #main-page-title-img {
@@ -53,9 +54,9 @@
 
 #main-input-search-button p {
   color: white;
-  text-shadow: -2px 2px 6px black;
+  /*text-shadow: -2px 2px 6px black;*/
   font-family: Brush Script MT, cursive;
-  font-size: 16px;
+  font-size: 20px;
   vertical-align: middle;
   margin-top: 12px;
 }
@@ -72,4 +73,26 @@
 
   top: 130px;
   left: 240px;
+}
+
+#title-menu-container-div {
+  width: 240px;
+  height: 200px;
+
+  display: flex;
+
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  margin-right: 24%;
+}
+
+.menu-join-button {
+  width: 260px;
+}
+
+#menu-join-title {
+  color: white;
+  text-shadow: 2px 2px 6px black;
 }

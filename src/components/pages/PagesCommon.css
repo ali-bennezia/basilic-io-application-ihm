@@ -11,3 +11,15 @@
   filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.329));
   /**text-shadow: 2px 2px 6px black;**/
 }
+
+.standard-button {
+  background-color: #3bd34d;
+  border: 1px solid #3bd34d;
+
+  border-radius: 6px;
+  color: white;
+
+  font-size: 20px;
+
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.76);
+}
