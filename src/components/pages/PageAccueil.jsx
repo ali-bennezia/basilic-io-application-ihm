@@ -20,7 +20,7 @@ function PageAccueil() {
   //Hook de navigation.
   const navigate = useNavigate();
 
-  //Gestion du fond de vagues.
+  //Gestion du fond de vagues animées.
   const waveBackgroundElement = useRef();
   useEffect(() => {
     WAVES({
@@ -41,11 +41,19 @@ function PageAccueil() {
     });
   }, []);
 
+  const search = () => {
+    navigate(`/search?q=${encodeURI(searchInput)}`);
+  };
+
   return (
     <div className="main-page-organizer">
       <div id="waves-background-div" ref={waveBackgroundElement}>
         <div id="title-box-div">
-          <img src="img/basilic_titre_mid_res.png" id="main-page-title-img" />
+          <img
+            src="img/basilic_titre_mid_res.png"
+            id="main-page-title-img"
+            alt="Basilic"
+          />
           <h2 id="main-subtitle-h2">
             Un réseau social français et open-source.
           </h2>
@@ -61,13 +69,14 @@ function PageAccueil() {
                   return e.target.value;
                 });
               }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") search();
+              }}
             />
             <Button
               variant="outline-secondary"
               id="main-input-search-button"
-              onClick={() => {
-                navigate(`/search?q=${encodeURI(searchInput)}`);
-              }}
+              onClick={search}
             >
               <p>Surfer</p>
             </Button>
@@ -86,12 +95,34 @@ function PageAccueil() {
 
         <div id="title-menu-container-div">
           <h4 id="menu-join-title">Rejoins-nous !</h4>
-          <button className="standard-button menu-join-button">
+          <button
+            className="standard-button menu-join-button"
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
             Se connecter
           </button>
-          <button className="standard-button menu-join-button">
+          <button
+            className="standard-button menu-join-button"
+            onClick={() => {
+              navigate("register");
+            }}
+          >
             S'enregistrer
           </button>
+        </div>
+      </div>
+      <div
+        className="lower-main-container"
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-around",
+        }}
+      >
+        <div className="lower-main-section-1">
+          <h1 className="lower-main-subtitle-h1">Pourquoi ?</h1>
         </div>
       </div>
     </div>
