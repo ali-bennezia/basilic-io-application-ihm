@@ -110,8 +110,8 @@
   color: #3bd34d;
 
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.363),
-    0px 1px 0px rgba(0, 0, 0, 0.473), 0px -1px 0px rgba(0, 0, 0, 0.473),
-    1px 0px rgba(0, 0, 0, 0.473), -1px 0px rgba(0, 0, 0, 0.473);
+    0px 2px 1px rgba(0, 65, 14, 0.473), 0px -2px 1px rgba(0, 65, 14, 0.473),
+    2px 0px 1px rgba(0, 65, 14, 0.473), -2px 0px 1px rgba(0, 65, 14, 0.473);
 
   font-weight: bold;
   text-align: center;
@@ -126,4 +126,18 @@ body {
     rgba(237, 237, 237, 1) 0%,
     rgba(189, 189, 189, 1) 100%
   );
+}
+
+.lower-main-p {
+  margin-top: 32px;
+
+  color: black;
+  font-family: circular, "segoe ui", sans-serif;
+  font-size: 22px;
+  text-align: center;
+}
+
+.lower-main-subtitle-h4 {
+  color: rgb(77, 77, 77);
+  margin-top: 64px;
 }

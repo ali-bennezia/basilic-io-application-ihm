@@ -123,6 +123,26 @@ function PageAccueil() {
       >
         <div className="lower-main-section-1">
           <h1 className="lower-main-subtitle-h1">Pourquoi ?</h1>
+
+          <p className="lower-main-p">
+            Le projet Basilic a été développé en autonomie dans le cadre d'une
+            formation à l'école DORANCO. Il sert également de démonstration.
+            <br />
+            C'est un réseau social, très similaire à twitter. Il offre plusieurs
+            fonctionnalités qui permettent aux utilisateurs d'intéragir.
+            <br />
+            En ce sens, il met en oeuvre diverses technologies. C'est un projet
+            qui repose notamment sur MongoDB/Mongoose, Express, et React.
+            <br />
+            C'est également un projet open-source. Tout est accessible sur{" "}
+            <a className="link-button" href="http://github.com/ali-bennezia">
+              Github
+            </a>
+            <h4 className="lower-main-subtitle-h4">
+              Quelques unes des technologies employées
+            </h4>
+            <div></div>
+          </p>
         </div>
       </div>
     </div>
