@@ -138,10 +138,41 @@ function PageAccueil() {
             <a className="link-button" href="http://github.com/ali-bennezia">
               Github
             </a>
-            <h4 className="lower-main-subtitle-h4">
-              Quelques unes des technologies employées
-            </h4>
-            <div></div>
+          </p>
+          <h4 className="lower-main-subtitle-h4">
+            Quelques unes des technologies employées
+          </h4>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                width: "50%",
+              }}
+            >
+              <img src="/img/logos/expressJS_logo.png" height="175" />
+              <img src="/img/logos/mongodb_logo.png" height="75" />
+              <img src="/img/logos/nodejs_logo.png" height="150" />
+            </div>
+          </div>
+
+          <h1 className="lower-main-subtitle-h1">Comment ?</h1>
+
+          <p className="lower-main-p">
+            Le projet est organisé selon le principe d'architecture n-tiers.
+            <br />
+            <h4 className="lower-main-subtitle-h5">La couche IHM</h4>
+            <br />
+            La première couche, la plus superficielle, est la couche IHM. Elle
+            est basée sur React et permet aux utilisateurs d'intéragir avec le
+            réseau.
+            <br />
+            Elle concerne la partie la plus visible du projet. Elle communique
+            par ailleurs avec la seconde couche, la couche métier.
+            <br />
+            <h4 className="lower-main-subtitle-h5">La couche métier</h4>
+            <br />
           </p>
         </div>
       </div>
