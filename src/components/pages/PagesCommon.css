@@ -40,3 +40,15 @@
 .link-button:hover {
   color: rgb(199, 199, 199);
 }
+
+.horizontal-layout-outer {
+  display: flex;
+  justify-content: center;
+}
+
+.horizontal-layout-inner {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}

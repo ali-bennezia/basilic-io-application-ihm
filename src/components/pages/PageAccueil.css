@@ -89,7 +89,7 @@
 }
 
 .menu-join-button {
-  width: 260px;
+  width: 340px;
 }
 
 #menu-join-title {
@@ -145,6 +145,15 @@ body {
 
 .lower-main-subtitle-h5 {
   color: rgb(77, 77, 77);
-  margin-top: 64px;
   text-align: center;
+}
+
+.circle-server-illustration {
+  background-color: #3bd34d;
+  border-radius: 50%;
+
+  filter: drop-shadow(black 0px 0px 3px);
+
+  width: 100px;
+  height: 100px;
 }
