@@ -99,7 +99,7 @@
 
 .lower-main-container {
   width: 100%;
-  height: 140vh;
+  height: 100%;
 }
 
 .lower-main-section-1 {
@@ -194,4 +194,10 @@ body {
 
 .circle-server-arrow-container img {
   height: 36px;
+}
+
+#circle-server-description {
+  text-align: center;
+  color: rgb(75, 75, 75);
+  font-style: italic;
 }

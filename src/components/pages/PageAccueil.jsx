@@ -16,6 +16,8 @@ import {
   EntypoFolderImages,
 } from "react-entypo";
 
+import Footer from "./Footer";
+
 import "./PagesCommon.css";
 import "./PageAccueil.css";
 
@@ -155,6 +157,8 @@ function PageAccueil() {
               <img src="/img/logos/nodejs_logo.png" height="150" />
             </div>
           </div>
+
+          <hr className="page-divider" />
 
           <h1 className="lower-main-subtitle-h1">Comment ?</h1>
 
@@ -300,8 +304,13 @@ function PageAccueil() {
               </div>
             </div>
           </div>
+
+          <p id="circle-server-description">
+            Ci-dessus, une illustration des trois couches du réseau.
+          </p>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
