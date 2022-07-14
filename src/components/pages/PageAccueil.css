@@ -156,4 +156,42 @@ body {
 
   width: 100px;
   height: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  padding-top: 20px;
+  white-space: nowrap;
+}
+
+.circle-server-icon {
+  color: white;
+  filter: drop-shadow(black 0px 0px 3px);
+}
+
+.circle-server-subtitle {
+  color: white;
+  text-shadow: black 0px 0px 2px;
+  font-family: circular, "segoe ui", sans-serif;
+
+  background-color: #638065;
+  border-radius: 10%;
+
+  padding-right: 5px;
+  padding-left: 5px;
+
+  box-shadow: black 0px 0px 1px;
+}
+
+.circle-server-arrow-container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.circle-server-arrow-container img {
+  height: 36px;
 }

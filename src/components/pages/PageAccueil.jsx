@@ -8,7 +8,13 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 
-import { EntypoGithub } from "react-entypo";
+import {
+  EntypoGithub,
+  EntypoBrowser,
+  EntypoDrive,
+  EntypoDatabase,
+  EntypoFolderImages,
+} from "react-entypo";
 
 import "./PagesCommon.css";
 import "./PageAccueil.css";
@@ -206,8 +212,30 @@ function PageAccueil() {
                 width: "38%",
               }}
             >
-              <div className="circle-server-illustration"></div>
-              <div className="circle-server-illustration"></div>
+              <div className="circle-server-illustration">
+                <EntypoBrowser
+                  className="circle-server-icon"
+                  style={{ width: "100px", height: "100px" }}
+                />
+                <p className="circle-server-subtitle">Interface</p>
+              </div>
+
+              <div className="circle-server-arrow-container">
+                <img src="/img/accueil/fleche-bidir.png" />
+              </div>
+
+              <div className="circle-server-illustration">
+                <EntypoDrive
+                  className="circle-server-icon"
+                  style={{ width: "100px", height: "100px" }}
+                />
+                <p className="circle-server-subtitle">Serveur d'application</p>
+              </div>
+
+              <div className="circle-server-arrow-container">
+                <img src="/img/accueil/fleche-bidir.png" />
+              </div>
+
               <div
                 style={{
                   display: "flex",
@@ -215,8 +243,60 @@ function PageAccueil() {
                   justifyContent: "center",
                 }}
               >
-                <div className="circle-server-illustration"></div>
-                <div className="circle-server-illustration"></div>
+                <div className="circle-server-illustration">
+                  <div
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "-10px",
+                      marginTop: "12px",
+                    }}
+                  >
+                    <EntypoDatabase
+                      className="circle-server-icon"
+                      style={{
+                        width: "65%",
+                        height: "65%",
+                      }}
+                    />
+                  </div>
+
+                  <p className="circle-server-subtitle">
+                    Base de
+                    <br />
+                    données
+                  </p>
+                </div>
+                <div className="circle-server-illustration">
+                  <div
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "-10px",
+                      marginTop: "12px",
+                    }}
+                  >
+                    <EntypoFolderImages
+                      className="circle-server-icon"
+                      style={{
+                        width: "65%",
+                        height: "65%",
+                      }}
+                    />
+                  </div>
+
+                  <p className="circle-server-subtitle">
+                    Serveur de
+                    <br />
+                    médias
+                  </p>
+                </div>
               </div>
             </div>
           </div>
