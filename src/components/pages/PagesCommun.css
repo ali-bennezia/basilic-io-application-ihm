@@ -70,3 +70,34 @@
 
   padding: 40px;
 }
+
+.basic-form {
+  width: 400px;
+}
+
+.basic-form h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.basic-form div .form-label {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 14px;
+}
+
+.basic-form button {
+  margin: 8px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: rgb(242, 242, 242);
+  padding: 24px;
+  border-radius: 20px;
+  border: rgb(207, 207, 207) solid 1px;
+
+  box-shadow: rgba(0, 0, 0, 0.295) 0px 0px 10px;
+}

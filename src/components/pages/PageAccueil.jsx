@@ -18,7 +18,7 @@ import {
 
 import Footer from "./Footer";
 
-import "./PagesCommon.css";
+import "./PagesCommun.css";
 import "./PageAccueil.css";
 
 function PageAccueil() {
@@ -106,7 +106,7 @@ function PageAccueil() {
           <button
             className="standard-button menu-join-button"
             onClick={() => {
-              navigate("/login");
+              navigate("/connexion");
             }}
           >
             Se connecter
@@ -114,7 +114,7 @@ function PageAccueil() {
           <button
             className="standard-button menu-join-button"
             onClick={() => {
-              navigate("register");
+              navigate("/inscription");
             }}
           >
             S'enregistrer
