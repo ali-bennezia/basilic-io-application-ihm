@@ -1,0 +1,46 @@
+{
+  "validation": {
+    "user": {
+      "email": {
+        "length": {
+          "min": 3,
+          "max": 65
+        }
+      },
+      "nomUtilisateur": { "length": { "min": 3, "max": 22 } },
+      "pwd": {
+        "length": {
+          "min": 6,
+          "max": 25
+        }
+      },
+      "phoneNumber": {
+        "length": {
+          "min": 4,
+          "max": 15
+        }
+      },
+      "params": {
+        "nomPublic": {
+          "length": { "max": 40 }
+        },
+        "descriptionProfil": {
+          "length": { "max": 450 }
+        }
+      }
+    },
+
+    "message": {
+      "length": {
+        "min": 3,
+        "max": 280
+      }
+    },
+    "post": {
+      "length": {
+        "min": 3,
+        "max": 320
+      }
+    }
+  }
+}

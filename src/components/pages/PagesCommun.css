@@ -101,3 +101,17 @@
 
   box-shadow: rgba(0, 0, 0, 0.295) 0px 0px 10px;
 }
+
+.form-error-label {
+  color: red;
+}
+
+.navbar-top {
+  width: 100%;
+  height: 48px;
+
+  background-color: rgb(242, 242, 242);
+  border: rgb(207, 207, 207) solid 1px;
+
+  box-shadow: rgba(0, 0, 0, 0.295) 0px 0px 10px;
+}
