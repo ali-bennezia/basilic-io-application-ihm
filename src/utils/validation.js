@@ -87,6 +87,26 @@ function validateUsername(val) {
   return { result: true, err: null };
 }
 
+function validatePassword(val) {
+  //Sanitation.
+  if (isObjectNullOrUndefined(val) || !isObjectString(val))
+    return { result: false, err: "val" };
+
+  //Validation.
+  //Validation de la taille de la chaîne de charactères.
+  if (
+    val.length < validation.user.pwd.length.min ||
+    val.length > validation.user.pwd.length.max
+  )
+    return { result: false, err: "length" };
+
+  //Validation des charactères (pas de charactères spéciaux ou d'espaces)
+  if (val.match(specialCharactersAndSpacesFormat))
+    return { result: false, err: "char" };
+
+  return { result: true, err: null };
+}
+
 //Donne un message d'erreur à afficher selon la valeur err donnée qui correspond à celle renvoyée par les méthodes de validation.
 function getValidationErrorMessage(err) {
   switch (err) {
@@ -108,5 +128,6 @@ export {
   validateEmail,
   validateUsername,
   validatePhoneNumber,
+  validatePassword,
   getValidationErrorMessage,
 };

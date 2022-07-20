@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
@@ -8,11 +8,17 @@ import BasePage from "./BasePage";
 
 import "./PagesCommun.css";
 
+import axios from "axios";
+
+//Configuration:
+import config from "./../../config/config.json";
+
 //Utilitaires:
 import {
   validateEmail,
   validateUsername,
   validatePhoneNumber,
+  validatePassword,
   getValidationErrorMessage,
 } from "./../../utils/validation";
 
@@ -28,6 +34,7 @@ function PageInscription() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  //Booléenne qui indique si le boutton confirmé est activé ou non.
   const [canConfirm, setCanConfirm] = useState(false);
 
   //Valeurs de la validation du formulaire:
@@ -36,6 +43,8 @@ function PageInscription() {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const [formError, setFormError] = useState("");
 
   //Callbacks:
   const onClickAnnuler = (e) => {
@@ -46,9 +55,30 @@ function PageInscription() {
   const onClickConfirmer = (e) => {
     e.preventDefault();
 
-    //TODO: Appel AJAX API d'inscription:
+    updateConfirmButtonAccess(false);
+    axios
+      .post(`${config.applicationServerURL}users/register`, {
+        email: email,
+        nomUtilisateur: username,
+        numeroTelephone: phoneNumber,
+        motDePasse: password,
+      })
+      .then((data) => {
+        console.log(data);
+        updateConfirmButtonAccess(true);
+        navigate("/connexion");
+      })
+      .catch((err) => {
+        if (err.response.data == "Non-Unique User Data")
+          setFormError(
+            "Email, nom d'utilisateur ou numéro de téléphone déjà utilisé(s) par un autre utilisateur."
+          );
+        else setFormError("Erreur interne.");
+        console.log(err);
+        updateConfirmButtonAccess(true);
+      });
 
-    navigate("/connexion");
+    //navigate("/connexion");
   };
 
   const checkValidation = (fieldName, fieldValue) => {
@@ -78,13 +108,51 @@ function PageInscription() {
         );
         break;
       case "Password":
+        let passwordValidationResult = validatePassword(fieldValue);
+        setPasswordError(
+          passwordValidationResult.result || fieldValue.length == 0
+            ? ""
+            : getValidationErrorMessage(passwordValidationResult.err)
+        );
         break;
       case "ConfirmPassword":
+        setConfirmPasswordError(
+          fieldValue.length == 0
+            ? ""
+            : password != fieldValue
+            ? "Les mots de passes ne correspondent pas."
+            : ""
+        );
         break;
       default:
         break;
     }
   };
+
+  //Mise a jour de l'état du boutton de confirmation. (Actif/Inactif)
+  const updateConfirmButtonAccess = (state = true) => {
+    let fullValidation =
+      emailError === phoneNumberError &&
+      phoneNumberError === usernameError &&
+      usernameError === passwordError &&
+      passwordError === confirmPasswordError &&
+      confirmPasswordError === "" &&
+      email !== "" &&
+      phoneNumber !== "" &&
+      username !== "" &&
+      password !== "" &&
+      confirmPassword !== "";
+    setCanConfirm((val) => fullValidation && state == true);
+  };
+
+  //Lien callback mise à jour du boutton à chaque input.
+  useEffect(updateConfirmButtonAccess, [
+    email,
+    username,
+    phoneNumber,
+    password,
+    confirmPassword,
+  ]);
 
   return (
     /*<BasePage
@@ -188,6 +256,7 @@ function PageInscription() {
           >
             Confirmer
           </Button>
+          <p className="form-error-label">{formError}</p>
         </Form>
       </div>
     </div> //</BasePage>
