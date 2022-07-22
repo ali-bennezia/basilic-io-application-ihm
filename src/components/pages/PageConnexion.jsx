@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthentificationContext from "../../contexts/AuthentificationContext";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
-import BasePage from "./BasePage";
 
 import "./PagesCommun.css";
 
 import axios from "axios";
 
 //Configuration:
-import config from "./../../config/config.json";
+import config from "../../config/config.json";
 
 //Utilitaires:
 import {
@@ -20,29 +19,31 @@ import {
   validatePhoneNumber,
   validatePassword,
   getValidationErrorMessage,
-} from "./../../utils/validation";
+} from "../../utils/validation";
 
-function PageInscription() {
+function PageConnexion() {
+  //Contexte d'authentification:
+  const authContextProps = useContext(AuthentificationContext);
+
   //Navigation:
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (authContextProps.authPayload != null) navigate("/flux"); //Page principale d'un utilisateur connecté, le flux d'activité.
+  }, []);
+
   //Variables d'état:
   //Valeurs du formulaire:
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   //Booléenne qui indique si le boutton confirmé est activé ou non.
   const [canConfirm, setCanConfirm] = useState(false);
 
   //Valeurs de la validation du formulaire:
-  const [emailError, setEmailError] = useState("");
-  const [phoneNumberError, setPhoneNumberError] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [formError, setFormError] = useState("");
 
@@ -57,58 +58,39 @@ function PageInscription() {
 
     updateConfirmButtonAccess(false);
     axios
-      .post(`${config.applicationServerURL}users/register`, {
-        email: email,
+      .post(`${config.applicationServerURL}users/signin`, {
         nomUtilisateur: username,
-        numeroTelephone: phoneNumber,
         motDePasse: password,
       })
       .then((data) => {
         console.log(data);
         updateConfirmButtonAccess(true);
         setFormError("");
-        navigate("/connexion");
+        authContextProps.setAuthPayload({
+          rememberMe: rememberMe,
+          issuedAt: new Date(),
+          ...data.data,
+        });
+        navigate("/flux");
       })
       .catch((err) => {
         switch (err.response.data) {
-          case "Non-Unique User Data":
-            setFormError(
-              "Email, nom d'utilisateur ou numéro de téléphone déjà utilisé(es) par un autre utilisateur."
-            );
-            break;
           case "Bad Request":
-            setFormError("Champs invalides.");
+          case "Incorrect Password":
+          case "Not Found":
+            setFormError("Nom d'utilisateur et/ou mot de passe incorrect(es).");
             break;
           default:
             setFormError("Erreur interne.");
             break;
         }
-
         console.log(err);
         updateConfirmButtonAccess(true);
       });
-
-    //navigate("/connexion");
   };
 
   const checkValidation = (fieldName, fieldValue) => {
     switch (fieldName) {
-      case "Email":
-        let emailValidationResult = validateEmail(fieldValue);
-        setEmailError(
-          emailValidationResult.result || fieldValue.length == 0
-            ? ""
-            : getValidationErrorMessage(emailValidationResult.err)
-        );
-        break;
-      case "PhoneNumber":
-        let phoneNumberValidationResult = validatePhoneNumber(fieldValue);
-        setPhoneNumberError(
-          phoneNumberValidationResult.result || fieldValue.length == 0
-            ? ""
-            : getValidationErrorMessage(phoneNumberValidationResult.err)
-        );
-        break;
       case "Username":
         let usernameValidationResult = validateUsername(fieldValue);
         setUsernameError(
@@ -125,15 +107,6 @@ function PageInscription() {
             : getValidationErrorMessage(passwordValidationResult.err)
         );
         break;
-      case "ConfirmPassword":
-        setConfirmPasswordError(
-          fieldValue.length == 0
-            ? ""
-            : password != fieldValue
-            ? "Les mots de passes ne correspondent pas."
-            : ""
-        );
-        break;
       default:
         break;
     }
@@ -142,32 +115,17 @@ function PageInscription() {
   //Mise a jour de l'état du boutton de confirmation. (Actif/Inactif)
   const updateConfirmButtonAccess = (state = true) => {
     let fullValidation =
-      emailError === phoneNumberError &&
-      phoneNumberError === usernameError &&
       usernameError === passwordError &&
-      passwordError === confirmPasswordError &&
-      confirmPasswordError === "" &&
-      email !== "" &&
-      phoneNumber !== "" &&
+      passwordError === "" &&
       username !== "" &&
-      password !== "" &&
-      confirmPassword !== "";
+      password !== "";
     setCanConfirm((val) => fullValidation && state == true);
   };
 
   //Lien callback mise à jour du boutton à chaque input.
-  useEffect(updateConfirmButtonAccess, [
-    email,
-    username,
-    phoneNumber,
-    password,
-    confirmPassword,
-  ]);
+  useEffect(updateConfirmButtonAccess, [username, password]);
 
   return (
-    /*<BasePage
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >*/
     <div
       className="main-page-organizer"
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -179,37 +137,7 @@ function PageInscription() {
       />
       <div className="form-container">
         <Form className="basic-form">
-          <h2>Inscription</h2>
-
-          <Form.Group className="mb-3" controlId="formEmail">
-            <Form.Label>Adresse e-mail</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Entrez ici votre adresse e-mail..."
-              value={email}
-              onInput={(e) => {
-                setEmail((val) => e.target.value);
-                checkValidation("Email", e.target.value);
-              }}
-            />
-            <Form.Text className="form-error-label">{emailError}</Form.Text>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formPhoneNumber">
-            <Form.Label>Numéro de téléphone</Form.Label>
-            <Form.Control
-              type="tel"
-              placeholder="Entrez ici votre numéro de téléphone..."
-              value={phoneNumber}
-              onInput={(e) => {
-                setPhoneNumber((val) => e.target.value);
-                checkValidation("PhoneNumber", e.target.value);
-              }}
-            />
-            <Form.Text className="form-error-label">
-              {phoneNumberError}
-            </Form.Text>
-          </Form.Group>
+          <h2>Connexion</h2>
 
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Nom d'utilisateur</Form.Label>
@@ -239,20 +167,15 @@ function PageInscription() {
             <Form.Text className="form-error-label">{passwordError}</Form.Text>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formConfirmPassword">
-            <Form.Label>Confirmation du mot de passe</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Entrez ici votre mot de passe une seconde fois..."
-              value={confirmPassword}
+          <Form.Group className="mb-3" controlId="formRememberMe">
+            <Form.Check
+              type="checkbox"
+              label="Rester connecté(e)"
+              value={rememberMe}
               onInput={(e) => {
-                setConfirmPassword((val) => e.target.value);
-                checkValidation("ConfirmPassword", e.target.value);
+                setRememberMe((val) => e.target.value);
               }}
             />
-            <Form.Text className="form-error-label">
-              {confirmPasswordError}
-            </Form.Text>
           </Form.Group>
 
           <Button variant="secondary" type="submit" onClick={onClickAnnuler}>
@@ -269,8 +192,8 @@ function PageInscription() {
           <p className="form-error-label">{formError}</p>
         </Form>
       </div>
-    </div> //</BasePage>
+    </div>
   );
 }
 
-export default PageInscription;
+export default PageConnexion;
