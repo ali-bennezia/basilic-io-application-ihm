@@ -21,6 +21,8 @@ import {
   getValidationErrorMessage,
 } from "../../utils/validation";
 
+import { generatePayloadFromSessionData } from "../../utils/authentification";
+
 function PageConnexion() {
   //Contexte d'authentification:
   const authContextProps = useContext(AuthentificationContext);
@@ -63,14 +65,11 @@ function PageConnexion() {
         motDePasse: password,
       })
       .then((data) => {
-        console.log(data);
         updateConfirmButtonAccess(true);
         setFormError("");
-        authContextProps.setAuthPayload({
-          rememberMe: rememberMe,
-          issuedAt: new Date(),
-          ...data.data,
-        });
+        authContextProps.setAuthPayload(
+          generatePayloadFromSessionData(data.data, rememberMe)
+        );
         navigate("/flux");
       })
       .catch((err) => {
@@ -171,9 +170,9 @@ function PageConnexion() {
             <Form.Check
               type="checkbox"
               label="Rester connecté(e)"
-              value={rememberMe}
+              defaultChecked={rememberMe}
               onInput={(e) => {
-                setRememberMe((val) => e.target.value);
+                setRememberMe((val) => e.target.checked);
               }}
             />
           </Form.Group>

@@ -64,7 +64,6 @@ function PageInscription() {
         motDePasse: password,
       })
       .then((data) => {
-        console.log(data);
         updateConfirmButtonAccess(true);
         setFormError("");
         navigate("/connexion");

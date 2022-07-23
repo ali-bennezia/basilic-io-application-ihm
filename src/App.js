@@ -9,9 +9,6 @@ import PageConnexion from "./components/pages/PageConnexion";
 import { AuthentificationContextProvider } from "./contexts/AuthentificationContext";
 
 function App() {
-  useEffect(() => {
-    console.log("test");
-  });
   return (
     <AuthentificationContextProvider>
       <Router>

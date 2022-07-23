@@ -8,7 +8,7 @@ function isAuthPayloadValid(payload) {
   if (payload == null || !payload) return false;
 
   let currentTime = new Date();
-  let issuedAt = payload.issueAt;
+  let issuedAt = new Date(payload.issuedAt);
   let tokenLifetime =
     (payload.rememberMe
       ? parseFloat(config.token.longLifetimeDays)
@@ -21,7 +21,7 @@ function isAuthPayloadNearingExpiration(payload) {
   if (payload == null || !payload) return false;
 
   let currentTime = new Date();
-  let issuedAt = payload.issueAt;
+  let issuedAt = new Date(payload.issuedAt);
   let tokenLifetime =
     (payload.rememberMe
       ? parseFloat(config.token.longLifetimeDays)
@@ -30,4 +30,16 @@ function isAuthPayloadNearingExpiration(payload) {
   return currentTime.getTime() - issuedAt.getTime() >= tokenLifetime * 0.55;
 }
 
-export { isAuthPayloadValid, isAuthPayloadNearingExpiration };
+const generatePayloadFromSessionData = (data, rememberMe = false) => {
+  return {
+    rememberMe: rememberMe,
+    issuedAt: new Date(),
+    ...data,
+  };
+};
+
+export {
+  isAuthPayloadValid,
+  isAuthPayloadNearingExpiration,
+  generatePayloadFromSessionData,
+};

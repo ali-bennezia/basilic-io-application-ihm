@@ -50,7 +50,7 @@ function PageAccueil() {
   }, []);
 
   const search = () => {
-    navigate(`/search?q=${encodeURI(searchInput)}`);
+    navigate(`/recherche?r=${encodeURI(searchInput)}`);
   };
 
   return (
