@@ -1,4 +1,5 @@
 import config from "../config/config.json";
+import { isObjectString } from "./sanitation";
 
 //Valeurs utiles.
 const ONE_DAY_MILISECONDS = 1000 * 3600 * 24;
@@ -38,8 +39,22 @@ const generatePayloadFromSessionData = (data, rememberMe = false) => {
   };
 };
 
+function processApplicationServerResponse(response, setAuthPayload, navigate) {
+  if (
+    "data" in response &&
+    "status" in response &&
+    isObjectString(response.data) &&
+    response === "Invalid Token" &&
+    response.status === 401
+  ) {
+    setAuthPayload(null);
+    navigate("/connexion");
+  }
+}
+
 export {
   isAuthPayloadValid,
   isAuthPayloadNearingExpiration,
   generatePayloadFromSessionData,
+  processApplicationServerResponse,
 };

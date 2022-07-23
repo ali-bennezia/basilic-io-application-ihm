@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import BasePage from "./BasePage";
+import BasePage from "./commun/BasePage";
 
-import "./PagesCommun.css";
+import "./commun/PagesCommun.css";
 
 import axios from "axios";
+
+import AuthentifiedRedirection from "../redirection/AuthentifiedRedirection";
 
 //Configuration:
 import config from "./../../config/config.json";
@@ -171,6 +173,7 @@ function PageInscription() {
       className="main-page-organizer"
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <AuthentifiedRedirection to="/flux" />
       <img
         src="img/basilic_titre_mid_res.png"
         id="main-page-title-img"

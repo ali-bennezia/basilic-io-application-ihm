@@ -8,6 +8,8 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 
+import AuthentifiedRedirection from "../redirection/AuthentifiedRedirection";
+
 import {
   EntypoGithub,
   EntypoBrowser,
@@ -16,9 +18,9 @@ import {
   EntypoFolderImages,
 } from "react-entypo";
 
-import Footer from "./Footer";
+import Footer from "./commun/Footer";
 
-import "./PagesCommun.css";
+import "./commun/PagesCommun.css";
 import "./PageAccueil.css";
 
 function PageAccueil() {
@@ -55,6 +57,8 @@ function PageAccueil() {
 
   return (
     <div className="main-page-organizer">
+      <AuthentifiedRedirection to="/flux" />
+
       <div id="waves-background-div" ref={waveBackgroundElement}>
         <div id="title-box-div">
           <img

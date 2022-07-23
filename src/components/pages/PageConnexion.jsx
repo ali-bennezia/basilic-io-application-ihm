@@ -5,7 +5,7 @@ import AuthentificationContext from "../../contexts/AuthentificationContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import "./PagesCommun.css";
+import "./commun/PagesCommun.css";
 
 import axios from "axios";
 
@@ -22,6 +22,7 @@ import {
 } from "../../utils/validation";
 
 import { generatePayloadFromSessionData } from "../../utils/authentification";
+import AuthentifiedRedirection from "../redirection/AuthentifiedRedirection";
 
 function PageConnexion() {
   //Contexte d'authentification:
@@ -29,10 +30,6 @@ function PageConnexion() {
 
   //Navigation:
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (authContextProps.authPayload != null) navigate("/flux"); //Page principale d'un utilisateur connecté, le flux d'activité.
-  }, []);
 
   //Variables d'état:
   //Valeurs du formulaire:
@@ -70,6 +67,7 @@ function PageConnexion() {
         authContextProps.setAuthPayload(
           generatePayloadFromSessionData(data.data, rememberMe)
         );
+        console.log(data);
         navigate("/flux");
       })
       .catch((err) => {
@@ -122,6 +120,7 @@ function PageConnexion() {
   };
 
   //Lien callback mise à jour du boutton à chaque input.
+
   useEffect(updateConfirmButtonAccess, [username, password]);
 
   return (
@@ -129,6 +128,7 @@ function PageConnexion() {
       className="main-page-organizer"
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <AuthentifiedRedirection to="/flux" />
       <img
         src="img/basilic_titre_mid_res.png"
         id="main-page-title-img"

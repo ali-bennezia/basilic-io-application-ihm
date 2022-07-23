@@ -1,9 +1,9 @@
 import React from "react";
 
-import "./PagesCommun.css";
+import "./../PagesCommun.css";
 
 function NavbarHaut() {
-  return <div className="navbar-top"></div>;
+  return <div className="navbar navbar-top"></div>;
 }
 
 export default NavbarHaut;
