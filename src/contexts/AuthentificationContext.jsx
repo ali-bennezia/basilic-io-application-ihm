@@ -14,7 +14,6 @@ const AuthentificationContext = createContext();
 var currentAuthPayload = null;
 
 function refreshAuthPayload(authPayload, setAuthPayload) {
-  console.log("Mise à jour.");
   if (authPayload != null && isAuthPayloadNearingExpiration(authPayload)) {
     //Appel AJAX permettant de mettre à jour le payload d'authentification.
     axios
@@ -22,7 +21,6 @@ function refreshAuthPayload(authPayload, setAuthPayload) {
         token: authPayload.token,
       })
       .then((data) => {
-        console.log("Nouveau payload reçu ! : " + data.data);
         setAuthPayload(data.data);
       })
       .catch((err) => {
@@ -31,12 +29,7 @@ function refreshAuthPayload(authPayload, setAuthPayload) {
   }
 }
 
-var ignoreFirstSaveAfterMount = true;
 function saveAuthPayload(authPayload) {
-  if (ignoreFirstSaveAfterMount == true) {
-    ignoreFirstSaveAfterMount = false;
-    return;
-  }
   localStorage.setItem("authPayload", JSON.stringify(authPayload));
   currentAuthPayload = authPayload;
 }
@@ -59,12 +52,11 @@ function loadAuthPayload() {
 
 function AuthentificationContextProvider(props) {
   //Variables d'état.
-  const [authPayload, setAuthPayload] = useState(null);
+  const [authPayload, setAuthPayload] = useState(loadAuthPayload());
 
   /*Charger au montage tout payload déjà connu si valide.
   Aussi, mettre à jour le payload à chaque montage si nécessaire. */
   useEffect(function () {
-    ignoreFirstSaveAfterMount = true;
     setAuthPayload(loadAuthPayload());
     refreshAuthPayload(authPayload, setAuthPayload);
   }, []);
