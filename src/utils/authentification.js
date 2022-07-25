@@ -1,5 +1,6 @@
 import config from "../config/config.json";
 import { isObjectString } from "./sanitation";
+import { getAuthPayload } from "./../contexts/AuthentificationContext";
 
 //Valeurs utiles.
 const ONE_DAY_MILISECONDS = 1000 * 3600 * 24;
@@ -52,9 +53,15 @@ function processApplicationServerResponse(response, setAuthPayload, navigate) {
   }
 }
 
+function isUserAuthentified() {
+  let authPayload = getAuthPayload();
+  return authPayload != null && isAuthPayloadValid(authPayload);
+}
+
 export {
   isAuthPayloadValid,
   isAuthPayloadNearingExpiration,
   generatePayloadFromSessionData,
   processApplicationServerResponse,
+  isUserAuthentified,
 };
