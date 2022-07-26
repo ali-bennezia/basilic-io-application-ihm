@@ -11,7 +11,33 @@ import config from "./../config/config.json";
 import axios from "axios";
 
 const AuthentificationContext = createContext();
+
 var currentAuthPayload = null;
+var currentAuthPayloadSetter = null;
+
+var currentAuthProfile = null;
+var currentAuthProfileSetter = null;
+
+function refreshAuthProfile() {
+  if (currentAuthProfileSetter == null) return;
+
+  let payload = getAuthPayload();
+  if (!isAuthPayloadValid(payload)) {
+    currentAuthProfileSetter(null);
+    return;
+  }
+
+  axios
+    .get(`${config.applicationServerURL}profiles/get/${payload.userId}`, {
+      headers: { Authorization: `Bearer ${payload.token}` },
+    })
+    .then((data) => {
+      currentAuthProfileSetter(data.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
 function refreshAuthPayload(authPayload, setAuthPayload) {
   if (authPayload != null && isAuthPayloadNearingExpiration(authPayload)) {
@@ -52,7 +78,19 @@ function loadAuthPayload() {
 
 function AuthentificationContextProvider(props) {
   //Variables d'état.
+  const [authProfile, setAuthProfile] = useState(null);
   const [authPayload, setAuthPayload] = useState(loadAuthPayload());
+
+  currentAuthProfileSetter = setAuthProfile;
+  currentAuthPayloadSetter = setAuthPayload;
+
+  //Mises à jour à executer à chaque changement de authProfile.
+  useEffect(
+    function () {
+      currentAuthProfile = authProfile;
+    },
+    [authProfile]
+  );
 
   /*Charger au montage tout payload déjà connu si valide.
   Aussi, mettre à jour le payload à chaque montage si nécessaire. */
@@ -65,13 +103,19 @@ function AuthentificationContextProvider(props) {
   useEffect(
     function () {
       saveAuthPayload(authPayload);
+      refreshAuthProfile();
     },
     [authPayload]
   );
 
   return (
     <AuthentificationContext.Provider
-      value={{ authPayload: authPayload, setAuthPayload: setAuthPayload }}
+      value={{
+        authPayload: authPayload,
+        setAuthPayload: setAuthPayload,
+        authProfile: authProfile,
+        setAuthProfile: setAuthProfile,
+      }}
     >
       {props.children}
     </AuthentificationContext.Provider>
@@ -79,6 +123,18 @@ function AuthentificationContextProvider(props) {
 }
 
 const getAuthPayload = () => currentAuthPayload;
+const getAuthPayloadSetter = () => currentAuthPayloadSetter;
 
-export { AuthentificationContextProvider, getAuthPayload, saveAuthPayload };
+const getAuthProfile = () => currentAuthProfile;
+const getAuthProfileSetter = () => currentAuthProfileSetter;
+
+export {
+  AuthentificationContextProvider,
+  getAuthPayload,
+  getAuthPayloadSetter,
+  saveAuthPayload,
+  loadAuthPayload,
+  getAuthProfile,
+  getAuthProfileSetter,
+};
 export default AuthentificationContext;

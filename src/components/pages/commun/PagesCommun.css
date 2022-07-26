@@ -140,7 +140,7 @@
   width: 236px;
   height: 100px;
 
-  margin-top: 54px;
+  margin-top: 74px;
   margin-left: 10px;
 
   display: flex;
@@ -149,4 +149,10 @@
 
 .navbar-text {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar-subtext {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: grey;
 }

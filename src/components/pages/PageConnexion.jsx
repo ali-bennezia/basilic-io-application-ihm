@@ -67,7 +67,6 @@ function PageConnexion() {
         authContextProps.setAuthPayload(
           generatePayloadFromSessionData(data.data, rememberMe)
         );
-        console.log(data);
         navigate("/flux");
       })
       .catch((err) => {
