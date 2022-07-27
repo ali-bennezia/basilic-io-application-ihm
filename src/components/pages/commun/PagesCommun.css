@@ -156,3 +156,48 @@
   font-size: 12px;
   color: grey;
 }
+
+.navbar-button-set {
+  margin-top: 88px;
+  margin-right: 2px;
+
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.navbar-button-set button {
+  width: 105%;
+  height: 48px;
+
+  border-radius: 0px;
+  box-shadow: none;
+
+  text-transform: none;
+}
+
+.navbar-button-set button[tag="one"] {
+  background-color: #3bd34d;
+}
+
+.navbar-button-set button[tag="two"] {
+  background-color: #67dd74;
+}
+
+.navbar-button-set button:hover[tag="one"] {
+  background-color: #52df62;
+}
+
+.navbar-button-set button:hover[tag="two"] {
+  background-color: #7add85;
+}
+
+.navbar-button-set button:disabled {
+  background-color: rgb(219, 219, 219);
+  color: rgb(173, 173, 173);
+}
