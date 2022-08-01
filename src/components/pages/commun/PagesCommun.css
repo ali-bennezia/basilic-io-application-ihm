@@ -3,6 +3,13 @@
   width: 100%;
 }
 
+.page-title {
+  text-align: center;
+  color: rgb(98, 236, 98);
+  text-shadow: -1px -1px 0 rgb(68, 158, 45), 1px -1px 0 rgb(68, 158, 45),
+    -1px 1px 0 rgb(68, 158, 45), 1px 1px 0 rgb(68, 158, 45), 0px 0px 3px black;
+}
+
 .git-link,
 .git-link a {
   color: white;
