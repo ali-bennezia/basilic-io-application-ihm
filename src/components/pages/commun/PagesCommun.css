@@ -208,3 +208,12 @@
   background-color: rgb(219, 219, 219);
   color: rgb(173, 173, 173);
 }
+
+button.MuiTab-root {
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+button.MuiButtonBase-root.Mui-selected {
+  color: #19d249;
+}
