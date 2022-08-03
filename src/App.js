@@ -13,7 +13,7 @@ import PageConnexion from "./components/pages/PageConnexion";
 import PageFlux from "./components/pages/PageFlux";
 import PageProfil from "./components/pages/PageProfil";
 import PageMessages from "./components/pages/PageMessages";
-import PageParams from "./components/pages/PageParams";
+import PageParams from "./components/pages/params/PageParams";
 
 function App() {
   return (

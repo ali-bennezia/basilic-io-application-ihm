@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import BasePage from "./commun/BasePage";
+import BasePage from "../commun/BasePage";
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
-import "./commun/PagesCommun.css";
+import "./../commun/PagesCommun.css";
+import OngletParamsProfilPublic from "./onglets/OngletParamsProfilPublic";
 
 function PageParams() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -37,6 +38,7 @@ function PageParams() {
           <Tab label="Supprimer" value={2} />
         </Tabs>
       </div>
+      <OngletParamsProfilPublic tabIndex={tabIndex} />
     </BasePage>
   );
 }
