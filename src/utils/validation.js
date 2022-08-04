@@ -107,6 +107,35 @@ function validatePassword(val) {
   return { result: true, err: null };
 }
 
+function validatePublicName(val) {
+  //Sanitation.
+  if (isObjectNullOrUndefined(val) || !isObjectString(val))
+    return { result: false, err: "val" };
+
+  //Validation.
+  //Validation de la taille de la chaîne de charactères.
+  if (val.length > validation.user.params.nomPublic.length.max)
+    return { result: false, err: "length" };
+
+  //Validation des charactères (pas de charactères spéciaux)
+  if (val.match(specialCharactersFormat)) return { result: false, err: "char" };
+
+  return { result: true, err: null };
+}
+
+function validateProfileDescription(val) {
+  //Sanitation.
+  if (isObjectNullOrUndefined(val) || !isObjectString(val))
+    return { result: false, err: "val" };
+
+  //Validation.
+  //Validation de la taille de la chaîne de charactères.
+  if (val.length > validation.user.params.descriptionProfil.length.max)
+    return { result: false, err: "length" };
+
+  return { result: true, err: null };
+}
+
 //Donne un message d'erreur à afficher selon la valeur err donnée qui correspond à celle renvoyée par les méthodes de validation.
 function getValidationErrorMessage(err) {
   switch (err) {
@@ -129,5 +158,7 @@ export {
   validateUsername,
   validatePhoneNumber,
   validatePassword,
+  validatePublicName,
+  validateProfileDescription,
   getValidationErrorMessage,
 };
