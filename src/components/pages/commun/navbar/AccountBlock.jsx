@@ -7,10 +7,7 @@ import "./../PagesCommun.css";
 
 import Button from "@mui/material/Button";
 
-import {
-  disconnectUser,
-  isAuthPayloadValid,
-} from "./../../../../utils/authentification";
+import { isAuthPayloadValid } from "./../../../../utils/authentification";
 
 import "./../PagesCommun.css";
 
@@ -18,16 +15,18 @@ import { EntypoLogOut, EntypoLogin, EntypoTextDocument } from "react-entypo";
 
 import { useNavigate } from "react-router-dom";
 
+import config from "./../../../../config/config.json";
+
 function AccountBlock() {
   const navigate = useNavigate();
 
-  const onClickDisconnect = () => {
-    disconnectUser();
-    navigate("/");
-  };
-
   const authProps = useContext(AuthentificationContext);
   const profile = authProps.authProfile;
+
+  const onClickDisconnect = () => {
+    authProps.logout(authProps.setAuthPayload, authProps.setAuthProfile);
+    navigate("/");
+  };
 
   if (
     authProps.authPayload != null &&
@@ -66,8 +65,10 @@ function AccountBlock() {
                 <img
                   src={
                     "photoProfil" in profile
-                      ? profile.photoProfil
-                      : "/img/profile/guest-avatar.jpg"
+                      ? `${config.mediaServerURL}medias/${
+                          profile.photoProfil.split("/")[0]
+                        }/get/${profile.photoProfil.split("/")[1]}`
+                      : `img/profile/guest-avatar.jpg`
                   }
                   style={{ width: "100%", height: "100%" }}
                 />

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Onglet from "./Onglet.jsx";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { getAuthProfile } from "../../../../contexts/AuthentificationContext.jsx";
+import AuthentificationContext from "../../../../contexts/AuthentificationContext.jsx";
+import axios from "axios";
 
 import "./../../commun/PagesCommun.css";
 import "./Onglet.css";
+import config from "./../../../../config/config.json";
 
 import { isStringBlank } from "./../../../../utils/sanitation";
 
@@ -15,7 +17,8 @@ import {
 } from "./../../../../utils/validation";
 
 function OngletParamsProfilPublic({ tabIndex }) {
-  const profile = getAuthProfile();
+  const { authPayload, setAuthPayload, authProfile, setAuthProfile } =
+    useContext(AuthentificationContext);
 
   //Variables d'état
   const [profilePhotoFile, setProfilePhotoFile] = useState(null);
@@ -26,30 +29,36 @@ function OngletParamsProfilPublic({ tabIndex }) {
   const [publicProfile, setPublicProfile] = useState(true);
   const [validForm, setValidForm] = useState(false);
 
+  const [waitingAJAXResponse, setWaitingAJAXResponse] = useState(false);
+
   //Fonction permettant la récupération des informations du profil.
   const fetchProfileData = () => {
+    console.log(authPayload);
+    console.log(authProfile);
     setPublicName(
-      profile != null && "nomPublic" in profile ? profile.nomPublic : ""
+      authProfile != null && "nomPublic" in authProfile
+        ? authProfile.nomPublic
+        : ""
     );
     setProfileDescription(
-      profile != null && "descriptionProfil" in profile
-        ? profile.descriptionProfil
+      authProfile != null && "descriptionProfil" in authProfile
+        ? authProfile.descriptionProfil
         : ""
     );
     setPublicProfile(
-      profile != null && "profilPublic" in profile ? profile.profilPublic : true
+      authProfile != null && "profilPublic" in authProfile
+        ? authProfile.profilPublic
+        : true
     );
     setValidForm(true);
   };
 
   //Chargement des informations connues du profil dans les champs dès le montage de cette composante.
-  useEffect(() => {
-    fetchProfileData();
-  }, []);
+  useEffect(fetchProfileData, []);
 
   //Callback pour toute entrée
-  const onAnyInput = () => {
-    let fullValidation = true;
+  const refreshFullValidation = () => {
+    let fullValidation = true && !waitingAJAXResponse;
 
     if (!isStringBlank(publicName))
       fullValidation = fullValidation && validatePublicName(publicName).result;
@@ -59,7 +68,52 @@ function OngletParamsProfilPublic({ tabIndex }) {
 
     setValidForm(fullValidation);
   };
-  useEffect(onAnyInput, [publicName, profileDescription, publicProfile]);
+  useEffect(refreshFullValidation, [
+    publicName,
+    profileDescription,
+    publicProfile,
+  ]);
+
+  //Callback pour l'envoi
+  const sendFormData = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    let newParams = {
+      nomPublic: publicName.trim() == "" ? null : publicName,
+      descriptionProfil:
+        profileDescription.trim() == "" ? null : profileDescription,
+      profilPublic: publicProfile,
+    };
+
+    for (let prop in newParams)
+      if (newParams[prop] == null) delete newParams[prop];
+
+    formData.append("newParams", JSON.stringify(newParams));
+    if (profilePhotoFile != null)
+      formData.append("photoProfil", profilePhotoFile);
+    if (profileBannerFile != null)
+      formData.append("banniereProfil", profileBannerFile);
+
+    setWaitingAJAXResponse(true);
+    axios
+      .patch(
+        `${config.applicationServerURL}users/params/patch/${authPayload.userId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${authPayload.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((data) => {
+        setWaitingAJAXResponse(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setWaitingAJAXResponse(false);
+      });
+  };
 
   return (
     <Onglet
@@ -152,8 +206,8 @@ function OngletParamsProfilPublic({ tabIndex }) {
               value={publicProfile}
               label="Profil visible au public"
               defaultChecked={
-                profile != null && "profilPublic" in profile
-                  ? profile.profilPublic == true
+                authProfile != null && "profilPublic" in authProfile
+                  ? authProfile.profilPublic == true
                   : true
               }
               onInput={(e) => {
@@ -162,7 +216,14 @@ function OngletParamsProfilPublic({ tabIndex }) {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit" disabled={!validForm}>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={!validForm}
+            onClick={(e) => {
+              sendFormData(e);
+            }}
+          >
             Envoyer
           </Button>
         </Form>

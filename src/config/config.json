@@ -1,5 +1,6 @@
 {
   "applicationServerURL": "http://localhost:5000/api/",
+  "mediaServerURL": "http://localhost:5001/api/",
   "token": {
     "defaultLifetimeDays": "4",
     "longLifetimeDays": "8"

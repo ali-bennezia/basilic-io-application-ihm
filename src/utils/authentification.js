@@ -1,9 +1,5 @@
 import config from "../config/config.json";
 import { isObjectString } from "./sanitation";
-import {
-  getAuthPayload,
-  getAuthPayloadSetter,
-} from "./../contexts/AuthentificationContext";
 
 import axios from "axios";
 
@@ -58,14 +54,9 @@ function processApplicationServerResponse(response, setAuthPayload, navigate) {
   }
 }
 
-function disconnectUser() {
-  getAuthPayloadSetter()(null);
-}
-
 export {
   isAuthPayloadValid,
   isAuthPayloadNearingExpiration,
   generatePayloadFromSessionData,
   processApplicationServerResponse,
-  disconnectUser,
 };

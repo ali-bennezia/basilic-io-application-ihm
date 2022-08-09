@@ -12,34 +12,36 @@ import axios from "axios";
 
 const AuthentificationContext = createContext();
 
-var currentAuthPayload = null;
-var currentAuthPayloadSetter = null;
-
-var currentAuthProfile = null;
-var currentAuthProfileSetter = null;
-
-function refreshAuthProfile() {
-  if (currentAuthProfileSetter == null) return;
-
-  let payload = getAuthPayload();
-  if (!isAuthPayloadValid(payload)) {
-    currentAuthProfileSetter(null);
+function refreshAuthProfile(
+  authPayload,
+  setAuthPayload,
+  authProfile,
+  setAuthProfile
+) {
+  if (!isAuthPayloadValid(authPayload)) {
+    setAuthProfile(null);
     return;
   }
 
   axios
-    .get(`${config.applicationServerURL}profiles/get/${payload.userId}`, {
-      headers: { Authorization: `Bearer ${payload.token}` },
+    .get(`${config.applicationServerURL}profiles/get/${authPayload.userId}`, {
+      headers: { Authorization: `Bearer ${authPayload.token}` },
     })
     .then((data) => {
-      currentAuthProfileSetter(data.data);
+      setAuthProfile(data.data);
     })
     .catch((err) => {
+      logout(setAuthPayload, setAuthProfile);
       console.log(err);
     });
 }
 
-function refreshAuthPayload(authPayload, setAuthPayload) {
+function logout(setAuthPayload, setAuthProfile) {
+  setAuthPayload(null);
+  setAuthProfile(null);
+}
+
+function refreshAuthPayload(authPayload, setAuthPayload, setAuthProfile) {
   if (authPayload != null && isAuthPayloadNearingExpiration(authPayload)) {
     //Appel AJAX permettant de mettre à jour le payload d'authentification.
     axios
@@ -50,6 +52,7 @@ function refreshAuthPayload(authPayload, setAuthPayload) {
         setAuthPayload(data.data);
       })
       .catch((err) => {
+        logout(setAuthPayload, setAuthProfile);
         console.log(err);
       });
   }
@@ -57,7 +60,6 @@ function refreshAuthPayload(authPayload, setAuthPayload) {
 
 function saveAuthPayload(authPayload) {
   localStorage.setItem("authPayload", JSON.stringify(authPayload));
-  currentAuthPayload = authPayload;
 }
 
 function loadAuthPayload() {
@@ -81,29 +83,23 @@ function AuthentificationContextProvider(props) {
   const [authProfile, setAuthProfile] = useState(null);
   const [authPayload, setAuthPayload] = useState(loadAuthPayload());
 
-  currentAuthProfileSetter = setAuthProfile;
-  currentAuthPayloadSetter = setAuthPayload;
-
-  //Mises à jour à executer à chaque changement de authProfile.
-  useEffect(
-    function () {
-      currentAuthProfile = authProfile;
-    },
-    [authProfile]
-  );
-
   /*Charger au montage tout payload déjà connu si valide.
   Aussi, mettre à jour le payload à chaque montage si nécessaire. */
   useEffect(function () {
     setAuthPayload(loadAuthPayload());
-    refreshAuthPayload(authPayload, setAuthPayload);
+    refreshAuthPayload(authPayload, setAuthPayload, setAuthProfile);
   }, []);
 
   //Sauvegarder tout nouveau payload.
   useEffect(
     function () {
       saveAuthPayload(authPayload);
-      refreshAuthProfile();
+      refreshAuthProfile(
+        authPayload,
+        setAuthPayload,
+        authProfile,
+        setAuthProfile
+      );
     },
     [authPayload]
   );
@@ -115,6 +111,7 @@ function AuthentificationContextProvider(props) {
         setAuthPayload: setAuthPayload,
         authProfile: authProfile,
         setAuthProfile: setAuthProfile,
+        logout: logout,
       }}
     >
       {props.children}
@@ -122,19 +119,5 @@ function AuthentificationContextProvider(props) {
   );
 }
 
-const getAuthPayload = () => currentAuthPayload;
-const getAuthPayloadSetter = () => currentAuthPayloadSetter;
-
-const getAuthProfile = () => currentAuthProfile;
-const getAuthProfileSetter = () => currentAuthProfileSetter;
-
-export {
-  AuthentificationContextProvider,
-  getAuthPayload,
-  getAuthPayloadSetter,
-  saveAuthPayload,
-  loadAuthPayload,
-  getAuthProfile,
-  getAuthProfileSetter,
-};
+export { AuthentificationContextProvider, saveAuthPayload, loadAuthPayload };
 export default AuthentificationContext;
