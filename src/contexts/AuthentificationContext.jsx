@@ -62,6 +62,10 @@ function saveAuthPayload(authPayload) {
   localStorage.setItem("authPayload", JSON.stringify(authPayload));
 }
 
+function saveAuthProfile(authProfile) {
+  localStorage.setItem("authProfile", JSON.stringify(authProfile));
+}
+
 function loadAuthPayload() {
   let savedAuthPayload =
     localStorage.getItem("authPayload") != null
@@ -78,9 +82,18 @@ function loadAuthPayload() {
   return savedAuthPayload;
 }
 
+function loadAuthProfile() {
+  let savedAuthProfile =
+    localStorage.getItem("authProfile") != null
+      ? JSON.parse(localStorage.getItem("authProfile"))
+      : null;
+
+  return savedAuthProfile;
+}
+
 function AuthentificationContextProvider(props) {
   //Variables d'état.
-  const [authProfile, setAuthProfile] = useState(null);
+  const [authProfile, setAuthProfile] = useState(loadAuthProfile());
   const [authPayload, setAuthPayload] = useState(loadAuthPayload());
 
   /*Charger au montage tout payload déjà connu si valide.
@@ -104,6 +117,19 @@ function AuthentificationContextProvider(props) {
     [authPayload]
   );
 
+  //Envoyer des informations additionnelles au profil actuel, si il existe.
+  const patchAuthProfile = (data) => {
+    setAuthProfile((prf) => (prf != null ? { ...prf, ...data } : data));
+  };
+
+  //Sauvegarder tout nouveau profil.
+  useEffect(
+    function () {
+      saveAuthProfile(authProfile);
+    },
+    [authProfile]
+  );
+
   return (
     <AuthentificationContext.Provider
       value={{
@@ -111,6 +137,7 @@ function AuthentificationContextProvider(props) {
         setAuthPayload: setAuthPayload,
         authProfile: authProfile,
         setAuthProfile: setAuthProfile,
+        patchAuthProfile: patchAuthProfile,
         logout: logout,
       }}
     >
@@ -119,5 +146,5 @@ function AuthentificationContextProvider(props) {
   );
 }
 
-export { AuthentificationContextProvider, saveAuthPayload, loadAuthPayload };
+export { AuthentificationContextProvider };
 export default AuthentificationContext;

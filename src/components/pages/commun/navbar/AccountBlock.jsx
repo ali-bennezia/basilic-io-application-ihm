@@ -20,8 +20,9 @@ import config from "./../../../../config/config.json";
 function AccountBlock() {
   const navigate = useNavigate();
 
-  const authProps = useContext(AuthentificationContext);
-  const profile = authProps.authProfile;
+  let authProps = useContext(AuthentificationContext);
+  let profile = authProps.authProfile;
+  let photoProfilData = profile != null ? profile.photoProfil.split("/") : "";
 
   const onClickDisconnect = () => {
     authProps.logout(authProps.setAuthPayload, authProps.setAuthProfile);
@@ -65,9 +66,7 @@ function AccountBlock() {
                 <img
                   src={
                     "photoProfil" in profile
-                      ? `${config.mediaServerURL}medias/${
-                          profile.photoProfil.split("/")[0]
-                        }/get/${profile.photoProfil.split("/")[1]}`
+                      ? `${config.mediaServerURL}medias/${photoProfilData[0]}/get/${photoProfilData[1]}`
                       : `img/profile/guest-avatar.jpg`
                   }
                   style={{ width: "100%", height: "100%" }}

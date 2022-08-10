@@ -17,8 +17,13 @@ import {
 } from "./../../../../utils/validation";
 
 function OngletParamsProfilPublic({ tabIndex }) {
-  const { authPayload, setAuthPayload, authProfile, setAuthProfile } =
-    useContext(AuthentificationContext);
+  const {
+    authPayload,
+    setAuthPayload,
+    authProfile,
+    setAuthProfile,
+    patchAuthProfile,
+  } = useContext(AuthentificationContext);
 
   //Variables d'état
   const [profilePhotoFile, setProfilePhotoFile] = useState(null);
@@ -33,8 +38,6 @@ function OngletParamsProfilPublic({ tabIndex }) {
 
   //Fonction permettant la récupération des informations du profil.
   const fetchProfileData = () => {
-    console.log(authPayload);
-    console.log(authProfile);
     setPublicName(
       authProfile != null && "nomPublic" in authProfile
         ? authProfile.nomPublic
@@ -107,6 +110,7 @@ function OngletParamsProfilPublic({ tabIndex }) {
         }
       )
       .then((data) => {
+        patchAuthProfile(data.data);
         setWaitingAJAXResponse(false);
       })
       .catch((err) => {
