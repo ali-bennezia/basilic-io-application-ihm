@@ -48,8 +48,8 @@ function AccountBlock() {
             <div
               style={{
                 backgroundColor: "#3bd34d",
-                width: "54px",
-                height: "54px",
+                width: "70px",
+                height: "70px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -58,8 +58,8 @@ function AccountBlock() {
             >
               <div
                 style={{
-                  width: "48px",
-                  height: "48px",
+                  width: "64px",
+                  height: "64px",
                   backgroundColor: "white",
                 }}
               >

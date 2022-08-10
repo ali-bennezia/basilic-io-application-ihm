@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthentificationContext from "../../contexts/AuthentificationContext";
 
 //Composante permettant la redirection si l'utilisateur est connecté et authentifié.
-export default function AuthentifiedRedirection({ to }) {
+function AuthentifiedRedirection({ to }) {
   const authContextProps = useContext(AuthentificationContext);
 
   const navigate = useNavigate();
@@ -12,3 +12,16 @@ export default function AuthentifiedRedirection({ to }) {
   }, []);
   return <></>;
 }
+
+//Composante permettant la redirection si l'utilisateur est déconnecté.
+function UnauthentifiedRedirection({ to }) {
+  const authContextProps = useContext(AuthentificationContext);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (authContextProps.authPayload == null) navigate(to);
+  }, []);
+  return <></>;
+}
+
+export { AuthentifiedRedirection, UnauthentifiedRedirection };

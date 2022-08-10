@@ -119,7 +119,12 @@ function AuthentificationContextProvider(props) {
 
   //Envoyer des informations additionnelles au profil actuel, si il existe.
   const patchAuthProfile = (data) => {
-    setAuthProfile((prf) => (prf != null ? { ...prf, ...data } : data));
+    let newPrf = { ...(authProfile != null ? authProfile : {}), ...data };
+    for (let p in data)
+      if (data[p] === null || data[p] === undefined) delete newPrf[p];
+
+    console.log(newPrf);
+    setAuthProfile(newPrf);
   };
 
   //Sauvegarder tout nouveau profil.

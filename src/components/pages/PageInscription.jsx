@@ -10,7 +10,7 @@ import "./commun/PagesCommun.css";
 
 import axios from "axios";
 
-import AuthentifiedRedirection from "../redirection/AuthentifiedRedirection";
+import { AuthentifiedRedirection } from "../redirection/AuthentifiedRedirection";
 
 //Configuration:
 import config from "./../../config/config.json";

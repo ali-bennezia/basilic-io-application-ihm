@@ -22,7 +22,7 @@ import {
 } from "../../utils/validation";
 
 import { generatePayloadFromSessionData } from "../../utils/authentification";
-import AuthentifiedRedirection from "../redirection/AuthentifiedRedirection";
+import { AuthentifiedRedirection } from "../redirection/AuthentifiedRedirection";
 
 function PageConnexion() {
   //Contexte d'authentification:

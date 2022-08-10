@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Onglet from "./Onglet.jsx";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import AuthentificationContext from "../../../../contexts/AuthentificationContext.jsx";
+import { UnauthentifiedRedirection } from "../../../redirection/AuthentifiedRedirection.jsx";
 import axios from "axios";
 
 import "./../../commun/PagesCommun.css";
@@ -16,14 +19,22 @@ import {
   validateProfileDescription,
 } from "./../../../../utils/validation";
 
+import Snackbar from "@mui/material/Snackbar";
+import { EntypoCheck } from "react-entypo";
+
 function OngletParamsProfilPublic({ tabIndex }) {
+  //Variables du contexte d'authentification.
   const {
     authPayload,
     setAuthPayload,
     authProfile,
     setAuthProfile,
     patchAuthProfile,
+    logout,
   } = useContext(AuthentificationContext);
+
+  //Navigation.
+  const navigate = useNavigate();
 
   //Variables d'état
   const [profilePhotoFile, setProfilePhotoFile] = useState(null);
@@ -35,6 +46,9 @@ function OngletParamsProfilPublic({ tabIndex }) {
   const [validForm, setValidForm] = useState(false);
 
   const [waitingAJAXResponse, setWaitingAJAXResponse] = useState(false);
+
+  const [formNotificationOpen, setFormNotificationOpen] = useState(false);
+  const [formNotificationMessage, setFormNotificationMessage] = useState("");
 
   //Fonction permettant la récupération des informations du profil.
   const fetchProfileData = () => {
@@ -61,7 +75,8 @@ function OngletParamsProfilPublic({ tabIndex }) {
 
   //Callback pour toute entrée
   const refreshFullValidation = () => {
-    let fullValidation = true && !waitingAJAXResponse;
+    let fullValidation = true;
+    fullValidation = fullValidation && !waitingAJAXResponse;
 
     if (!isStringBlank(publicName))
       fullValidation = fullValidation && validatePublicName(publicName).result;
@@ -75,11 +90,21 @@ function OngletParamsProfilPublic({ tabIndex }) {
     publicName,
     profileDescription,
     publicProfile,
+    waitingAJAXResponse,
   ]);
 
   //Callback pour l'envoi
   const sendFormData = (e) => {
     e.preventDefault();
+
+    if (authPayload == null) {
+      logout(setAuthPayload, setAuthProfile);
+      setFormNotificationMessage("Erreur, vous n'êtes pas connecté(e).");
+      setFormNotificationOpen(true);
+      navigate("/connexion");
+      return;
+    }
+
     let formData = new FormData();
     let newParams = {
       nomPublic: publicName.trim() == "" ? null : publicName,
@@ -87,9 +112,6 @@ function OngletParamsProfilPublic({ tabIndex }) {
         profileDescription.trim() == "" ? null : profileDescription,
       profilPublic: publicProfile,
     };
-
-    for (let prop in newParams)
-      if (newParams[prop] == null) delete newParams[prop];
 
     formData.append("newParams", JSON.stringify(newParams));
     if (profilePhotoFile != null)
@@ -110,12 +132,21 @@ function OngletParamsProfilPublic({ tabIndex }) {
         }
       )
       .then((data) => {
-        patchAuthProfile(data.data);
+        patchAuthProfile({ ...newParams, ...data.data });
         setWaitingAJAXResponse(false);
+
+        setProfilePhotoFile(null);
+        setProfileBannerFile(null);
+
+        setFormNotificationMessage("Profil mis à jour avec succès.");
+        setFormNotificationOpen(true);
       })
       .catch((err) => {
         console.log(err);
         setWaitingAJAXResponse(false);
+
+        setFormNotificationMessage("Erreur, mise à jour du profil impossible.");
+        setFormNotificationOpen(true);
       });
   };
 
@@ -130,6 +161,7 @@ function OngletParamsProfilPublic({ tabIndex }) {
         alignItems: "center",
       }}
     >
+      <UnauthentifiedRedirection to="/connexion" />
       <div
         style={{
           width: "640px",
@@ -230,6 +262,13 @@ function OngletParamsProfilPublic({ tabIndex }) {
           >
             Envoyer
           </Button>
+
+          <Snackbar
+            open={formNotificationOpen}
+            onClose={(e) => setFormNotificationOpen(false)}
+            autoHideDuration={6000}
+            message={formNotificationMessage}
+          />
         </Form>
       </div>
     </Onglet>
