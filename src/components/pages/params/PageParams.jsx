@@ -5,7 +5,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
 import "./../commun/PagesCommun.css";
+
 import OngletParamsProfilPublic from "./onglets/OngletParamsProfilPublic";
+import OngletParamsCompteUtilisateur from "./onglets/OngletParamsCompteUtilisateur";
+
+import { UnauthentifiedRedirection } from "./../../redirection/AuthentifiedRedirection";
 
 function PageParams() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -17,6 +21,8 @@ function PageParams() {
         justifyContent: "center",
       }}
     >
+      <UnauthentifiedRedirection to="/connexion" />
+
       <h1 className="page-title" style={{ marginTop: "26px" }}>
         Paramètres
       </h1>
@@ -34,11 +40,12 @@ function PageParams() {
           onChange={(event, newValue) => setTabIndex(newValue)}
         >
           <Tab label="Profil public" value={0} />
-          <Tab label="Compte d'utilisateur" value={1} />
+          <Tab label="Données confidentielles" value={1} />
           <Tab label="Supprimer" value={2} />
         </Tabs>
       </div>
       <OngletParamsProfilPublic tabIndex={tabIndex} />
+      <OngletParamsCompteUtilisateur tabIndex={tabIndex} />
     </BasePage>
   );
 }

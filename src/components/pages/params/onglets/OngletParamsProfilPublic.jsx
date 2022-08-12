@@ -5,7 +5,6 @@ import Onglet from "./Onglet.jsx";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import AuthentificationContext from "../../../../contexts/AuthentificationContext.jsx";
-import { UnauthentifiedRedirection } from "../../../redirection/AuthentifiedRedirection.jsx";
 import axios from "axios";
 
 import "./../../commun/PagesCommun.css";
@@ -161,7 +160,6 @@ function OngletParamsProfilPublic({ tabIndex }) {
         alignItems: "center",
       }}
     >
-      <UnauthentifiedRedirection to="/connexion" />
       <div
         style={{
           width: "640px",

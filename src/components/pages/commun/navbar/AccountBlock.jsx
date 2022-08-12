@@ -69,7 +69,7 @@ function AccountBlock() {
                       ? `${config.mediaServerURL}medias/${photoProfilData[0]}/get/${photoProfilData[1]}`
                       : `img/profile/guest-avatar.jpg`
                   }
-                  style={{ width: "100%", height: "100%" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
             </div>
