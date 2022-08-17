@@ -10,6 +10,7 @@ import OngletParamsProfilPublic from "./onglets/OngletParamsProfilPublic";
 import OngletParamsCompteUtilisateur from "./onglets/OngletParamsCompteUtilisateur";
 
 import { UnauthentifiedRedirection } from "./../../redirection/AuthentifiedRedirection";
+import OngletParamsSupprimer from "./onglets/OngletParamsSupprimer";
 
 function PageParams() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -46,6 +47,7 @@ function PageParams() {
       </div>
       <OngletParamsProfilPublic tabIndex={tabIndex} />
       <OngletParamsCompteUtilisateur tabIndex={tabIndex} />
+      <OngletParamsSupprimer tabIndex={tabIndex} />
     </BasePage>
   );
 }

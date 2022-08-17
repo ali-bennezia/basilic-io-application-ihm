@@ -11,7 +11,7 @@ import PageInscription from "./components/pages/PageInscription";
 import PageConnexion from "./components/pages/PageConnexion";
 
 import PageFlux from "./components/pages/PageFlux";
-import PageProfil from "./components/pages/PageProfil";
+import PageProfil from "./components/pages/profil/PageProfil";
 import PageMessages from "./components/pages/PageMessages";
 import PageParams from "./components/pages/params/PageParams";
 
@@ -22,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/flux" element={<PageFlux />} />
           <Route path="/profil" element={<PageProfil />} />
+          <Route path="/profil/:userId" element={<PageProfil />} />
           <Route path="/params" element={<PageParams />} />
           <Route path="/messages" element={<PageMessages />} />
           <Route path="/inscription" element={<PageInscription />} />

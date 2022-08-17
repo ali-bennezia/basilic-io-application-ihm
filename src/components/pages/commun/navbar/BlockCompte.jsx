@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import AvatarProfil from "./profil/AvatarProfil";
 
 import AuthentificationContext from "../../../../contexts/AuthentificationContext";
 
@@ -7,7 +8,7 @@ import "./../PagesCommun.css";
 
 import Button from "@mui/material/Button";
 
-import { isAuthPayloadValid } from "./../../../../utils/authentification";
+import { isAuthPayloadValid } from "../../../../utils/authentification";
 
 import "./../PagesCommun.css";
 
@@ -15,14 +16,13 @@ import { EntypoLogOut, EntypoLogin, EntypoTextDocument } from "react-entypo";
 
 import { useNavigate } from "react-router-dom";
 
-import config from "./../../../../config/config.json";
+import config from "../../../../config/config.json";
 
-function AccountBlock() {
+function BlockCompte() {
   const navigate = useNavigate();
 
   let authProps = useContext(AuthentificationContext);
   let profile = authProps.authProfile;
-  let photoProfilData = profile != null ? profile.photoProfil.split("/") : "";
 
   const onClickDisconnect = () => {
     authProps.logout(authProps.setAuthPayload, authProps.setAuthProfile);
@@ -45,36 +45,9 @@ function AccountBlock() {
       >
         <div id="navbar-account-block">
           <div>
-            <div
-              style={{
-                backgroundColor: "#3bd34d",
-                width: "70px",
-                height: "70px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                boxShadow: "black 0px 0px 3px",
-              }}
-            >
-              <div
-                style={{
-                  width: "64px",
-                  height: "64px",
-                  backgroundColor: "white",
-                }}
-              >
-                <img
-                  src={
-                    "photoProfil" in profile
-                      ? `${config.mediaServerURL}medias/${photoProfilData[0]}/get/${photoProfilData[1]}`
-                      : `img/profile/guest-avatar.jpg`
-                  }
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </div>
-            </div>
+            <AvatarProfil profile={profile} />
           </div>
-          <div style={{ marginLeft: "-38px", marginTop: "-10px" }}>
+          <div style={{ marginLeft: "-78px", marginTop: "-10px" }}>
             <p className="navbar-text" style={{ fontSize: "14px" }}>
               {"nomPublic" in profile && profile.nomPublic != null
                 ? profile.nomPublic
@@ -168,4 +141,4 @@ function AccountBlock() {
     );
 }
 
-export default AccountBlock;
+export default BlockCompte;

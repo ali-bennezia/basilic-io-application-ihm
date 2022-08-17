@@ -1,12 +1,12 @@
 import React from "react";
 
-import AccountBlock from "./AccountBlock";
+import BlockCompte from "./BlockCompte";
 import NavbarButtonSet from "./NavbarButtonSet";
 
 export default function NavbarLateral() {
   return (
     <div className="navbar navbar-side">
-      <AccountBlock />
+      <BlockCompte />
       <NavbarButtonSet />
     </div>
   );

@@ -222,3 +222,18 @@ button.btn.btn-primary {
   background-color: #19d249;
   border-color: #27be4f;
 }
+
+.form-paragraph {
+  color: rgb(99, 99, 99);
+}
+
+.inner-page-block {
+  background-color: rgb(242, 242, 242);
+  border: rgb(207, 207, 207) solid 1px;
+
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 80px;
+  margin-top: 40px;
+}
