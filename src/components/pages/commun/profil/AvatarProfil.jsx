@@ -1,6 +1,6 @@
 import React from "react";
 
-import config from "./../../../../../config/config.json";
+import config from "../../../../config/config.json";
 
 function AvatarProfil({ profile, size = 70, borderWidth = 6, style = {} }) {
   const photoProfilData =
@@ -32,9 +32,9 @@ function AvatarProfil({ profile, size = 70, borderWidth = 6, style = {} }) {
       >
         <img
           src={
-            "photoProfil" in profile && photoProfilData
+            profile != null && "photoProfil" in profile && photoProfilData
               ? `${config.mediaServerURL}medias/${photoProfilData[0]}/get/${photoProfilData[1]}`
-              : `img/profile/guest-avatar.jpg`
+              : config.defaultAvatar
           }
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />

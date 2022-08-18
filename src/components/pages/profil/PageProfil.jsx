@@ -39,6 +39,7 @@ function PageProfil() {
 
   //Variables d'état.
   const [pageState, setPageState] = useState(ProfileState.Error);
+  const [viewedAuthProfile, setViewedAuthProfile] = useState(null);
 
   //Initialisation de la page.
   useEffect(() => {
@@ -57,9 +58,11 @@ function PageProfil() {
       .get(`${config.applicationServerURL}profiles/get/${viewedUserId}`)
       .then((data) => {
         console.log(data.data);
+        setViewedAuthProfile(data.data);
       })
       .catch((err) => {
         console.log(err);
+        setViewedAuthProfile(null);
       });
   }, []);
 
@@ -81,7 +84,7 @@ function PageProfil() {
           justifyContent: "center",
         }}
       >
-        <EnTeteProfil />
+        <EnTeteProfil profile={viewedAuthProfile} />
       </div>
     </BasePage>
   );

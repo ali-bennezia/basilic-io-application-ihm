@@ -47,6 +47,13 @@ function OngletParamsSupprimer({ tabIndex }) {
   const [formNotificationOpen, setFormNotificationOpen] = useState(false);
   const [formNotificationMessage, setFormNotificationMessage] = useState("");
 
+  const [askConfirmation, setAskConfirmation] = useState(true);
+
+  //Initialisation au montage du composant.
+  useEffect(() => {
+    setAskConfirmation(true);
+  }, []);
+
   //Callback pour toute entrée
   const refreshFullValidation = () => {
     let fullValidation = true;
@@ -86,6 +93,11 @@ function OngletParamsSupprimer({ tabIndex }) {
       data.motDePasse = currentPassword;
     else return;
 
+    if (askConfirmation === true) {
+      setAskConfirmation((val) => !val);
+      return;
+    }
+
     setWaitingAJAXResponse(true);
     axios
       .delete(
@@ -114,6 +126,7 @@ function OngletParamsSupprimer({ tabIndex }) {
 
         setFormNotificationMessage("Erreur, suppression du compte impossible.");
         setFormNotificationOpen(true);
+        setAskConfirmation(true);
       });
   };
 
@@ -184,7 +197,9 @@ function OngletParamsSupprimer({ tabIndex }) {
               sendFormData(e);
             }}
           >
-            Supprimer mon compte
+            {askConfirmation
+              ? "Supprimer mon compte"
+              : "Confirmer la suppression de mon compte"}
           </Button>
 
           <Snackbar

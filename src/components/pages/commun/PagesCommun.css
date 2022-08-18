@@ -237,3 +237,8 @@ button.btn.btn-primary {
   margin: 80px;
   margin-top: 40px;
 }
+
+img.profile-banner {
+  object-fit: cover;
+  box-shadow: rgba(0, 0, 0, 0.63) 0px 2px 3px 0px;
+}

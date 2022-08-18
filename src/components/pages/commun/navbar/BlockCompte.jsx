@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import AvatarProfil from "./profil/AvatarProfil";
+import AvatarProfil from "../profil/AvatarProfil";
 
 import AuthentificationContext from "../../../../contexts/AuthentificationContext";
 
