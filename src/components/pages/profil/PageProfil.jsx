@@ -3,6 +3,9 @@ import EnTeteProfil from "./EnTeteProfil";
 import { useParams, useNavigate } from "react-router-dom";
 import BasePage from "./../commun/BasePage";
 
+import MoonLoader from "react-spinners/MoonLoader";
+import { EntypoCircleWithCross } from "react-entypo";
+
 import { UnauthentifiedRedirection } from "./../../redirection/AuthentifiedRedirection";
 import AuthentificationContext from "../../../contexts/AuthentificationContext.jsx";
 
@@ -12,9 +15,10 @@ import config from "./../../../config/config.json";
 import axios from "axios";
 
 const ProfileState = {
-  Visible: 0,
-  Private: 1,
-  Error: 2,
+  Loading: 0,
+  Visible: 1,
+  Private: 2,
+  Error: 3,
 };
 
 function PageProfil() {
@@ -38,7 +42,8 @@ function PageProfil() {
   let viewedUserId = null;
 
   //Variables d'état.
-  const [pageState, setPageState] = useState(ProfileState.Error);
+  const [pageState, setPageState] = useState(ProfileState.Loading);
+  const [profileContent, setProfileContent] = useState(<></>);
   const [viewedAuthProfile, setViewedAuthProfile] = useState(null);
 
   //Initialisation de la page.
@@ -58,13 +63,72 @@ function PageProfil() {
       .get(`${config.applicationServerURL}profiles/get/${viewedUserId}`)
       .then((data) => {
         console.log(data.data);
+        setPageState(
+          "profilPublic" in data.data && data.data.profilPublic === false
+            ? ProfileState.Private
+            : ProfileState.Visible
+        );
         setViewedAuthProfile(data.data);
       })
       .catch((err) => {
         console.log(err);
+        setPageState(ProfileState.Error);
         setViewedAuthProfile(null);
       });
   }, []);
+
+  const updateProfileContent = () => {
+    switch (pageState) {
+      case ProfileState.Loading:
+        setProfileContent(
+          <div style={{ marginTop: "260px" }}>
+            <MoonLoader color="green" />
+          </div>
+        );
+        break;
+      case ProfileState.Private:
+        setProfileContent(<p>Profil privé</p>);
+        break;
+      case ProfileState.Visible:
+        setProfileContent(
+          <>
+            <EnTeteProfil profile={viewedAuthProfile} />
+          </>
+        );
+        break;
+      default:
+        setProfileContent(
+          <div
+            className="inner-page-block"
+            style={{
+              height: "300px",
+              padding: "40px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <h3 style={{ textAlign: "center" }}>Profil introuvable</h3>
+            <p>
+              Malheureusement, il est impossible de charger le profil auquel
+              vous tentez d'accéder.
+            </p>
+            <br />
+            <EntypoCircleWithCross
+              style={{
+                textAlign: "center",
+                fontSize: "80px",
+                color: "red",
+                filter: "drop-shadow(0px 0px 1px black)",
+              }}
+            />
+          </div>
+        );
+        break;
+    }
+  };
+
+  useEffect(updateProfileContent, [pageState, viewedAuthProfile]);
 
   return (
     <BasePage
@@ -84,7 +148,7 @@ function PageProfil() {
           justifyContent: "center",
         }}
       >
-        <EnTeteProfil profile={viewedAuthProfile} />
+        {profileContent}
       </div>
     </BasePage>
   );
