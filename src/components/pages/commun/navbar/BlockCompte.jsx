@@ -47,8 +47,19 @@ function BlockCompte() {
           <div>
             <AvatarProfil profile={profile} />
           </div>
-          <div style={{ marginLeft: "-78px", marginTop: "-10px" }}>
-            <p className="navbar-text" style={{ fontSize: "14px" }}>
+          <div
+            style={{ width: "100px", marginLeft: "-40px", marginTop: "-10px" }}
+          >
+            <p
+              className="navbar-text"
+              style={{
+                fontSize: "14px",
+                maxWidth: "100px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               {"nomPublic" in profile && profile.nomPublic != null
                 ? profile.nomPublic
                 : profile.nomUtilisateur}
