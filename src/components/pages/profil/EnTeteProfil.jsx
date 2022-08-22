@@ -21,6 +21,24 @@ function EnTeteProfil({ profile }) {
         style={{ position: "absolute", right: "20px", top: "135px" }}
         profile={profile}
       />
+
+      <p
+        style={{
+          position: "absolute",
+          left: "200px",
+          top: "140px",
+          width: "280px",
+          height: "100px",
+          wordWrap: "break-word",
+          overflow: "hidden",
+        }}
+      >
+        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+      </p>
     </div>
   );
 }
