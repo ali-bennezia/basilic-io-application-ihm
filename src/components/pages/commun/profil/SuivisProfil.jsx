@@ -2,7 +2,6 @@ import React from "react";
 import { EntypoHeart, EntypoUsers } from "react-entypo";
 
 function SuivisProfil({ profile, style }) {
-  console.log(profile);
   const suis = profile != null && "suis" in profile ? profile.suis : null;
   const suiviPar =
     profile != null && "suiviPar" in profile ? profile.suiviPar : null;
