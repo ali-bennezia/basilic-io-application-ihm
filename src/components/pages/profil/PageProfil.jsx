@@ -14,6 +14,8 @@ import config from "./../../../config/config.json";
 
 import axios from "axios";
 
+import Snackbar from "@mui/material/Snackbar";
+
 const ProfileState = {
   Loading: 0,
   Visible: 1,
@@ -46,6 +48,9 @@ function PageProfil() {
   const [profileContent, setProfileContent] = useState(<></>);
   const [viewedAuthProfile, setViewedAuthProfile] = useState(null);
 
+  const [formNotificationOpen, setFormNotificationOpen] = useState(false);
+  const [formNotificationMessage, setFormNotificationMessage] = useState("");
+
   //Initialisation de la page.
   useEffect(() => {
     viewedUserId = userId
@@ -59,12 +64,16 @@ function PageProfil() {
       return;
     }
 
+    let cfg = {};
+    if (authPayload != null)
+      cfg.headers = { authorization: `Bearer ${authPayload.token}` };
+
     axios
-      .get(`${config.applicationServerURL}profiles/get/${viewedUserId}`)
+      .get(`${config.applicationServerURL}profiles/get/${viewedUserId}`, cfg)
       .then((data) => {
-        console.log(data.data);
         setPageState(
-          "profilPublic" in data.data && data.data.profilPublic === false
+          "profilPublic" in data.data &&
+            data.data.token.domaineVisible === false
             ? ProfileState.Private
             : ProfileState.Visible
         );
@@ -92,7 +101,12 @@ function PageProfil() {
       case ProfileState.Visible:
         setProfileContent(
           <>
-            <EnTeteProfil profile={viewedAuthProfile} />
+            <EnTeteProfil
+              profile={viewedAuthProfile}
+              setFormNotificationOpen={setFormNotificationOpen}
+              setFormNotificationMessage={setFormNotificationMessage}
+              setViewedAuthProfile={setViewedAuthProfile}
+            />
           </>
         );
         break;
@@ -150,6 +164,12 @@ function PageProfil() {
       >
         {profileContent}
       </div>
+      <Snackbar
+        open={formNotificationOpen}
+        onClose={(e) => setFormNotificationOpen(false)}
+        autoHideDuration={6000}
+        message={formNotificationMessage}
+      />
     </BasePage>
   );
 }

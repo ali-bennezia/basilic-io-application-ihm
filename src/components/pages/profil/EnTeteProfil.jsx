@@ -6,7 +6,14 @@ import SuivisProfil from "../commun/profil/SuivisProfil";
 
 import "./../commun/PagesCommun.css";
 
-function EnTeteProfil({ profile }) {
+import ActionsProfil from "../commun/profil/ActionsProfil";
+
+function EnTeteProfil({
+  profile,
+  setFormNotificationOpen,
+  setFormNotificationMessage,
+  setViewedAuthProfile,
+}) {
   return (
     <div className="inner-page-block" style={{ height: "300px" }}>
       {profile != null && "banniereProfil" in profile ? (
@@ -60,6 +67,14 @@ function EnTeteProfil({ profile }) {
           left: "200px",
           top: "180px",
         }}
+      />
+
+      <ActionsProfil
+        style={{ position: "absolute", right: "20px", bottom: "20px" }}
+        profile={profile}
+        setFormNotificationOpen={setFormNotificationOpen}
+        setFormNotificationMessage={setFormNotificationMessage}
+        setViewedAuthProfile={setViewedAuthProfile}
       />
     </div>
   );

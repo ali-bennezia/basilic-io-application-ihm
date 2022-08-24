@@ -4,9 +4,9 @@ import React, { createContext, useState, useEffect } from "react";
 import {
   isAuthPayloadValid,
   isAuthPayloadNearingExpiration,
-} from "./../utils/authentification";
+} from "../utils/authentification";
 
-import config from "./../config/config.json";
+import config from "../config/config.json";
 
 import axios from "axios";
 
