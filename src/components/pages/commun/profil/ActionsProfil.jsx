@@ -15,6 +15,7 @@ function ActionsProfil({
   setFormNotificationOpen,
   setFormNotificationMessage,
   setViewedAuthProfile,
+  setMessageBoxIsOpen,
 }) {
   let { authProfile, authPayload } = useContext(AuthentificationContext);
   const isSelf =
@@ -61,7 +62,11 @@ function ActionsProfil({
         {!isFollowed ? "Suivre" : "Ne plus suivre"}
       </Button>
       &nbsp;&nbsp;&nbsp;
-      <Button>
+      <Button
+        onClick={(e) => {
+          setMessageBoxIsOpen(true);
+        }}
+      >
         <EntypoMail style={{ marginTop: "4px" }} />
         &nbsp;Envoyer un message
       </Button>

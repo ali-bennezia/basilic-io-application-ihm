@@ -3,11 +3,15 @@ import EnTeteProfil from "./EnTeteProfil";
 import { useParams, useNavigate } from "react-router-dom";
 import BasePage from "./../commun/BasePage";
 
+import { UnauthentifiedRedirection } from "./../../redirection/AuthentifiedRedirection";
+import AuthentificationContext from "../../../contexts/AuthentificationContext.jsx";
+import BoiteDialogue from "../commun/dialogue/BoiteDialogue";
+
 import MoonLoader from "react-spinners/MoonLoader";
 import { EntypoCircleWithCross } from "react-entypo";
 
-import { UnauthentifiedRedirection } from "./../../redirection/AuthentifiedRedirection";
-import AuthentificationContext from "../../../contexts/AuthentificationContext.jsx";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 import "./../commun/PagesCommun.css";
 import config from "./../../../config/config.json";
@@ -48,8 +52,17 @@ function PageProfil() {
   const [profileContent, setProfileContent] = useState(<></>);
   const [viewedAuthProfile, setViewedAuthProfile] = useState(null);
 
+  const [messageBoxIsOpen, setMessageBoxIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [formError, setFormError] = useState("");
+
   const [formNotificationOpen, setFormNotificationOpen] = useState(false);
   const [formNotificationMessage, setFormNotificationMessage] = useState("");
+
+  //Callback pour l'envoi de message.
+  const onClickSendMessage = (e) => {
+    console.log("envoi");
+  };
 
   //Initialisation de la page.
   useEffect(() => {
@@ -106,6 +119,7 @@ function PageProfil() {
               setFormNotificationOpen={setFormNotificationOpen}
               setFormNotificationMessage={setFormNotificationMessage}
               setViewedAuthProfile={setViewedAuthProfile}
+              setMessageBoxIsOpen={setMessageBoxIsOpen}
             />
           </>
         );
@@ -170,6 +184,33 @@ function PageProfil() {
         autoHideDuration={6000}
         message={formNotificationMessage}
       />
+      <BoiteDialogue
+        title="Envoyer un message"
+        isOpen={messageBoxIsOpen}
+        setIsOpen={setMessageBoxIsOpen}
+      >
+        <Form
+          className="basic-form"
+          style={{ width: "100%", marginTop: "-14px" }}
+        >
+          <Form.Group className="mb-3" controlId="formMessage">
+            <Form.Label>Message</Form.Label>
+            <Form.Control
+              as="textarea"
+              placeholder="Entrez ici votre message..."
+              value={message}
+              onInput={(e) => {
+                setMessage((val) => e.target.value);
+              }}
+              style={{ height: "186px" }}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" onClick={onClickSendMessage}>
+            Envoyer
+          </Button>
+          <p className="form-error-label">{formError}</p>
+        </Form>
+      </BoiteDialogue>
     </BasePage>
   );
 }

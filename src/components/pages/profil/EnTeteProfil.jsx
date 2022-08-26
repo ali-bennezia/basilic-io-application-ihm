@@ -13,6 +13,7 @@ function EnTeteProfil({
   setFormNotificationOpen,
   setFormNotificationMessage,
   setViewedAuthProfile,
+  setMessageBoxIsOpen,
 }) {
   return (
     <div className="inner-page-block" style={{ height: "300px" }}>
@@ -75,6 +76,7 @@ function EnTeteProfil({
         setFormNotificationOpen={setFormNotificationOpen}
         setFormNotificationMessage={setFormNotificationMessage}
         setViewedAuthProfile={setViewedAuthProfile}
+        setMessageBoxIsOpen={setMessageBoxIsOpen}
       />
     </div>
   );
