@@ -12,7 +12,12 @@ import { isAuthPayloadValid } from "../../../../utils/authentification";
 
 import "./../PagesCommun.css";
 
-import { EntypoLogOut, EntypoLogin, EntypoTextDocument } from "react-entypo";
+import {
+  EntypoLogOut,
+  EntypoLogin,
+  EntypoTextDocument,
+  EntypoCheck,
+} from "react-entypo";
 
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +28,42 @@ function BlockCompte() {
 
   let authProps = useContext(AuthentificationContext);
   let profile = authProps.authProfile;
+
+  const invalidAccountElement = (
+    <>
+      {" "}
+      <Button
+        variant="contained"
+        style={{
+          backgroundColor: "#3bd34d",
+
+          fontSize: "14px",
+          fontFamily: "Arial, Helvetica, sans-serif",
+          textTransform: "none",
+
+          width: "84%",
+          height: "30px",
+          padding: "8px",
+
+          marginTop: "10px",
+        }}
+      >
+        <EntypoCheck /> &nbsp; Valider mon compte
+      </Button>
+      <p
+        className="navbar-text"
+        style={{
+          textAlign: "center",
+          fontSize: "16px",
+          marginTop: "10px",
+          color: "grey",
+        }}
+      >
+        Votre compte n'est pas encore valide. Vous n'avez pas accès à toutes les
+        fonctionnalités.
+      </p>
+    </>
+  );
 
   const onClickDisconnect = () => {
     authProps.logout(authProps.setAuthPayload, authProps.setAuthProfile);
@@ -86,6 +127,7 @@ function BlockCompte() {
         >
           <EntypoLogOut /> &nbsp; Se déconnecter
         </Button>
+        {!authProps.authProfile.valide ? invalidAccountElement : <></>}
       </div>
     );
   else

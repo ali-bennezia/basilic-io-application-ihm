@@ -66,6 +66,7 @@ function ActionsProfil({
         onClick={(e) => {
           setMessageBoxIsOpen(true);
         }}
+        disabled={!authProfile.valide}
       >
         <EntypoMail style={{ marginTop: "4px" }} />
         &nbsp;Envoyer un message

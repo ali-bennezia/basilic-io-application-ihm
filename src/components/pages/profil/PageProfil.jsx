@@ -44,6 +44,8 @@ function PageProfil() {
     logout,
   } = useContext(AuthentificationContext);
 
+  console.log(authPayload);
+  console.log(authProfile);
   //Variables.
   let viewedUserId = null;
 
@@ -61,7 +63,29 @@ function PageProfil() {
 
   //Callback pour l'envoi de message.
   const onClickSendMessage = (e) => {
-    console.log("envoi");
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("contenu", message);
+    formData.append("cibleUserId", viewedAuthProfile.id);
+
+    axios
+      .post(
+        `${config.applicationServerURL}messages/conversations/messages/post`,
+        formData,
+        { headers: { authorization: `Bearer ${authPayload.token}` } }
+      )
+      .then((data) => {
+        setFormNotificationMessage("Message envoyé avec succès.");
+        setFormNotificationOpen(true);
+        setMessageBoxIsOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setFormNotificationMessage("Erreur. Envoi du message impossible.");
+        setFormNotificationOpen(true);
+        setMessageBoxIsOpen(false);
+      });
   };
 
   //Initialisation de la page.
