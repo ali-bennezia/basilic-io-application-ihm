@@ -47,6 +47,7 @@ function BlockCompte() {
 
           marginTop: "10px",
         }}
+        onClick={(e) => navigate("/valider")}
       >
         <EntypoCheck /> &nbsp; Valider mon compte
       </Button>

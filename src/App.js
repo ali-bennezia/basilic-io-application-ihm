@@ -14,12 +14,14 @@ import PageFlux from "./components/pages/PageFlux";
 import PageProfil from "./components/pages/profil/PageProfil";
 import PageMessages from "./components/pages/PageMessages";
 import PageParams from "./components/pages/params/PageParams";
+import PageValidation from "./components/pages/profil/validation/PageValidation";
 
 function App() {
   return (
     <AuthentificationContextProvider>
       <Router>
         <Routes>
+          <Route path="/valider" element={<PageValidation />} />
           <Route path="/flux" element={<PageFlux />} />
           <Route path="/profil" element={<PageProfil />} />
           <Route path="/profil/:userId" element={<PageProfil />} />
