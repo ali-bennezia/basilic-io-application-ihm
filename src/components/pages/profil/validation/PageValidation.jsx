@@ -19,7 +19,8 @@ function PageValidation() {
   const navigate = useNavigate();
 
   //Variables du contexte d'authentification.
-  const { authPayload } = useContext(AuthentificationContext);
+  const { authPayload, setAuthPayload, setAuthProfile, refreshAuthPayload } =
+    useContext(AuthentificationContext);
 
   //Variables d'état.
   const [mode, setMode] = useState(0);
@@ -66,6 +67,7 @@ function PageValidation() {
       )
       .then((data) => {
         //Compte validé.
+        refreshAuthPayload(authPayload, setAuthPayload, setAuthProfile);
         navigate("/flux");
       })
       .catch((err) => {
@@ -133,7 +135,7 @@ function PageValidation() {
                   type="text"
                   placeholder="Entrez ici le code de validation ..."
                   value={code}
-                  onInput={(e) => setCode(code)}
+                  onInput={(e) => setCode(e.target.value)}
                 />
               </Form.Group>
               <Button onClick={validateCode}>Valider</Button>

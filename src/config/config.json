@@ -6,5 +6,5 @@
     "longLifetimeDays": "8"
   },
   "defaultAvatar": "/img/profile/guest-avatar.jpg",
-  "defaultBanner": "/img/profile/guest-avatar.jpg"
+  "defaultBanner": "/img/profile/default-banner.jpg"
 }

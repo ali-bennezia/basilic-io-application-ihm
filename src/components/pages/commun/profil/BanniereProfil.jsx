@@ -8,7 +8,7 @@ function BanniereProfil({ profile }) {
       ? profile.banniereProfil.split("/")
       : "";
 
-  return profile != null && "banniereProfil" in profile ? (
+  return profile != null ? (
     <img
       className="profile-banner"
       style={{

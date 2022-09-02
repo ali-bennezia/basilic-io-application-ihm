@@ -7,6 +7,8 @@ import { UnauthentifiedRedirection } from "./../../redirection/AuthentifiedRedir
 import AuthentificationContext from "../../../contexts/AuthentificationContext.jsx";
 import BoiteDialogue from "../commun/dialogue/BoiteDialogue";
 
+import FluxPosts from "../contenu/FluxPosts";
+
 import MoonLoader from "react-spinners/MoonLoader";
 import { EntypoCircleWithCross } from "react-entypo";
 
@@ -46,13 +48,13 @@ function PageProfil() {
 
   console.log(authPayload);
   console.log(authProfile);
-  //Variables.
-  let viewedUserId = null;
 
   //Variables d'état.
   const [pageState, setPageState] = useState(ProfileState.Loading);
   const [profileContent, setProfileContent] = useState(<></>);
+
   const [viewedAuthProfile, setViewedAuthProfile] = useState(null);
+  const [isSelf, setIsSelf] = useState(true);
 
   const [messageBoxIsOpen, setMessageBoxIsOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -90,7 +92,7 @@ function PageProfil() {
 
   //Initialisation de la page.
   useEffect(() => {
-    viewedUserId = userId
+    const viewedUserId = userId
       ? userId
       : authProfile && "id" in authProfile
       ? authProfile.id
@@ -100,6 +102,8 @@ function PageProfil() {
       navigate("/flux");
       return;
     }
+
+    setIsSelf(authProfile != null && viewedUserId == authProfile.id);
 
     let cfg = {};
     if (authPayload != null)
@@ -115,6 +119,14 @@ function PageProfil() {
             : ProfileState.Visible
         );
         setViewedAuthProfile(data.data);
+
+        /* Récupération de posts au chargement
+        axios
+          .get(
+            `${config.applicationServerURL}profiles/posts/${viewedUserId}&0&10`
+          )
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err));*/
       })
       .catch((err) => {
         console.log(err);
@@ -144,6 +156,11 @@ function PageProfil() {
               setFormNotificationMessage={setFormNotificationMessage}
               setViewedAuthProfile={setViewedAuthProfile}
               setMessageBoxIsOpen={setMessageBoxIsOpen}
+            />
+            <FluxPosts
+              showPostField={
+                isSelf && authProfile != null && authProfile.valide === true
+              }
             />
           </>
         );
@@ -198,6 +215,8 @@ function PageProfil() {
           padding: "20px",
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         }}
       >
         {profileContent}

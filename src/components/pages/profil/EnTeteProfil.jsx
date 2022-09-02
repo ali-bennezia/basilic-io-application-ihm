@@ -17,9 +17,7 @@ function EnTeteProfil({
 }) {
   return (
     <div className="inner-page-block" style={{ height: "300px" }}>
-      {profile != null && "banniereProfil" in profile ? (
-        <BanniereProfil profile={profile} />
-      ) : null}
+      {profile != null ? <BanniereProfil profile={profile} /> : null}
       <AvatarProfil
         profile={profile}
         size={140}

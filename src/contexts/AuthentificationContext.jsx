@@ -144,6 +144,8 @@ function AuthentificationContextProvider(props) {
         setAuthProfile: setAuthProfile,
         patchAuthProfile: patchAuthProfile,
         logout: logout,
+        refreshAuthPayload: refreshAuthPayload,
+        refreshAuthProfile: refreshAuthProfile,
       }}
     >
       {props.children}
