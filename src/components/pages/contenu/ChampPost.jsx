@@ -9,7 +9,7 @@ function ChampPost() {
   return (
     <div
       className="inner-page-block"
-      style={{ height: "220px", padding: "30px", marginTop: "0px" }}
+      style={{ height: "auto", padding: "30px", marginTop: "0px" }}
     >
       <Form
         style={{

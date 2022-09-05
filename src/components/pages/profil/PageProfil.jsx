@@ -114,6 +114,7 @@ function PageProfil() {
       .then((data) => {
         setPageState(
           "profilPublic" in data.data &&
+            "domaineVisible" in data.data.token &&
             data.data.token.domaineVisible === false
             ? ProfileState.Private
             : ProfileState.Visible
