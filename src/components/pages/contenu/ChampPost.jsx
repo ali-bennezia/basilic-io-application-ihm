@@ -5,7 +5,7 @@ import { Form, Button } from "react-bootstrap";
 import { EntypoChat } from "react-entypo";
 import SelectionneurMedias from "./medias/SelectionneurMedias";
 
-function ChampPost() {
+function ChampPost({ setFormNotificationOpen, setFormNotificationMessage }) {
   return (
     <div
       className="inner-page-block"
@@ -26,13 +26,16 @@ function ChampPost() {
             marginTop: "16px",
           }}
         >
-          <Button variant="primary" type="submit" style={{}}>
+          <Button variant="primary" type="submit">
             <EntypoChat
               style={{ marginTop: "4px", marginRight: "6px", fontSize: "20px" }}
             />
             Poster
           </Button>
-          <SelectionneurMedias />
+          <SelectionneurMedias
+            setFormNotificationOpen={setFormNotificationOpen}
+            setFormNotificationMessage={setFormNotificationMessage}
+          />
         </div>
       </Form>
     </div>

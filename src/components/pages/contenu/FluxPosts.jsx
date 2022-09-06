@@ -7,7 +7,11 @@ import { Form, Button } from "react-bootstrap";
 
 import AuthentificationContext from "../../../contexts/AuthentificationContext.jsx";
 
-function FluxPosts({ showPostField = false }) {
+function FluxPosts({
+  showPostField = false,
+  setFormNotificationOpen,
+  setFormNotificationMessage,
+}) {
   //Variables du contexte d'authentification.
   const {
     authPayload,
@@ -18,7 +22,14 @@ function FluxPosts({ showPostField = false }) {
     logout,
   } = useContext(AuthentificationContext);
 
-  const postInput = showPostField ? <ChampPost /> : <></>;
+  const postInput = showPostField ? (
+    <ChampPost
+      setFormNotificationOpen={setFormNotificationOpen}
+      setFormNotificationMessage={setFormNotificationMessage}
+    />
+  ) : (
+    <></>
+  );
 
   return (
     <div

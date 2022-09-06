@@ -4,8 +4,12 @@ import Button from "react-bootstrap/Button";
 
 import { EntypoCircleWithPlus } from "react-entypo";
 import SelectionneurMedia from "./SelectionneurMedia";
+import config from "./../../../../config/config.json";
 
-function SelectionneurMedias() {
+function SelectionneurMedias({
+  setFormNotificationOpen,
+  setFormNotificationMessage,
+}) {
   const fileInputRef = createRef();
 
   //Variables d'état.
@@ -19,6 +23,12 @@ function SelectionneurMedias() {
     setMedias((val) => [...val, ...arr]);
 
     console.log(medias);
+  };
+
+  const removeFile = (file) => {
+    let arr = [...medias];
+    arr.splice(arr.indexOf(file), 1);
+    setMedias(arr);
   };
 
   return (
@@ -41,6 +51,22 @@ function SelectionneurMedias() {
       <Button
         style={{ marginLeft: "8px" }}
         onClick={(e) => {
+          e.preventDefault();
+
+          if (medias.length >= config.maxMediasPerPost) {
+            if (
+              setFormNotificationOpen != undefined &&
+              setFormNotificationMessage != undefined
+            ) {
+              setFormNotificationMessage(
+                "Limite de médias possibles atteinte."
+              );
+              setFormNotificationOpen(true);
+            }
+
+            return;
+          }
+
           fileInputRef.current.click();
         }}
       >
@@ -61,7 +87,9 @@ function SelectionneurMedias() {
         }}
       >
         {medias.map((el, i) => {
-          return <SelectionneurMedia file={el} key={i} />;
+          return (
+            <SelectionneurMedia file={el} key={i} removeFile={removeFile} />
+          );
         })}
       </div>
     </div>

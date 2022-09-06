@@ -6,5 +6,6 @@
     "longLifetimeDays": "8"
   },
   "defaultAvatar": "/img/profile/guest-avatar.jpg",
-  "defaultBanner": "/img/profile/default-banner.jpg"
+  "defaultBanner": "/img/profile/default-banner.jpg",
+  "maxMediasPerPost": "4"
 }

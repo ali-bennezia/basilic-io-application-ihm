@@ -162,6 +162,8 @@ function PageProfil() {
               showPostField={
                 isSelf && authProfile != null && authProfile.valide === true
               }
+              setFormNotificationOpen={setFormNotificationOpen}
+              setFormNotificationMessage={setFormNotificationMessage}
             />
           </>
         );
