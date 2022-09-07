@@ -1,4 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+
+import Post from "./Post";
 import ChampPost from "./ChampPost";
 
 import "./../commun/PagesCommun.css";
@@ -11,6 +13,8 @@ function FluxPosts({
   showPostField = false,
   setFormNotificationOpen,
   setFormNotificationMessage,
+  fetchPostsPromise,
+  fetchPostsTimelinePromise,
 }) {
   //Variables du contexte d'authentification.
   const {
@@ -22,6 +26,15 @@ function FluxPosts({
     logout,
   } = useContext(AuthentificationContext);
 
+  //Variables d'état.
+  const [posts, setPosts] = useState([]);
+
+  //Initialisation.
+  useEffect(() => {
+    fetchPostsPromise().then((data) => setPosts(data.data));
+  }, []);
+
+  //Constantes.
   const postInput = showPostField ? (
     <ChampPost
       setFormNotificationOpen={setFormNotificationOpen}
@@ -44,6 +57,9 @@ function FluxPosts({
       }}
     >
       {postInput}
+      {posts.map((el, i) => (
+        <Post key={i} postData={el} />
+      ))}
     </div>
   );
 }

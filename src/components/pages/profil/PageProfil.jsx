@@ -46,9 +46,6 @@ function PageProfil() {
     logout,
   } = useContext(AuthentificationContext);
 
-  console.log(authPayload);
-  console.log(authProfile);
-
   //Variables d'état.
   const [pageState, setPageState] = useState(ProfileState.Loading);
   const [profileContent, setProfileContent] = useState(<></>);
@@ -90,6 +87,22 @@ function PageProfil() {
       });
   };
 
+  //Callback récupération de posts.
+  const fetchPostsPromise = () => {
+    const viewedUserId = userId
+      ? userId
+      : authProfile && "id" in authProfile
+      ? authProfile.id
+      : null;
+
+    return axios
+      .get(
+        `${config.applicationServerURL}profiles/posts/${viewedUserId}&0&10`,
+        { headers: { authorization: `Bearer ${authPayload.token}` } }
+      )
+      .catch((err) => console.log(err));
+  };
+
   //Initialisation de la page.
   useEffect(() => {
     const viewedUserId = userId
@@ -120,14 +133,6 @@ function PageProfil() {
             : ProfileState.Visible
         );
         setViewedAuthProfile(data.data);
-
-        /* Récupération de posts au chargement
-        axios
-          .get(
-            `${config.applicationServerURL}profiles/posts/${viewedUserId}&0&10`
-          )
-          .then((data) => console.log(data))
-          .catch((err) => console.log(err));*/
       })
       .catch((err) => {
         console.log(err);
@@ -164,6 +169,7 @@ function PageProfil() {
               }
               setFormNotificationOpen={setFormNotificationOpen}
               setFormNotificationMessage={setFormNotificationMessage}
+              fetchPostsPromise={fetchPostsPromise}
             />
           </>
         );
