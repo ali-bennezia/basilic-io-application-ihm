@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Form, Button } from "react-bootstrap";
 
@@ -6,6 +6,7 @@ import { EntypoChat } from "react-entypo";
 import SelectionneurMedias from "./medias/SelectionneurMedias";
 
 function ChampPost({ setFormNotificationOpen, setFormNotificationMessage }) {
+  const [medias, setMedias] = useState([]);
   return (
     <div
       className="inner-page-block"
@@ -35,6 +36,8 @@ function ChampPost({ setFormNotificationOpen, setFormNotificationMessage }) {
           <SelectionneurMedias
             setFormNotificationOpen={setFormNotificationOpen}
             setFormNotificationMessage={setFormNotificationMessage}
+            medias={medias}
+            setMedias={setMedias}
           />
         </div>
       </Form>

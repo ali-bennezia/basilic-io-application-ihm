@@ -6,14 +6,14 @@ import { EntypoCircleWithPlus } from "react-entypo";
 import SelectionneurMedia from "./SelectionneurMedia";
 import config from "./../../../../config/config.json";
 
+//La variable d'état 'medias' doit être passés par injection de dépendance. Elle doit être un array, vide au démarrage idéalement.
 function SelectionneurMedias({
   setFormNotificationOpen,
   setFormNotificationMessage,
+  medias,
+  setMedias,
 }) {
   const fileInputRef = createRef();
-
-  //Variables d'état.
-  const [medias, setMedias] = useState([]);
 
   //Callbacks
   const fetchMedias = (e) => {

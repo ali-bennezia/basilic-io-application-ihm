@@ -55,6 +55,8 @@ function PageConnexion() {
   const onClickConfirmer = (e) => {
     e.preventDefault();
 
+    if (!canConfirm) return;
+
     updateConfirmButtonAccess(false);
     axios
       .post(`${config.applicationServerURL}users/signin`, {
@@ -134,7 +136,7 @@ function PageConnexion() {
         alt="Basilic"
       />
       <div className="form-container">
-        <Form className="basic-form">
+        <Form className="basic-form" onSubmit={onClickConfirmer}>
           <h2>Connexion</h2>
 
           <Form.Group className="mb-3" controlId="formUsername">
@@ -176,15 +178,10 @@ function PageConnexion() {
             />
           </Form.Group>
 
-          <Button variant="secondary" type="submit" onClick={onClickAnnuler}>
+          <Button variant="secondary" onClick={onClickAnnuler}>
             Annuler
           </Button>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={onClickConfirmer}
-            disabled={!canConfirm}
-          >
+          <Button variant="primary" type="submit" disabled={!canConfirm}>
             Confirmer
           </Button>
           <p className="form-error-label">{formError}</p>
