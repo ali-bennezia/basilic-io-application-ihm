@@ -238,6 +238,13 @@ button.btn.btn-primary {
   margin-top: 40px;
 }
 
+.block-part {
+  background-color: rgb(242, 242, 242);
+  border: rgb(207, 207, 207) solid 1px;
+
+  margin-top: -60px;
+}
+
 img.profile-banner {
   object-fit: cover;
   box-shadow: rgba(0, 0, 0, 0.63) 0px 2px 3px 0px;
