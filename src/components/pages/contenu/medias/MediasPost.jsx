@@ -1,27 +1,103 @@
 import React from "react";
 import config from "./../../../../config/config.json";
 
-function MediasPost({ medias = [] }) {
+import { EntypoVideo } from "react-entypo";
+
+function MediasPost({
+  medias = [],
+  setMediaDialogueIsOpen,
+  setMediaDialogueSource,
+  setMediaDialogueIsVideo,
+}) {
   return (
     <div
       style={{
         width: "100%",
         height: "auto",
+        display: "flex",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
       }}
     >
       {medias.map((el, i) => {
         const mediaData = el.split("/");
         const mediaSource = `${config.mediaServerURL}medias/${mediaData[0]}/get/${mediaData[1]}`;
-        const mediaStyle = {
+        const mediaPlacementStyle = {
+          width: medias.length == 1 ? "100%" : "46%",
+          marginTop: "20px",
+
+          position: "relative",
+          border: "none",
+          padding: "0",
+        };
+        const mediaAppearenceStyle = {
           backgroundColor: "white",
-          margin: "8px",
-          width: medias.length == 1 ? "100%" : "40%",
+          boxShadow: "grey 0px 0px 3px",
         };
 
         return !el.endsWith(".mp4") ? (
-          <img key={i} style={mediaStyle} src={mediaSource} />
+          <button
+            key={i}
+            style={{ ...mediaPlacementStyle, height: "auto" }}
+            onClick={(e) => {
+              e.preventDefault();
+              setMediaDialogueSource(mediaSource);
+              setMediaDialogueIsVideo(false);
+              setMediaDialogueIsOpen(true);
+            }}
+          >
+            <img
+              key={i}
+              style={{
+                width: "100%",
+                margin: "0",
+                float: "top",
+                ...mediaAppearenceStyle,
+              }}
+              src={mediaSource}
+            />
+          </button>
         ) : (
-          <video key={i} style={mediaStyle} src={mediaSource} />
+          <button
+            key={i}
+            style={{ ...mediaPlacementStyle }}
+            onClick={(e) => {
+              e.preventDefault();
+              setMediaDialogueSource(mediaSource);
+              setMediaDialogueIsVideo(true);
+              setMediaDialogueIsOpen(true);
+            }}
+          >
+            <span>
+              <video
+                src={mediaSource}
+                style={{ width: "100%", ...mediaAppearenceStyle }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+
+                  top: "0px",
+                  left: "0px",
+
+                  width: "100%",
+                  height: "100%",
+
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <EntypoVideo
+                  style={{
+                    fontSize: "100px",
+                    color: "white",
+                    filter: "drop-shadow(black 0px 0px 3px)",
+                  }}
+                />
+              </div>
+            </span>
+          </button>
         );
       })}
     </div>

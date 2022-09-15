@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 
 import Post from "./Post";
 import ChampPost from "./ChampPost";
+import MediaDialogue from "./../commun/dialogue/MediaDialogue";
 
 import "./../commun/PagesCommun.css";
 
@@ -28,6 +29,11 @@ function FluxPosts({
 
   //Variables d'état.
   const [posts, setPosts] = useState([]);
+
+  const [lastSelectedMediaSource, setLastSelectedMediaSource] = useState(null);
+  const [lastSelectedMediaIsVideo, setLastSelectedMediaIsVideo] =
+    useState(false);
+  const [mediaDialogueIsOpen, setMediaDialogueIsOpen] = useState(false);
 
   //Initialisation.
   useEffect(() => {
@@ -56,9 +62,21 @@ function FluxPosts({
         alignItems: "center",
       }}
     >
+      <MediaDialogue
+        isVideo={lastSelectedMediaIsVideo}
+        src={lastSelectedMediaSource}
+        isOpen={mediaDialogueIsOpen}
+        setIsOpen={setMediaDialogueIsOpen}
+      />
       {postInput}
       {posts.map((el, i) => (
-        <Post key={i} postData={el} />
+        <Post
+          key={i}
+          postData={el}
+          setMediaDialogueIsOpen={setMediaDialogueIsOpen}
+          setMediaDialogueSource={setLastSelectedMediaSource}
+          setMediaDialogueIsVideo={setLastSelectedMediaIsVideo}
+        />
       ))}
     </div>
   );

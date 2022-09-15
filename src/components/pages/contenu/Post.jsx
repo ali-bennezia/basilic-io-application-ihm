@@ -3,7 +3,12 @@ import React from "react";
 import AvatarProfil from "./../commun/profil/AvatarProfil";
 import MediasPost from "./medias/MediasPost";
 
-function Post({ postData }) {
+function Post({
+  postData,
+  setMediaDialogueIsOpen,
+  setMediaDialogueSource,
+  setMediaDialogueIsVideo,
+}) {
   console.log(postData);
   return (
     <div
@@ -45,7 +50,12 @@ function Post({ postData }) {
       <p style={{ marginTop: "20px", overflowWrap: "break-word" }}>
         {postData.contenu}
       </p>
-      <MediasPost medias={postData.medias} />
+      <MediasPost
+        medias={postData.medias}
+        setMediaDialogueIsOpen={setMediaDialogueIsOpen}
+        setMediaDialogueSource={setMediaDialogueSource}
+        setMediaDialogueIsVideo={setMediaDialogueIsVideo}
+      />
     </div>
   );
 }
