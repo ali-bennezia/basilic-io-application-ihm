@@ -266,3 +266,7 @@ textarea {
 .media-delete-btn:hover {
   color: black;
 }
+
+button.MuiButtonBase-root {
+  text-shadow: rgba(128, 128, 128, 0.404) 0px 0px 2px;
+}

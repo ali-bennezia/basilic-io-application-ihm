@@ -7,7 +7,7 @@ import { UnauthentifiedRedirection } from "./../../redirection/AuthentifiedRedir
 import AuthentificationContext from "../../../contexts/AuthentificationContext.jsx";
 import BoiteDialogue from "../commun/dialogue/BoiteDialogue";
 
-import FluxPosts from "../contenu/FluxPosts";
+import MultiFluxPosts from "../contenu/MultiFluxPosts";
 
 import MoonLoader from "react-spinners/MoonLoader";
 import { EntypoCircleWithCross } from "react-entypo";
@@ -88,20 +88,42 @@ function PageProfil() {
   };
 
   //Callback récupération de posts.
-  const fetchPostsPromise = () => {
+  const fetch = (nature) => {
     const viewedUserId = userId
       ? userId
       : authProfile && "id" in authProfile
       ? authProfile.id
       : null;
 
-    return axios
-      .get(
-        `${config.applicationServerURL}profiles/posts/${viewedUserId}&0&10`,
-        { headers: { authorization: `Bearer ${authPayload.token}` } }
-      )
-      .catch((err) => console.log(err));
+    return axios.get(
+      `${config.applicationServerURL}profiles/posts/${viewedUserId}&${nature}&10`,
+      {
+        headers: { authorization: `Bearer ${authPayload.token}` },
+      }
+    );
   };
+
+  const fetchMore = (nature, timestamp) => {
+    const viewedUserId = userId
+      ? userId
+      : authProfile && "id" in authProfile
+      ? authProfile.id
+      : null;
+
+    return axios.get(
+      `${config.applicationServerURL}profiles/posts/${viewedUserId}&${nature}&${timestamp}&10`,
+      { headers: { authorization: `Bearer ${authPayload.token}` } }
+    );
+  };
+
+  const fetchPostsPromise = () => fetch(0);
+  const fetchMorePostsPromise = (timestamp) => fetchMore(0, timestamp);
+
+  const fetchMediaPostsPromise = () => fetch(1);
+  const fetchMoreMediaPostsPromise = (timestamp) => fetchMore(1, timestamp);
+
+  const fetchResponsePostsPromise = () => fetch(1);
+  const fetchMoreResponsePostsPromise = (timestamp) => fetchMore(1, timestamp);
 
   //Initialisation de la page.
   useEffect(() => {
@@ -163,13 +185,39 @@ function PageProfil() {
               setViewedAuthProfile={setViewedAuthProfile}
               setMessageBoxIsOpen={setMessageBoxIsOpen}
             />
-            <FluxPosts
-              showPostField={
-                isSelf && authProfile != null && authProfile.valide === true
-              }
-              setFormNotificationOpen={setFormNotificationOpen}
-              setFormNotificationMessage={setFormNotificationMessage}
-              fetchPostsPromise={fetchPostsPromise}
+            <MultiFluxPosts
+              tabs={[
+                {
+                  name: "Posts",
+                  propsFlux: {
+                    showPostField: false,
+                    setFormNotificationOpen: setFormNotificationOpen,
+                    setFormNotificationMessage: setFormNotificationMessage,
+                    fetchPostsPromise: fetchPostsPromise,
+                    fetchMorePostsPromise: fetchMorePostsPromise,
+                  },
+                },
+                {
+                  name: "Médias",
+                  propsFlux: {
+                    showPostField: false,
+                    setFormNotificationOpen: setFormNotificationOpen,
+                    setFormNotificationMessage: setFormNotificationMessage,
+                    fetchPostsPromise: fetchMediaPostsPromise,
+                    fetchMorePostsPromise: fetchMoreMediaPostsPromise,
+                  },
+                },
+                {
+                  name: "Réponses",
+                  propsFlux: {
+                    showPostField: false,
+                    setFormNotificationOpen: setFormNotificationOpen,
+                    setFormNotificationMessage: setFormNotificationMessage,
+                    fetchPostsPromise: fetchResponsePostsPromise,
+                    fetchMorePostsPromise: fetchMoreResponsePostsPromise,
+                  },
+                },
+              ]}
             />
           </>
         );
