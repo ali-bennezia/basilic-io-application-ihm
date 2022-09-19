@@ -1,32 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Video from "./../../contenu/medias/Video";
 
 import { EntypoCross } from "react-entypo";
 import MoonLoader from "react-spinners/MoonLoader";
 
-const isMediaLoaded = (ref) => {
-  if (ref.current == null || ref.current == undefined) return true;
-  if ("complete" in ref.current && ref.current.complete === false) return false;
-  if ("naturalWidth" in ref.current && ref.current.naturalWidth === 0)
-    return false;
-  if ("readyState" in ref.current && ref.current.readyState !== 4) return false;
-  return true;
-};
-
 function MediaDialogue({ isVideo = false, src, isOpen, setIsOpen }) {
   //Constantes.
   const mediaStyle = { maxWidth: "80vw", maxHeight: "80vh" };
   const mediaRef = useRef();
-
-  //Variables d'état.
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  console.log(src);
-
-  //Effets.
-  useEffect(() => {
-    setIsLoaded(isMediaLoaded(mediaRef));
-  });
 
   return isOpen ? (
     <div
@@ -92,10 +73,27 @@ function MediaDialogue({ isVideo = false, src, isOpen, setIsOpen }) {
                 style={mediaStyle}
                 src={src}
                 ref={mediaRef}
-                hidden={!isLoaded}
+                hidden={
+                  (mediaRef.current != undefined &&
+                    !mediaRef.current.complete) ||
+                  (mediaRef.current != undefined &&
+                    "naturalWidth" in mediaRef.current &&
+                    mediaRef.current.naturalWidth == 0)
+                }
               />
             )}
-            <MoonLoader color="green" hidden={isLoaded} />
+            <MoonLoader
+              color="green"
+              hidden={
+                !(
+                  (mediaRef.current != undefined &&
+                    !mediaRef.current.complete) ||
+                  (mediaRef.current != undefined &&
+                    "naturalWidth" in mediaRef.current &&
+                    mediaRef.current.naturalWidth == 0)
+                )
+              }
+            />
           </>
         ) : (
           <></>
