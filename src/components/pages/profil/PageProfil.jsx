@@ -122,8 +122,8 @@ function PageProfil() {
   const fetchMediaPostsPromise = () => fetch(1);
   const fetchMoreMediaPostsPromise = (timestamp) => fetchMore(1, timestamp);
 
-  const fetchResponsePostsPromise = () => fetch(1);
-  const fetchMoreResponsePostsPromise = (timestamp) => fetchMore(1, timestamp);
+  const fetchResponsePostsPromise = () => fetch(2);
+  const fetchMoreResponsePostsPromise = (timestamp) => fetchMore(2, timestamp);
 
   //Initialisation de la page.
   useEffect(() => {

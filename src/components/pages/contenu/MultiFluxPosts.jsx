@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import FluxPosts from "./FluxPosts";
 
 import Tabs from "@mui/material/Tabs";
@@ -15,6 +15,10 @@ import Tab from "@mui/material/Tab";
 function MultiFluxPosts({ tabs }) {
   //Variables d'état.
   const [tabIndex, setTabIndex] = useState(0);
+  const [currentProps, setCurrentProps] = useState(tabs[tabIndex].propsFlux);
+
+  //Références.
+  const fluxRef = useRef();
 
   return (
     <div
@@ -36,7 +40,19 @@ function MultiFluxPosts({ tabs }) {
         }}
         indicatorColor={"#3bd34d"}
         value={tabIndex}
-        onChange={(event, newValue) => setTabIndex(newValue)}
+        onChange={(event, newValue) => {
+          if (
+            fluxRef &&
+            "current" in fluxRef &&
+            fluxRef.current != null &&
+            "fetchPostsPromise" in tabs[newValue].propsFlux
+          )
+            fluxRef.current.clearPosts(
+              tabs[newValue].propsFlux.fetchPostsPromise
+            );
+          setTabIndex(newValue);
+          setCurrentProps(tabs[newValue].propsFlux);
+        }}
       >
         {tabs.map((el, i) => {
           return <Tab label={el.name} value={i} key={i} />;
@@ -44,7 +60,7 @@ function MultiFluxPosts({ tabs }) {
       </Tabs>
       <span style={{ height: "130px" }} />
 
-      {tabs.length > 0 ? <FluxPosts {...tabs[tabIndex].propsFlux} /> : null}
+      {tabs.length > 0 ? <FluxPosts {...currentProps} ref={fluxRef} /> : null}
     </div>
   );
 }

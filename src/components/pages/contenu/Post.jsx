@@ -1,6 +1,7 @@
 import React from "react";
 
 import AvatarProfil from "./../commun/profil/AvatarProfil";
+import BlockInteractionsPost from "./BlockInteractionsPost";
 import MediasPost from "./medias/MediasPost";
 
 function Post({
@@ -55,6 +56,19 @@ function Post({
         setMediaDialogueSource={setMediaDialogueSource}
         setMediaDialogueIsVideo={setMediaDialogueIsVideo}
       />
+      <div
+        style={{
+          width: "100%",
+          height: "auto",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <BlockInteractionsPost
+          postData={postData}
+          style={{ marginTop: "10px" }}
+        />
+      </div>
     </div>
   );
 }

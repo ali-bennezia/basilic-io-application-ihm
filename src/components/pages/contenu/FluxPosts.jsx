@@ -1,4 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 
 import Post from "./Post";
 import ChampPost from "./ChampPost";
@@ -12,13 +18,16 @@ import MoonLoader from "react-spinners/MoonLoader";
 
 import { EntypoCcw } from "react-entypo";
 
-function FluxPosts({
-  showPostField = false,
-  setFormNotificationOpen,
-  setFormNotificationMessage,
-  fetchPostsPromise,
-  fetchMorePostsPromise,
-}) {
+const FluxPosts = forwardRef((props, ref) => {
+  //Props.
+  let {
+    showPostField = false,
+    setFormNotificationOpen,
+    setFormNotificationMessage,
+    fetchPostsPromise,
+    fetchMorePostsPromise,
+  } = props;
+
   //Variables du contexte d'authentification.
   const {
     authPayload,
@@ -33,21 +42,45 @@ function FluxPosts({
   const [posts, setPosts] = useState([]);
   const [fetchingNewerPosts, setFetchingNewerPosts] = useState(true);
 
+  const [latestFetchPromise, setLatestFetchPromise] = useState(null);
+
   const [lastSelectedMediaSource, setLastSelectedMediaSource] = useState(null);
   const [lastSelectedMediaIsVideo, setLastSelectedMediaIsVideo] =
     useState(false);
   const [mediaDialogueIsOpen, setMediaDialogueIsOpen] = useState(false);
 
-  const [latestPostTimestamp, setLatestPostTimestap] = useState(null);
+  const [latestPostTimestamp, setLatestPostTimestamp] = useState(null);
 
-  //Fonctions.
+  const [hasScrollLoaded, setHasScrollLoaded] = useState(false);
+
+  //Fonctions et callbacks.
   const updateLatestTimestamp = (latestPosts) => {
     if (latestPosts.length > 0)
-      setLatestPostTimestap(latestPosts[latestPosts.length - 1].createdAt);
+      setLatestPostTimestamp(latestPosts[latestPosts.length - 1].createdAt);
+  };
+
+  const ceaseLoading = () => {
+    if (latestFetchPromise != null) {
+      if (latestFetchPromise.isPending())
+        latestFetchPromise.reject("Chargement annulé.");
+      setLatestFetchPromise(null);
+      setFetchingNewerPosts(false);
+    }
   };
 
   const loadMorePosts = () => {
-    fetchMorePostsPromise(latestPostTimestamp)
+    if (fetchingNewerPosts === true) return;
+
+    if (posts.length == 0) {
+      fetchInitialPosts();
+      return;
+    }
+
+    ceaseLoading();
+
+    const newPromise = fetchMorePostsPromise(latestPostTimestamp);
+    setFetchingNewerPosts(true);
+    newPromise
       .then((data) => {
         let newPosts = data.data;
         if (
@@ -61,6 +94,7 @@ function FluxPosts({
         setFetchingNewerPosts(false);
 
         updateLatestTimestamp(newPosts);
+        setLatestFetchPromise(null);
       })
       .catch((err) => {
         if (
@@ -71,18 +105,21 @@ function FluxPosts({
           setFormNotificationOpen(true);
         }
         setFetchingNewerPosts(false);
+        setLatestFetchPromise(null);
       });
+    setLatestFetchPromise(newPromise);
   };
 
-  //Initialisation.
-  useEffect(() => {
-    setLatestPostTimestap(Date.now());
-    fetchPostsPromise()
+  const fetchInitialPosts = () => {
+    setLatestPostTimestamp(Date.now());
+    const newPromise = fetchPostsPromise();
+    setFetchingNewerPosts(true);
+    newPromise
       .then((data) => {
         setPosts(data.data);
         setFetchingNewerPosts(false);
-
         updateLatestTimestamp(data.data);
+        setLatestFetchPromise(null);
       })
       .catch((err) => {
         if (
@@ -93,8 +130,29 @@ function FluxPosts({
           setFormNotificationOpen(true);
         }
         setFetchingNewerPosts(false);
+        setLatestFetchPromise(null);
       });
-  }, []);
+    setLatestFetchPromise(newPromise);
+  };
+
+  window.onscroll = function (e) {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      !fetchingNewerPosts &&
+      !hasScrollLoaded &&
+      (this.pScroll || 0) < this.scrollY
+    ) {
+      loadMorePosts();
+      setHasScrollLoaded(true);
+    } else {
+      setHasScrollLoaded(false);
+    }
+
+    this.pScroll = this.scrollY;
+  };
+
+  //Initialisation.
+  useEffect(fetchInitialPosts, []);
 
   //Constantes.
   const postInput = showPostField ? (
@@ -105,6 +163,21 @@ function FluxPosts({
   ) : (
     <></>
   );
+
+  //Extension de l'instance du composant.
+  useImperativeHandle(ref, () => {
+    return {
+      clearPosts(newFetchCallback = null) {
+        if (newFetchCallback != null) fetchPostsPromise = newFetchCallback;
+
+        ceaseLoading();
+        setLatestPostTimestamp(Date.now());
+        setHasScrollLoaded(false);
+        setPosts([]);
+        fetchInitialPosts();
+      },
+    };
+  });
 
   return (
     <div
@@ -143,6 +216,7 @@ function FluxPosts({
         onClick={(e) => {
           loadMorePosts();
         }}
+        disabled={fetchingNewerPosts}
       >
         {" "}
         <EntypoCcw
@@ -152,6 +226,6 @@ function FluxPosts({
       </Button>
     </div>
   );
-}
+});
 
 export default FluxPosts;
