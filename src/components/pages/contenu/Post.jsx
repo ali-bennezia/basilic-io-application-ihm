@@ -4,6 +4,21 @@ import AvatarProfil from "./../commun/profil/AvatarProfil";
 import BlockInteractionsPost from "./BlockInteractionsPost";
 import MediasPost from "./medias/MediasPost";
 
+const mths = [
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre",
+];
+
 function Post({
   postData,
   setMediaDialogueIsOpen,
@@ -11,6 +26,8 @@ function Post({
   setMediaDialogueIsVideo,
 }) {
   console.log(postData);
+  const postDate = new Date(postData.createdAt);
+
   return (
     <div
       className="inner-page-block"
@@ -63,12 +80,17 @@ function Post({
           height: "auto",
           display: "flex",
           justifyContent: "space-between",
+          marginTop: "28px",
+          marginBottom: "0px",
+          padding: "0px",
         }}
       >
-        <BlockInteractionsPost
-          postData={postData}
-          style={{ marginTop: "10px" }}
-        />
+        <p style={{ fontStyle: "italic", color: "grey" }}>
+          Posté le {postDate.getDay()} {mths[postDate.getMonth()]}{" "}
+          {postDate.getFullYear()} à {postDate.getHours()}h
+          {postDate.getMinutes()}
+        </p>
+        <BlockInteractionsPost postData={postData} />
       </div>
     </div>
   );
