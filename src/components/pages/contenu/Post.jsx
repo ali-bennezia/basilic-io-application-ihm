@@ -10,6 +10,7 @@ function Post({
   setMediaDialogueSource,
   setMediaDialogueIsVideo,
 }) {
+  console.log(postData);
   return (
     <div
       className="inner-page-block"

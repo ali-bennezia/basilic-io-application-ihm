@@ -1,22 +1,96 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import AuthentificationContext from "../../../contexts/AuthentificationContext";
 
 import { EntypoThumbsUp, EntypoThumbsDown } from "react-entypo";
 
+import axios from "axios";
+import config from "./../../../config/config.json";
+
 const textStyle = { display: "inline-block", fontWeight: "bold" };
 const iconStyle = {
-  fontSize: "26px",
-  marginTop: "-4px",
+  fontSize: "22px",
+  marginTop: "-0px",
   marginLeft: "6px",
   marginRight: "6px",
 };
+const buttonStyle = { border: "none", padding: "0", margin: "0" };
 
 function BlockInteractionsPost({ postData, style }) {
-  postData.dislike = 24;
-  postData.like = 25;
+  //Variables de contexte.
+  const { authPayload } = useContext(AuthentificationContext);
+
+  //Variables d'état.
+  const [dislikeOver, setDislikeOver] = useState(false);
+  const [likeOver, setLikeOver] = useState(false);
+
+  const [dislikePar, setDislikePar] = useState(postData.dislikePar || false);
+  const [likePar, setLikePar] = useState(postData.likePar || false);
+
+  const [likes, setLikes] = useState(postData.like);
+  const [dislikes, setDislikes] = useState(postData.dislike);
+
+  //Callbacks.
+  const sendActivityRequest = (nature) => {
+    axios
+      .post(
+        `${config.applicationServerURL}posts/activities/create/${postData._id}&${nature}`,
+        {},
+        { headers: { authorization: `Bearer ${authPayload.token}` } }
+      )
+      .then((data) => {
+        const decrFunc = dislikePar
+          ? () => {
+              setDislikes((val) => val - 1);
+            }
+          : likePar
+          ? () => {
+              setLikes((val) => val - 1);
+            }
+          : () => {};
+        setLikePar(false);
+        setDislikePar(false);
+        let func =
+          nature === "dislike"
+            ? () => {
+                setDislikePar(true);
+                setDislikes((val) => val + 1);
+              }
+            : () => {
+                setLikePar(true);
+                setLikes((val) => val + 1);
+              };
+        func(true);
+        decrFunc();
+      });
+  };
+
   return (
     <div style={style}>
-      <EntypoThumbsDown style={iconStyle} />
-      <p style={textStyle}>{postData.dislike}</p>
+      <button
+        style={buttonStyle}
+        onMouseEnter={(e) => {
+          setDislikeOver(true);
+        }}
+        onMouseLeave={(e) => {
+          setDislikeOver(false);
+        }}
+        onClick={(e) => {
+          e.preventDefault();
+          if (dislikePar === true) return;
+          sendActivityRequest("dislike");
+        }}
+      >
+        <EntypoThumbsDown
+          style={{
+            ...iconStyle,
+            color: "#8a0000",
+            fontSize: dislikePar ? "28px" : `${dislikeOver ? "26" : "22"}px`,
+            marginTop:
+              dislikePar || false ? "-6px" : `${dislikeOver ? "-1" : "0"}px`,
+          }}
+        />
+      </button>
+      <p style={textStyle}>{dislikes}</p>
       <div
         style={{
           display: "inline-block",
@@ -36,9 +110,7 @@ function BlockInteractionsPost({ postData, style }) {
           style={{
             height: "100%",
 
-            width: `${parseInt(
-              (postData.dislike / (postData.like + postData.dislike)) * 100
-            )}%`,
+            width: `${parseInt((dislikes / (likes + dislikes)) * 100)}%`,
             position: "relative",
             top: "0px",
 
@@ -46,16 +118,12 @@ function BlockInteractionsPost({ postData, style }) {
             background:
               "linear-gradient(0deg, rgba(116,0,0,1) 0%, rgba(255,0,0,1) 100%)",
           }}
-          hidden={
-            postData == null || (postData.like === 0 && postData.dislike === 0)
-          }
+          hidden={postData == null || (likes === 0 && dislikes === 0)}
         />
         <div
           style={{
             height: "100%",
-            width: `${parseInt(
-              (postData.like / (postData.like + postData.dislike)) * 100
-            )}%`,
+            width: `${parseInt((likes / (likes + dislikes)) * 100)}%`,
             position: "relative",
             top: "-100%",
             float: "right",
@@ -64,13 +132,33 @@ function BlockInteractionsPost({ postData, style }) {
             background:
               "linear-gradient(0deg, rgba(0,143,5,1) 0%, rgba(0,251,75,1) 100%)",
           }}
-          hidden={
-            postData == null || (postData.like === 0 && postData.dislike === 0)
-          }
+          hidden={postData == null || (likes === 0 && dislikes === 0)}
         />
       </div>
-      <p style={textStyle}>{postData.like}</p>
-      <EntypoThumbsUp style={iconStyle} />
+      <p style={textStyle}>{likes}</p>
+      <button
+        style={buttonStyle}
+        onMouseEnter={(e) => {
+          setLikeOver(true);
+        }}
+        onMouseLeave={(e) => {
+          setLikeOver(false);
+        }}
+        onClick={(e) => {
+          e.preventDefault();
+          if (likePar === true) return;
+          sendActivityRequest("like");
+        }}
+      >
+        <EntypoThumbsUp
+          style={{
+            ...iconStyle,
+            color: "#067500",
+            fontSize: likePar ? "28px" : `${likeOver ? "26" : "22"}px`,
+            marginTop: likePar ? "-6px" : `${likeOver ? "-3" : "0"}px`,
+          }}
+        />{" "}
+      </button>
     </div>
   );
 }
