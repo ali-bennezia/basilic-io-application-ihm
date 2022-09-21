@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import AuthentificationContext from "../../../contexts/AuthentificationContext";
 
-import { EntypoThumbsUp, EntypoThumbsDown } from "react-entypo";
+import { EntypoThumbsUp, EntypoThumbsDown, EntypoChat } from "react-entypo";
 
 import axios from "axios";
 import config from "./../../../config/config.json";
@@ -64,8 +65,40 @@ function BlockInteractionsPost({ postData, style }) {
       });
   };
 
+  const sendActivityDeletionRequest = () => {
+    axios
+      .delete(
+        `${config.applicationServerURL}posts/activities/delete/${postData._id}`,
+        { headers: { authorization: `Bearer ${authPayload.token}` } }
+      )
+      .then((data) => {
+        const decrFunc = dislikePar
+          ? () => {
+              setDislikes((val) => val - 1);
+            }
+          : likePar
+          ? () => {
+              setLikes((val) => val - 1);
+            }
+          : () => {};
+        decrFunc();
+        setLikePar(false);
+        setDislikePar(false);
+      });
+  };
+
   return (
     <div style={style}>
+      <Link
+        className="link"
+        to={`/post/${postData._id}`}
+        style={{ color: "black" }}
+      >
+        <EntypoChat style={iconStyle} />
+        <p style={{ ...textStyle, marginRight: "30px" }}>
+          {postData.reponse} Réponses
+        </p>
+      </Link>
       <button
         style={buttonStyle}
         onMouseEnter={(e) => {
@@ -76,7 +109,10 @@ function BlockInteractionsPost({ postData, style }) {
         }}
         onClick={(e) => {
           e.preventDefault();
-          if (dislikePar === true) return;
+          if (dislikePar === true) {
+            sendActivityDeletionRequest();
+            return;
+          }
           sendActivityRequest("dislike");
         }}
       >
@@ -146,7 +182,10 @@ function BlockInteractionsPost({ postData, style }) {
         }}
         onClick={(e) => {
           e.preventDefault();
-          if (likePar === true) return;
+          if (likePar === true) {
+            sendActivityDeletionRequest();
+            return;
+          }
           sendActivityRequest("like");
         }}
       >
