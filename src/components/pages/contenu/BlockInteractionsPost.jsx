@@ -16,7 +16,7 @@ const iconStyle = {
 };
 const buttonStyle = { border: "none", padding: "0", margin: "0" };
 
-function BlockInteractionsPost({ postData, style }) {
+function BlockInteractionsPost({ postData, postResponses = true, style }) {
   //Variables de contexte.
   const { authPayload } = useContext(AuthentificationContext);
 
@@ -89,16 +89,20 @@ function BlockInteractionsPost({ postData, style }) {
 
   return (
     <div style={style}>
-      <Link
-        className="link"
-        to={`/post/${postData._id}`}
-        style={{ color: "black" }}
-      >
-        <EntypoChat style={iconStyle} />
-        <p style={{ ...textStyle, marginRight: "30px" }}>
-          {postData.reponse} Réponses
-        </p>
-      </Link>
+      {postResponses ? (
+        <Link
+          className="link"
+          to={`/post/${postData._id}`}
+          style={{ color: "black" }}
+        >
+          <EntypoChat style={iconStyle} />
+          <p style={{ ...textStyle, marginRight: "30px" }}>
+            {postData.reponse} Réponse{postData.reponse == 1 ? "" : "s"}
+          </p>
+        </Link>
+      ) : (
+        <></>
+      )}
       <button
         style={buttonStyle}
         onMouseEnter={(e) => {

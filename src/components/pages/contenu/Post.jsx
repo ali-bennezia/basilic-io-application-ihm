@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import AvatarProfil from "./../commun/profil/AvatarProfil";
 import BlockInteractionsPost from "./BlockInteractionsPost";
@@ -21,13 +22,13 @@ const mths = [
 
 function Post({
   postData,
+  postResponses = true,
   setMediaDialogueIsOpen,
   setMediaDialogueSource,
   setMediaDialogueIsVideo,
 }) {
-  console.log(postData);
   const postDate = new Date(postData.createdAt);
-
+  console.log(postData);
   return (
     <div
       className="inner-page-block"
@@ -67,6 +68,23 @@ function Post({
       </div>
       <p style={{ marginTop: "20px", overflowWrap: "break-word" }}>
         {postData.contenu}
+        {"postCible" in postData && "nomUtilisateurCible" in postData ? (
+          <span style={{ fontStyle: "italic", color: "grey" }}>
+            <br />
+            <br />
+            Réponse à{" "}
+            <Link
+              to={`/post/${postData.postCible}`}
+              style={{ textDecoration: "none" }}
+            >
+              <span style={{ color: "green" }}>
+                @{postData.nomUtilisateurCible}
+              </span>
+            </Link>
+          </span>
+        ) : (
+          ""
+        )}
       </p>
       <MediasPost
         medias={postData.medias}
@@ -90,7 +108,10 @@ function Post({
           {postDate.getFullYear()} à {postDate.getHours()}h
           {postDate.getMinutes()}
         </p>
-        <BlockInteractionsPost postData={postData} />
+        <BlockInteractionsPost
+          postData={postData}
+          postResponses={postResponses}
+        />
       </div>
     </div>
   );

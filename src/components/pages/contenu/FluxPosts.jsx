@@ -26,6 +26,9 @@ const FluxPosts = forwardRef((props, ref) => {
     setFormNotificationMessage,
     fetchPostsPromise,
     fetchMorePostsPromise,
+    style = {},
+    loadMoreMsg = null,
+    idPostCible = null,
   } = props;
 
   //Variables du contexte d'authentification.
@@ -54,6 +57,12 @@ const FluxPosts = forwardRef((props, ref) => {
   const [hasScrollLoaded, setHasScrollLoaded] = useState(false);
 
   //Fonctions et callbacks.
+  const appendNewPosts = (newestPosts) => {
+    if (newestPosts.length > 0) {
+      setPosts((posts) => [...newestPosts, ...posts]);
+    }
+  };
+
   const updateLatestTimestamp = (latestPosts) => {
     if (latestPosts.length > 0)
       setLatestPostTimestamp(latestPosts[latestPosts.length - 1].createdAt);
@@ -159,6 +168,10 @@ const FluxPosts = forwardRef((props, ref) => {
     <ChampPost
       setFormNotificationOpen={setFormNotificationOpen}
       setFormNotificationMessage={setFormNotificationMessage}
+      idPostCible={idPostCible}
+      onPosted={(newPost) => {
+        appendNewPosts([newPost]);
+      }}
     />
   ) : (
     <></>
@@ -189,6 +202,7 @@ const FluxPosts = forwardRef((props, ref) => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        ...style,
       }}
     >
       <MediaDialogue
@@ -222,7 +236,7 @@ const FluxPosts = forwardRef((props, ref) => {
         <EntypoCcw
           style={{ fontSize: "20px", marginTop: "5px", marginRight: "6px" }}
         />{" "}
-        Charger plus de posts
+        {loadMoreMsg ? loadMoreMsg : "Charger plus de posts"}
       </Button>
     </div>
   );
