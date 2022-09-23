@@ -141,17 +141,7 @@ function OngletParamsSupprimer({ tabIndex }) {
         alignItems: "center",
       }}
     >
-      <div
-        style={{
-          width: "640px",
-          height: "410px",
-          border: "1px solid #BABABA",
-          borderRadius: "20px",
-          marginTop: "20px",
-          padding: "40px",
-          backgroundColor: "#F2F2F2",
-        }}
-      >
+      <div className="inner-page-container">
         <Form>
           <p className="form-paragraph">
             Veuillez noter que cette action est irréversible. <br />

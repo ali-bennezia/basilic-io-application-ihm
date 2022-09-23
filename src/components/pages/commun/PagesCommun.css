@@ -238,6 +238,16 @@ button.btn.btn-primary {
   margin-top: 40px;
 }
 
+.inner-page-container {
+  width: 640px;
+  height: auto;
+  border: 1px solid #bababa;
+  border-radius: 20px;
+  margin-top: 20px;
+  padding: 40px;
+  background-color: #f2f2f2;
+}
+
 .block-part {
   background-color: rgb(242, 242, 242);
   border: rgb(207, 207, 207) solid 1px;

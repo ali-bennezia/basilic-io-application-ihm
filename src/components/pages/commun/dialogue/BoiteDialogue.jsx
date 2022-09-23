@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { EntypoCross } from "react-entypo";
 
-function BoiteDialogue({ title, children, isOpen, setIsOpen }) {
+function BoiteDialogue({ title, children, isOpen, setIsOpen, style = {} }) {
   return isOpen ? (
     <div
       style={{
@@ -25,6 +25,7 @@ function BoiteDialogue({ title, children, isOpen, setIsOpen }) {
           height: "400px",
           backgroundColor: "white",
           borderRadius: "24px",
+          ...style,
         }}
       >
         <div

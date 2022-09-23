@@ -21,6 +21,7 @@ import config from "./../../../config/config.json";
 import axios from "axios";
 
 import Snackbar from "@mui/material/Snackbar";
+import SelectionneurMedias from "../contenu/medias/SelectionneurMedias";
 
 const ProfileState = {
   Loading: 0,
@@ -60,13 +61,18 @@ function PageProfil() {
   const [formNotificationOpen, setFormNotificationOpen] = useState(false);
   const [formNotificationMessage, setFormNotificationMessage] = useState("");
 
+  const [msgDlgMedias, setMsgDlgMedias] = useState([]);
+
   //Callback pour l'envoi de message.
   const onClickSendMessage = (e) => {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append("contenu", message);
-    formData.append("cibleUserId", viewedAuthProfile.id);
+
+    let data = { contenu: message, cibleUserId: viewedAuthProfile.id };
+
+    formData.append("data", JSON.stringify(data));
+    for (let m of msgDlgMedias) formData.append("medias", m);
 
     axios
       .post(
@@ -125,8 +131,7 @@ function PageProfil() {
   const fetchResponsePostsPromise = () => fetch(2);
   const fetchMoreResponsePostsPromise = (timestamp) => fetchMore(2, timestamp);
 
-  //Initialisation de la page.
-  useEffect(() => {
+  const initPage = () => {
     const viewedUserId = userId
       ? userId
       : authProfile && "id" in authProfile
@@ -161,7 +166,11 @@ function PageProfil() {
         setPageState(ProfileState.Error);
         setViewedAuthProfile(null);
       });
-  }, []);
+  };
+
+  //Initialisation de la page.
+  useEffect(initPage, []);
+  useEffect(initPage, [userId]);
 
   const updateProfileContent = () => {
     switch (pageState) {
@@ -288,6 +297,7 @@ function PageProfil() {
         title="Envoyer un message"
         isOpen={messageBoxIsOpen}
         setIsOpen={setMessageBoxIsOpen}
+        style={{ height: "auto" }}
       >
         <Form
           className="basic-form"
@@ -305,9 +315,28 @@ function PageProfil() {
               style={{ height: "186px" }}
             />
           </Form.Group>
-          <Button variant="primary" type="submit" onClick={onClickSendMessage}>
-            Envoyer
-          </Button>
+          <span
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={onClickSendMessage}
+              style={{ height: "39px" }}
+            >
+              Envoyer
+            </Button>
+            <SelectionneurMedias
+              setFormNotificationMessage={setFormNotificationMessage}
+              setFormNotificationOpen={setFormNotificationOpen}
+              medias={msgDlgMedias}
+              setMedias={setMsgDlgMedias}
+            />{" "}
+          </span>
           <p className="form-error-label">{formError}</p>
         </Form>
       </BoiteDialogue>

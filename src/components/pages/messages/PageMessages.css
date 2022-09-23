@@ -1,0 +1,9 @@
+.block-conversation {
+  width: 100%;
+  height: 80px;
+}
+
+.block-conversation:hover {
+  background-color: rgb(233, 233, 233);
+  border-radius: 16px;
+}

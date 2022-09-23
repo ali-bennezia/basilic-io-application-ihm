@@ -12,7 +12,7 @@ import PageConnexion from "./components/pages/PageConnexion";
 
 import PageFlux from "./components/pages/PageFlux";
 import PageProfil from "./components/pages/profil/PageProfil";
-import PageMessages from "./components/pages/PageMessages";
+import PageMessages from "./components/pages/messages/PageMessages";
 import PageParams from "./components/pages/params/PageParams";
 import PageValidation from "./components/pages/profil/validation/PageValidation";
 import PagePost from "./components/pages/PagePost";

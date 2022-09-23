@@ -155,17 +155,7 @@ function OngletParamsCompteUtilisateur({ tabIndex }) {
         alignItems: "center",
       }}
     >
-      <div
-        style={{
-          width: "640px",
-          height: "620px",
-          border: "1px solid #BABABA",
-          borderRadius: "20px",
-          marginTop: "20px",
-          padding: "40px",
-          backgroundColor: "#F2F2F2",
-        }}
-      >
+      <div className="inner-page-container">
         <Form>
           <Form.Group
             className="mb-3"
