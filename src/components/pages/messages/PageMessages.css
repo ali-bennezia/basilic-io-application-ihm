@@ -7,3 +7,14 @@
   background-color: rgb(233, 233, 233);
   border-radius: 16px;
 }
+
+
+.block-conversation[data-alert="true"] {
+  background-color: #C6FFCA;
+  border-radius: 16px;
+}
+
+.block-conversation[data-alert="true"]:hover {
+  background-color: #A5FFAB;
+  border-radius: 16px;
+}

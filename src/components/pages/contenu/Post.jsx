@@ -5,20 +5,7 @@ import AvatarProfil from "./../commun/profil/AvatarProfil";
 import BlockInteractionsPost from "./BlockInteractionsPost";
 import MediasPost from "./medias/MediasPost";
 
-const mths = [
-  "Janvier",
-  "Février",
-  "Mars",
-  "Avril",
-  "Mai",
-  "Juin",
-  "Juillet",
-  "Août",
-  "Septembre",
-  "Octobre",
-  "Novembre",
-  "Décembre",
-];
+import { parseTimestamp } from "./../../../utils/objects";
 
 function Post({
   postData,
@@ -27,8 +14,6 @@ function Post({
   setMediaDialogueSource,
   setMediaDialogueIsVideo,
 }) {
-  const postDate = new Date(postData.createdAt);
-
   return (
     <div
       className="inner-page-block"
@@ -107,9 +92,7 @@ function Post({
         }}
       >
         <p style={{ fontStyle: "italic", color: "grey" }}>
-          Posté le {postDate.getDay()} {mths[postDate.getMonth()]}{" "}
-          {postDate.getFullYear()} à {postDate.getHours()}h
-          {postDate.getMinutes()}
+          Posté {parseTimestamp(postData.createdAt)}
         </p>
         <BlockInteractionsPost
           postData={postData}
