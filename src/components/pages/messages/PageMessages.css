@@ -1,6 +1,9 @@
 .block-conversation {
   width: 100%;
   height: 80px;
+
+  position: relative;
+  top:0px;
 }
 
 .block-conversation:hover {

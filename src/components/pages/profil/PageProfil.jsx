@@ -23,12 +23,7 @@ import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import SelectionneurMedias from "../contenu/medias/SelectionneurMedias";
 
-const ProfileState = {
-  Loading: 0,
-  Visible: 1,
-  Private: 2,
-  Error: 3,
-};
+import { PageState } from "./../../../utils/utils.js";
 
 function PageProfil() {
   //Navigation.
@@ -48,7 +43,7 @@ function PageProfil() {
   } = useContext(AuthentificationContext);
 
   //Variables d'état.
-  const [pageState, setPageState] = useState(ProfileState.Loading);
+  const [pageState, setPageState] = useState(PageState.Loading);
   const [profileContent, setProfileContent] = useState(<></>);
 
   const [viewedAuthProfile, setViewedAuthProfile] = useState(null);
@@ -156,14 +151,14 @@ function PageProfil() {
           "profilPublic" in data.data &&
             "domaineVisible" in data.data.token &&
             data.data.token.domaineVisible === false
-            ? ProfileState.Private
-            : ProfileState.Visible
+            ? PageState.Private
+            : PageState.Visible
         );
         setViewedAuthProfile(data.data);
       })
       .catch((err) => {
         console.log(err);
-        setPageState(ProfileState.Error);
+        setPageState(PageState.Error);
         setViewedAuthProfile(null);
       });
   };
@@ -174,17 +169,17 @@ function PageProfil() {
 
   const updateProfileContent = () => {
     switch (pageState) {
-      case ProfileState.Loading:
+      case PageState.Loading:
         setProfileContent(
           <div style={{ marginTop: "260px" }}>
             <MoonLoader color="green" />
           </div>
         );
         break;
-      case ProfileState.Private:
+      case PageState.Private:
         setProfileContent(<p>Profil privé</p>);
         break;
-      case ProfileState.Visible:
+      case PageState.Visible:
         setProfileContent(
           <>
             <EnTeteProfil

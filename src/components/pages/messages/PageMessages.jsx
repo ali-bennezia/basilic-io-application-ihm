@@ -33,7 +33,6 @@ function PageMessages() {
       )
       .then((data) => {
         setConvos(data.data);
-        console.log(data.data);
         setIsLoading(false);
         setError(false);
       })

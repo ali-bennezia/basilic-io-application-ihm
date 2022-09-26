@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import {Link} from "react-router-dom";
+
 import AuthentificationContext from "../../../contexts/AuthentificationContext";
 
 import AvatarProfil from "../commun/profil/AvatarProfil";
@@ -22,10 +24,10 @@ function BlockConversation({ convo }) {
     : convo.unseenMessagesUserB;
 
   return (
-    <>
+    <Link to={`/conversation/${convo.userA.id}&${convo.userB.id}`}>
       <div className="block-conversation" data-alert={unseenMessages>0}>
         <AvatarProfil
-          profile={partner._id}
+          profile={partner}
           size={60}
           borderRadius={10}
           style={{ position: "relative", top: "10px", left: "10px" }}
@@ -45,6 +47,7 @@ function BlockConversation({ convo }) {
             style={{
               display: "inline-block",
               fontSize: "18px",
+              color:"black"
             }}
           >
             {"nomPublic" in partner
@@ -99,8 +102,8 @@ function BlockConversation({ convo }) {
 
         {"lastSentMessage" in convo ? 
         <>
-          <EntypoQuote style={{fontSize:"38px", position: "relative", bottom:"88px", right:"-755px", color:"#d9d9d9"}} />
-          <Icon icon={quoteIcon} hFlip={true} style={{position:"relative", fontSize:"40px", left:"270px", top:"-120px", color:"#d9d9d9"}} />
+          <EntypoQuote style={{fontSize:"38px", color:"#d9d9d9", position:"absolute", top:"50px", right:"0px"}} />
+          <Icon icon={quoteIcon} hFlip={true} style={{ fontSize:"40px", color:"#d9d9d9", position:"absolute", bottom:"38px", right:"480px"}} />
         </>
          : null}
         
@@ -131,7 +134,7 @@ function BlockConversation({ convo }) {
 
       </div>
       <hr style={{width:"100%", position:"relative", top:"-44px"}} />
-    </>
+    </Link>
   );
 }
 
