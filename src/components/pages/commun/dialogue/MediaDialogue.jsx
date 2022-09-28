@@ -3,11 +3,19 @@ import Video from "./../../contenu/medias/Video";
 
 import { EntypoCross } from "react-entypo";
 import MoonLoader from "react-spinners/MoonLoader";
+import MediaPrivee from "../../contenu/medias/MediaPrivee";
 
-function MediaDialogue({ isVideo = false, src, isOpen, setIsOpen }) {
+function MediaDialogue({
+  isVideo = false,
+  src = "",
+  isOpen,
+  setIsOpen,
+  isPrivate = false,
+}) {
   //Constantes.
   const mediaStyle = { maxWidth: "80vw", maxHeight: "80vh" };
   const mediaRef = useRef();
+  const mediaData = src.split("/");
 
   return isOpen ? (
     <div
@@ -62,11 +70,26 @@ function MediaDialogue({ isVideo = false, src, isOpen, setIsOpen }) {
         {src != null ? (
           <>
             {isVideo ? (
-              <Video
-                options={{
-                  controls: true,
-                  sources: [{ src: src, type: "video/mp4" }],
-                }}
+              !isPrivate ? (
+                <Video
+                  options={{
+                    controls: true,
+                    sources: [{ src: src, type: "video/mp4" }],
+                  }}
+                />
+              ) : (
+                <MediaPrivee
+                  isVideo={true}
+                  isVideoThumbnail={false}
+                  mediaName={mediaData[mediaData.length - 1]}
+                  style={mediaStyle}
+                />
+              )
+            ) : isPrivate ? (
+              <MediaPrivee
+                isVideo={false}
+                mediaName={mediaData[mediaData.length - 1]}
+                style={mediaStyle}
               />
             ) : (
               <img

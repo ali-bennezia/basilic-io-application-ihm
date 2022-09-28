@@ -47,7 +47,7 @@ const FluxPosts = forwardRef((props, ref) => {
 
   const [latestFetchPromise, setLatestFetchPromise] = useState(null);
 
-  const [lastSelectedMediaSource, setLastSelectedMediaSource] = useState(null);
+  const [lastSelectedMediaSource, setLastSelectedMediaSource] = useState("");
   const [lastSelectedMediaIsVideo, setLastSelectedMediaIsVideo] =
     useState(false);
   const [mediaDialogueIsOpen, setMediaDialogueIsOpen] = useState(false);

@@ -1,10 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import AuthentificationContext from "../../../contexts/AuthentificationContext";
 
-function ConvoMessage({ messageData, style = {}, username = "" }) {
+import MediasPost from "./../contenu/medias/MediasPost";
+
+function ConvoMessage({
+  messageData,
+  style = {},
+  username = "",
+  setMediaDialogueIsOpen,
+  setMediaDialogueSource,
+  setMediaDialogueIsVideo,
+  setMediaDialogueIsPrivate,
+}) {
   //Variables de contexte.
   const { authProfile } = useContext(AuthentificationContext);
+
+  //Variables d'état.
+  const [medias, setMedias] = useState(messageData.medias);
 
   //Constantes.
   const isSelf = messageData.auteur === authProfile.userId;
@@ -44,6 +57,19 @@ function ConvoMessage({ messageData, style = {}, username = "" }) {
         >
           {messageData.contenu}
         </p>
+
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          <MediasPost
+            medias={medias}
+            setMediaDialogueIsOpen={setMediaDialogueIsOpen}
+            setMediaDialogueSource={setMediaDialogueSource}
+            setMediaDialogueIsVideo={setMediaDialogueIsVideo}
+            setMediaDialogueIsPrivate={setMediaDialogueIsPrivate}
+            style={{ width: "68%" }}
+          />
+        </div>
       </div>
     </div>
   );

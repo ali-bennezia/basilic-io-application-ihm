@@ -23,6 +23,8 @@ import AfficheurInterlocuteur from "./AfficheurInterlocuteur";
 import ConvoMessage from "./ConvoMessage";
 import ChampMessage from "./ChampMessage";
 
+import MediaDialogue from "./../commun/dialogue/MediaDialogue";
+
 const titleTextStyle = { display: "inline-block", fontSize: "24px" };
 
 function PageConversation() {
@@ -46,6 +48,11 @@ function PageConversation() {
   const [sbMessage, setSbMessage] = useState("");
 
   const [fetchingNewerMessages, setFetchingNewerMessages] = useState(true);
+
+  const [mediaDialogueIsOpen, setMediaDialogueIsOpen] = useState(false);
+  const [mediaDialogueIsVideo, setMediaDialogueIsVideo] = useState(false);
+  const [mediaDialogueSource, setMediaDialogueSource] = useState("");
+  const [mediaDialogueIsPrivate, setMediaDialogueIsPrivate] = useState(false);
 
   //Fonctions et callbacks.
   const loadMoreMessages = () => {
@@ -196,7 +203,7 @@ function PageConversation() {
                   <div
                     style={{
                       marginTop: "120px",
-                      maxHeight: "400px",
+                      maxHeight: "800px",
                       overflowY: "auto",
                     }}
                   >
@@ -243,6 +250,10 @@ function PageConversation() {
                               : partnerProfile.nomPublic ||
                                 partnerProfile.nomUtilisateur
                           }
+                          setMediaDialogueIsOpen={setMediaDialogueIsOpen}
+                          setMediaDialogueIsVideo={setMediaDialogueIsVideo}
+                          setMediaDialogueSource={setMediaDialogueSource}
+                          setMediaDialogueIsPrivate={setMediaDialogueIsPrivate}
                         />
                       );
                     })}
@@ -274,6 +285,13 @@ function PageConversation() {
         }}
         autoHideDuration={6000}
         message={sbMessage}
+      />
+      <MediaDialogue
+        isVideo={mediaDialogueIsVideo}
+        src={mediaDialogueSource}
+        isOpen={mediaDialogueIsOpen}
+        setIsOpen={setMediaDialogueIsOpen}
+        isPrivate={mediaDialogueIsPrivate}
       />
     </BasePage>
   );

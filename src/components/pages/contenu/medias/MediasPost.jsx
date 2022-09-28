@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
+
+import axios from "axios";
 import config from "./../../../../config/config.json";
 
 import { EntypoVideo } from "react-entypo";
+import AuthentificationContext from "../../../../contexts/AuthentificationContext";
+import MediaPrivee from "./MediaPrivee";
 
 function MediasPost({
   medias = [],
   setMediaDialogueIsOpen,
   setMediaDialogueSource,
   setMediaDialogueIsVideo,
+  setMediaDialogueIsPrivate = (b) => {},
+  style = {},
 }) {
+  //Variables de contexte.
+  const { authPayload } = useContext(AuthentificationContext);
+
   return (
     <div
       style={{
@@ -17,6 +26,7 @@ function MediasPost({
         display: "flex",
         justifyContent: "space-between",
         flexWrap: "wrap",
+        ...style,
       }}
     >
       {medias.map((el, i) => {
@@ -44,18 +54,33 @@ function MediasPost({
               setMediaDialogueSource(mediaSource);
               setMediaDialogueIsVideo(false);
               setMediaDialogueIsOpen(true);
+              setMediaDialogueIsPrivate(mediaData[0] === "private");
             }}
           >
-            <img
-              key={i}
-              style={{
-                width: "100%",
-                margin: "0",
-                float: "top",
-                ...mediaAppearenceStyle,
-              }}
-              src={mediaSource}
-            />
+            {mediaData[0] === "private" ? (
+              <MediaPrivee
+                isVideo={false}
+                mediaName={mediaData[1]}
+                key={i}
+                style={{
+                  width: "100%",
+                  margin: "0",
+                  float: "top",
+                  ...mediaAppearenceStyle,
+                }}
+              />
+            ) : (
+              <img
+                key={i}
+                style={{
+                  width: "100%",
+                  margin: "0",
+                  float: "top",
+                  ...mediaAppearenceStyle,
+                }}
+                src={mediaData[0] === "public" ? mediaSource : ""}
+              />
+            )}
           </button>
         ) : (
           <button
@@ -66,37 +91,47 @@ function MediasPost({
               setMediaDialogueSource(mediaSource);
               setMediaDialogueIsVideo(true);
               setMediaDialogueIsOpen(true);
+              setMediaDialogueIsPrivate(mediaData[0] === "private");
             }}
           >
-            <span>
-              <video
-                src={mediaSource}
+            {mediaData[0] === "private" ? (
+              <MediaPrivee
+                isVideo={true}
+                mediaName={mediaData[1]}
+                key={i}
                 style={{ width: "100%", ...mediaAppearenceStyle }}
               />
-              <div
-                style={{
-                  position: "absolute",
-
-                  top: "0px",
-                  left: "0px",
-
-                  width: "100%",
-                  height: "100%",
-
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <EntypoVideo
-                  style={{
-                    fontSize: "100px",
-                    color: "white",
-                    filter: "drop-shadow(black 0px 0px 3px)",
-                  }}
+            ) : (
+              <span>
+                <video
+                  src={mediaData[0] === "public" ? mediaSource : ""}
+                  style={{ width: "100%", ...mediaAppearenceStyle }}
                 />
-              </div>
-            </span>
+                <div
+                  style={{
+                    position: "absolute",
+
+                    top: "0px",
+                    left: "0px",
+
+                    width: "100%",
+                    height: "100%",
+
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <EntypoVideo
+                    style={{
+                      fontSize: "100px",
+                      color: "white",
+                      filter: "drop-shadow(black 0px 0px 3px)",
+                    }}
+                  />
+                </div>
+              </span>
+            )}
           </button>
         );
       })}
