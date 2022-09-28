@@ -39,6 +39,7 @@ function MediasPost({
           position: "relative",
           border: "none",
           padding: "0",
+          background: "none",
         };
         const mediaAppearenceStyle = {
           backgroundColor: "white",

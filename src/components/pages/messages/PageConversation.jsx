@@ -56,7 +56,8 @@ function PageConversation() {
 
   //Fonctions et callbacks.
   const loadMoreMessages = () => {
-    if (fetchingNewerMessages === true) return;
+    if (fetchingNewerMessages === true || latestMessageTimestamp === null)
+      return;
     setFetchingNewerMessages(true);
 
     let promise = axios
@@ -78,20 +79,21 @@ function PageConversation() {
 
   const processOldMessages = (msgs) => {
     if (msgs.length == 0) return;
-    let oldestReceivedId = msgs[msgs.length - 1].id;
-    let oldestKnownId = messages[0].id || null;
+    let newestReceivedId = msgs[0]._id;
+    let oldestKnownId = messages.length > 0 ? messages[0]._id : null;
 
-    if (oldestReceivedId === oldestKnownId) {
-      setMessages([...msgs.pop().reverse(), ...messages]);
-    } else {
-      setMessages([...msgs.reverse(), ...messages]);
-    }
+    if (newestReceivedId === oldestKnownId) msgs.shift();
+
+    if (msgs.length > 0)
+      setLatestMessageTimestamp(msgs[msgs.length - 1].createdAt);
+
+    setMessages([...msgs.reverse(), ...messages]);
   };
 
   const processNewMessages = (msgs) => {
-    if (msgs.length > 0) {
+    if (msgs.length === 0) return;
+    if (messages.length === 0) {
       setLatestMessageTimestamp(msgs[msgs.length - 1].createdAt);
-      console.log(msgs[msgs.length - 1].createdAt);
     }
 
     setMessages([...messages, ...msgs.reverse()]);
@@ -128,7 +130,7 @@ function PageConversation() {
         fetchProfile(userIdA, userIdASetter);
         fetchProfile(userIdB, userIdBSetter);
 
-        processNewMessages(data.data);
+        processOldMessages(data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -221,6 +223,7 @@ function PageConversation() {
                           loadMoreMessages();
                         }}
                         disabled={fetchingNewerMessages}
+                        style={{ boxShadow: "none" }}
                       >
                         {" "}
                         <EntypoCcw
