@@ -24,6 +24,7 @@ function PageMessages() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [oldestTimestamp, setOldestTimestamp] = useState(null);
+  const [lastScroll, setLastScroll] = useState(0);
 
   //Contexte.
   const { authPayload } = useContext(AuthentificationContext);
@@ -51,7 +52,6 @@ function PageMessages() {
         { headers: { authorization: `Bearer ${authPayload.token}` } }
       )
       .then((data) => {
-        console.log(data);
         processNewConvos(data.data);
         setIsLoading(false);
         setError(false);
@@ -110,25 +110,52 @@ function PageMessages() {
           height: "auto",
         }}
       >
-        <div style={{ height: "100%", overflowY: "auto" }}>
+        <div
+          style={{ height: "100%", overflowY: "auto" }}
+          onScroll={function ({ target: content }) {
+            let maxScrollTop = content.scrollHeight - content.clientHeight;
+
+            if (
+              lastScroll < content.scrollTop &&
+              content.scrollTop > maxScrollTop - 10 &&
+              !isLoading
+            )
+              fetchNewerConvos();
+            setLastScroll(content.scrollTop);
+          }}
+        >
           {" "}
-          {isLoading ? (
-            <span
-              style={{
-                width: "100%",
-                height: "80%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <MoonLoader color="green" />
-            </span>
-          ) : !error ? (
+          {!error ? (
             <>
               {convos.map((el, i) => {
                 return <BlockConversation key={i} convo={el} />;
               })}
+              {convos.map((el, i) => {
+                return <BlockConversation key={i} convo={el} />;
+              })}
+              {convos.map((el, i) => {
+                return <BlockConversation key={i} convo={el} />;
+              })}
+              {convos.map((el, i) => {
+                return <BlockConversation key={i} convo={el} />;
+              })}
+              {convos.map((el, i) => {
+                return <BlockConversation key={i} convo={el} />;
+              })}
+
+              {isLoading ? (
+                <span
+                  style={{
+                    width: "100%",
+                    height: "80%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MoonLoader color="green" />
+                </span>
+              ) : null}
 
               <span
                 style={{
@@ -157,8 +184,6 @@ function PageMessages() {
                   />{" "}
                   Charger plus de conversations
                 </Button>
-
-                {isLoading ? <MoonLoader color="green" /> : null}
               </span>
             </>
           ) : (

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import AuthentificationContext from "../../../contexts/AuthentificationContext";
 
@@ -7,9 +7,9 @@ import AvatarProfil from "../commun/profil/AvatarProfil";
 
 import { parseTimestamp } from "./../../../utils/objects";
 
-import {EntypoQuote} from "react-entypo";
+import { EntypoQuote } from "react-entypo";
 
-import {Icon} from "@iconify/react";
+import { Icon } from "@iconify/react";
 import quoteIcon from "@iconify/icons-entypo/quote";
 
 function BlockConversation({ convo }) {
@@ -19,18 +19,23 @@ function BlockConversation({ convo }) {
   //Variables.
   const isUserA = authPayload.userId == convo.userA.id;
   const partner = isUserA ? convo.userB : convo.userA;
-  const unseenMessages =  isUserA
+  const unseenMessages = isUserA
     ? convo.unseenMessagesUserA
     : convo.unseenMessagesUserB;
 
   return (
     <Link to={`/conversation/${convo.userA.id}&${convo.userB.id}`}>
-      <div className="block-conversation" data-alert={unseenMessages>0}>
+      <div className="block-conversation" data-alert={unseenMessages > 0}>
         <AvatarProfil
           profile={partner}
           size={60}
           borderRadius={10}
-          style={{ position: "relative", top: "10px", left: "10px" }}
+          style={{
+            position: "relative",
+            top: "10px",
+            left: "10px",
+            zIndex: "1",
+          }}
         />
         <div
           style={{
@@ -47,7 +52,7 @@ function BlockConversation({ convo }) {
             style={{
               display: "inline-block",
               fontSize: "18px",
-              color:"black"
+              color: "black",
             }}
           >
             {"nomPublic" in partner
@@ -81,59 +86,72 @@ function BlockConversation({ convo }) {
                     } message${unseenMessages == 1 ? "" : "s"}`}{" "}
                   </span>{" "}
                   <span style={{ color: "grey", fontStyle: "italic" }}>
-                    {"lastSentMessageAt" in convo
-                      ? ' • '
-                      : ""}
+                    {"lastSentMessageAt" in convo ? " • " : ""}
                   </span>
                 </>
               ) : (
                 ""
               )}
-                <span style={{ color: "grey", fontStyle: "italic" }}>
-                  {"lastSentMessageAt" in convo
-                    ? `Dernier message ${parseTimestamp(
-                        convo.lastSentMessageAt
-                      )}`
-                    : ""}
-                </span>
+              <span style={{ color: "grey", fontStyle: "italic" }}>
+                {"lastSentMessageAt" in convo
+                  ? `Dernier message ${parseTimestamp(convo.lastSentMessageAt)}`
+                  : ""}
+              </span>
             </span>
           </p>
         </div>
 
-        {"lastSentMessage" in convo ? 
-        <>
-          <EntypoQuote style={{fontSize:"38px", color:"#d9d9d9", position:"absolute", top:"50px", right:"0px"}} />
-          <Icon icon={quoteIcon} hFlip={true} style={{ fontSize:"40px", color:"#d9d9d9", position:"absolute", bottom:"38px", right:"480px"}} />
-        </>
-         : null}
-        
+        {"lastSentMessage" in convo ? (
+          <>
+            <EntypoQuote
+              style={{
+                fontSize: "38px",
+                color: "#d9d9d9",
+                position: "absolute",
+                top: "50px",
+                right: "0px",
+              }}
+            />
+            <Icon
+              icon={quoteIcon}
+              hFlip={true}
+              style={{
+                fontSize: "40px",
+                color: "#d9d9d9",
+                position: "absolute",
+                bottom: "38px",
+                right: "480px",
+              }}
+            />
+          </>
+        ) : null}
 
         <p
           style={{
             position: "relative",
             display: "inline-block",
-            float:"right",
-            right:"0px",
+            float: "right",
+            right: "0px",
             top: "-58px",
             height: "100%",
             width: "45%",
-            margin:"0",
-            paddingRight:"8px",
+            margin: "0",
+            paddingRight: "8px",
 
-            textAlign:"end",
+            textAlign: "end",
 
-            fontStyle:"italic",
-            color:`${unseenMessages > 0 ? "black" : "grey"}`,
-            overflow:"hidden",
-            maxHeight:"4.8em"
+            fontStyle: "italic",
+            color: `${unseenMessages > 0 ? "black" : "grey"}`,
+            overflow: "hidden",
+            maxHeight: "4.8em",
           }}
         >
-         {"lastSentMessage" in convo ? convo.lastSentMessage : "Aucun message ..."}
-
+          {"lastSentMessage" in convo
+            ? convo.lastSentMessage
+            : "Aucun message ..."}
         </p>
-
       </div>
-      <hr style={{width:"100%", position:"relative", top:"-44px"}} />
+      <hr style={{ width: "100%", position: "relative", top: "-44px" }} />
     </Link>
   );
 }

@@ -1,35 +1,43 @@
+//React & routeur
+
 import React, { useState, useEffect } from "react";
 import { useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { useParams } from "react-router-dom";
+//Composantes
 
 import "./BlockConversation";
 import BasePage from "../commun/BasePage";
 import AuthentificationContext from "../../../contexts/AuthentificationContext";
 
+import AfficheurInterlocuteur from "./AfficheurInterlocuteur";
+import ConvoMessage from "./ConvoMessage";
+import ChampMessage from "./ChampMessage";
+import MediaDialogue from "./../commun/dialogue/MediaDialogue";
+
+//Style
+
 import "./../commun/PagesCommun.css";
+
+//Packages
 
 import axios from "axios";
 import config from "../../../config/config.json";
 
 import { MoonLoader } from "react-spinners";
 import Snackbar from "@mui/material/Snackbar";
-
 import Button from "react-bootstrap/Button";
-import { EntypoCcw } from "react-entypo";
-
+import { EntypoArrowLeft, EntypoCcw } from "react-entypo";
 import { PageState } from "./../../../utils/utils.js";
-import AfficheurInterlocuteur from "./AfficheurInterlocuteur";
-import ConvoMessage from "./ConvoMessage";
-import ChampMessage from "./ChampMessage";
-
-import MediaDialogue from "./../commun/dialogue/MediaDialogue";
 
 const titleTextStyle = { display: "inline-block", fontSize: "24px" };
 
 function PageConversation() {
   //Paramètres d'URL.
   const { userIdA, userIdB } = useParams();
+
+  //Navigation.
+  const navigate = useNavigate();
 
   //Variables de contexte.
   const { authPayload } = useContext(AuthentificationContext);
@@ -53,6 +61,8 @@ function PageConversation() {
   const [mediaDialogueIsVideo, setMediaDialogueIsVideo] = useState(false);
   const [mediaDialogueSource, setMediaDialogueSource] = useState("");
   const [mediaDialogueIsPrivate, setMediaDialogueIsPrivate] = useState(false);
+
+  const [lastScroll, setLastScroll] = useState(0);
 
   //Fonctions et callbacks.
   const loadMoreMessages = () => {
@@ -139,7 +149,9 @@ function PageConversation() {
   };
 
   //Initialisation.
-  useEffect(fetchContent, []);
+  useEffect(() => {
+    fetchContent();
+  }, []);
 
   return (
     <BasePage
@@ -157,6 +169,32 @@ function PageConversation() {
       <h1 className="page-title" style={{ marginTop: "26px" }}>
         Conversation
       </h1>
+      <span
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          margin: "10px",
+        }}
+      >
+        <Button
+          className="standard-button"
+          onClick={(e) => {
+            navigate(-1);
+          }}
+          style={{ boxShadow: "none" }}
+        >
+          {" "}
+          <EntypoArrowLeft
+            style={{
+              fontSize: "20px",
+              marginTop: "5px",
+              marginRight: "6px",
+            }}
+          />{" "}
+          Retour
+        </Button>
+      </span>
       <div
         className="inner-page-container"
         style={{
@@ -207,6 +245,18 @@ function PageConversation() {
                       marginTop: "120px",
                       maxHeight: "800px",
                       overflowY: "auto",
+                    }}
+                    onScroll={function (e) {
+                      const { target: content } = e;
+
+                      if (
+                        lastScroll > content.scrollTop &&
+                        content.scrollTop < 10 &&
+                        !fetchingNewerMessages
+                      )
+                        loadMoreMessages();
+
+                      setLastScroll(content.scrollTop);
                     }}
                   >
                     <span
