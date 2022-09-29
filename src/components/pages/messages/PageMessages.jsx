@@ -130,18 +130,6 @@ function PageMessages() {
               {convos.map((el, i) => {
                 return <BlockConversation key={i} convo={el} />;
               })}
-              {convos.map((el, i) => {
-                return <BlockConversation key={i} convo={el} />;
-              })}
-              {convos.map((el, i) => {
-                return <BlockConversation key={i} convo={el} />;
-              })}
-              {convos.map((el, i) => {
-                return <BlockConversation key={i} convo={el} />;
-              })}
-              {convos.map((el, i) => {
-                return <BlockConversation key={i} convo={el} />;
-              })}
 
               {isLoading ? (
                 <span
