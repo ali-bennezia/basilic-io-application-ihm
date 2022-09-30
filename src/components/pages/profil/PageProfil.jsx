@@ -79,6 +79,9 @@ function PageProfil() {
         setFormNotificationMessage("Message envoyé avec succès.");
         setFormNotificationOpen(true);
         setMessageBoxIsOpen(false);
+
+        setMessage("");
+        setMsgDlgMedias([]);
       })
       .catch((err) => {
         console.log(err);

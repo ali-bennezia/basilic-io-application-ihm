@@ -164,18 +164,19 @@ const FluxPosts = forwardRef((props, ref) => {
   useEffect(fetchInitialPosts, []);
 
   //Constantes.
-  const postInput = showPostField ? (
-    <ChampPost
-      setFormNotificationOpen={setFormNotificationOpen}
-      setFormNotificationMessage={setFormNotificationMessage}
-      idPostCible={idPostCible}
-      onPosted={(newPost) => {
-        appendNewPosts([newPost]);
-      }}
-    />
-  ) : (
-    <></>
-  );
+  const postInput =
+    showPostField && (authProfile.valide || false) ? (
+      <ChampPost
+        setFormNotificationOpen={setFormNotificationOpen}
+        setFormNotificationMessage={setFormNotificationMessage}
+        idPostCible={idPostCible}
+        onPosted={(newPost) => {
+          appendNewPosts([newPost]);
+        }}
+      />
+    ) : (
+      <></>
+    );
 
   //Extension de l'instance du composant.
   useImperativeHandle(ref, () => {

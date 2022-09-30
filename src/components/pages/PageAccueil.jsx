@@ -51,8 +51,9 @@ function PageAccueil() {
     });
   }, []);
 
-  const search = () => {
-    navigate(`/recherche?r=${encodeURI(searchInput)}`);
+  const search = (e) => {
+    e.preventDefault();
+    navigate(`/recherche?r=${encodeURIComponent(searchInput)}`);
   };
 
   return (
@@ -82,7 +83,7 @@ function PageAccueil() {
                 });
               }}
               onKeyDown={(e) => {
-                if (e.key === "Enter") search();
+                if (e.key === "Enter") search(e);
               }}
             />
             <Button

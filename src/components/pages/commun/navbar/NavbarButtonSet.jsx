@@ -16,6 +16,7 @@ const menuIconStyle = { width: "20px", height: "20px" };
 
 function NavbarButtonSet() {
   const authProps = useContext(AuthentificationContext);
+  const { authProfile } = authProps;
 
   let userLoggedIn =
     authProps.authPayload != null &&
@@ -50,7 +51,7 @@ function NavbarButtonSet() {
       <Button
         variant="contained"
         tag="one"
-        disabled={!userLoggedIn}
+        disabled={!userLoggedIn || !authProfile || !authProfile.valide}
         onClick={() => {
           navigate("/messages");
         }}
