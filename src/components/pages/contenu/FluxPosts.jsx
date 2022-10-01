@@ -120,7 +120,7 @@ const FluxPosts = forwardRef((props, ref) => {
   };
 
   const fetchInitialPosts = () => {
-    setLatestPostTimestamp(Date.now());
+    setLatestPostTimestamp(new Date().toString());
     const newPromise = fetchPostsPromise();
     setFetchingNewerPosts(true);
     newPromise
@@ -165,7 +165,7 @@ const FluxPosts = forwardRef((props, ref) => {
 
   //Constantes.
   const postInput =
-    showPostField && (authProfile.valide || false) ? (
+    showPostField && authProfile != null && authProfile.valide === true ? (
       <ChampPost
         setFormNotificationOpen={setFormNotificationOpen}
         setFormNotificationMessage={setFormNotificationMessage}

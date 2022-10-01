@@ -50,20 +50,20 @@ function OngletParamsProfilPublic({ tabIndex }) {
   const [formNotificationMessage, setFormNotificationMessage] = useState("");
 
   //Fonction permettant la récupération des informations du profil.
-  const fetchProfileData = () => {
+  const fetchProfileData = (currentProfile = authProfile) => {
     setPublicName(
-      authProfile != null && "nomPublic" in authProfile
-        ? authProfile.nomPublic
+      currentProfile != null && "nomPublic" in currentProfile
+        ? currentProfile.nomPublic
         : ""
     );
     setProfileDescription(
-      authProfile != null && "descriptionProfil" in authProfile
+      currentProfile != null && "descriptionProfil" in currentProfile
         ? authProfile.descriptionProfil
         : ""
     );
     setPublicProfile(
-      authProfile != null && "profilPublic" in authProfile
-        ? authProfile.profilPublic
+      currentProfile != null && "profilPublic" in currentProfile
+        ? currentProfile.profilPublic
         : true
     );
     setValidForm(true);
@@ -131,6 +131,11 @@ function OngletParamsProfilPublic({ tabIndex }) {
         }
       )
       .then((data) => {
+        delete data.data._id;
+        delete data.data.__v;
+
+        setAuthProfile({ ...authProfile, ...data.data });
+
         patchAuthProfile({ ...newParams, ...data.data });
         setWaitingAJAXResponse(false);
 
