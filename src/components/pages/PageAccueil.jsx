@@ -53,7 +53,7 @@ function PageAccueil() {
 
   const search = (e) => {
     e.preventDefault();
-    navigate(`/recherche?r=${encodeURIComponent(searchInput)}`);
+    navigate(`/recherche/${encodeURIComponent(searchInput)}`);
   };
 
   return (

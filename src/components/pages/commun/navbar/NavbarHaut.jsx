@@ -17,7 +17,7 @@ function NavbarHaut() {
   const doSearch = (e) => {
     e.preventDefault();
 
-    navigate(`/recherche?r=${encodeURIComponent(searchInput)}`);
+    navigate(`/recherche/${encodeURIComponent(searchInput)}`);
   };
 
   return (

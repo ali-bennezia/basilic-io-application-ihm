@@ -14,6 +14,7 @@ import PageConversation from "./components/pages/messages/PageConversation";
 import PageParams from "./components/pages/params/PageParams";
 import PageValidation from "./components/pages/profil/validation/PageValidation";
 import PagePost from "./components/pages/PagePost";
+import PageRecherche from "./components/pages/PageRecherche";
 
 import AuthentificationContext from "./contexts/AuthentificationContext";
 
@@ -23,6 +24,7 @@ function Routage() {
   return (
     <Router>
       <Routes>
+        <Route path="/recherche/:query" element={<PageRecherche />} />
         <Route path="/post/:postId" element={<PagePost />} />
         <Route path="/valider" element={<PageValidation />} />
         <Route path="/flux" element={<PageFlux />} />

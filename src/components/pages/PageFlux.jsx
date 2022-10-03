@@ -31,7 +31,9 @@ function PageFlux() {
     });
   const timestampFetch = (tmsp) =>
     axios.get(
-      `${config.applicationServerURL}posts/flux/public/get/10&${tmsp}`,
+      `${
+        config.applicationServerURL
+      }posts/flux/public/get/10&${encodeURIComponent(tmsp)}`,
       {
         headers:
           authPayload != null && authPayload.token != null
