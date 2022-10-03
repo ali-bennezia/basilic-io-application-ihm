@@ -102,7 +102,10 @@ function PageProfil() {
     return axios.get(
       `${config.applicationServerURL}profiles/posts/${viewedUserId}&${nature}&10`,
       {
-        headers: { authorization: `Bearer ${authPayload.token}` },
+        headers:
+          authPayload != null
+            ? { authorization: `Bearer ${authPayload.token}` }
+            : {},
       }
     );
   };
@@ -152,8 +155,8 @@ function PageProfil() {
       .then((data) => {
         setPageState(
           "profilPublic" in data.data &&
-            "domaineVisible" in data.data.token &&
-            data.data.token.domaineVisible === false
+            "domaineVisible" in data.data &&
+            data.data.domaineVisible === false
             ? PageState.Private
             : PageState.Visible
         );
@@ -270,8 +273,6 @@ function PageProfil() {
         justifyContent: "center",
       }}
     >
-      <UnauthentifiedRedirection to="/connexion" />
-
       <div
         style={{
           width: "100%",

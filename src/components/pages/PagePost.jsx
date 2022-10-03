@@ -74,7 +74,10 @@ function PagePost() {
     return axios.get(
       `${config.applicationServerURL}posts/responses/${postId}&10`,
       {
-        headers: { authorization: `Bearer ${authPayload.token}` },
+        headers:
+          authPayload != null
+            ? { authorization: `Bearer ${authPayload.token}` }
+            : {},
       }
     );
   };
@@ -82,7 +85,12 @@ function PagePost() {
   const fetchMore = (timestamp) => {
     return axios.get(
       `${config.applicationServerURL}posts/responses/${postId}&10&${timestamp}`,
-      { headers: { authorization: `Bearer ${authPayload.token}` } }
+      {
+        headers:
+          authPayload != null
+            ? { authorization: `Bearer ${authPayload.token}` }
+            : {},
+      }
     );
   };
 

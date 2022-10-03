@@ -22,7 +22,9 @@ function ActionsProfil({
     profile != null && authProfile != null && authProfile.id == profile.id;
 
   //Variables d'état.
-  const [isFollowed, setIsFollowed] = useState(profile.token.suisProfil);
+  const [isFollowed, setIsFollowed] = useState(
+    profile != null && "token" in profile && profile.token.suisProfil === true
+  );
 
   const followProfile = (e) => {
     axios
@@ -57,7 +59,7 @@ function ActionsProfil({
 
   return !isSelf && profile != null ? (
     <div className="profile-header-buttons" style={{ width: "auto", ...style }}>
-      <Button onClick={followProfile}>
+      <Button onClick={followProfile} disabled={authProfile == null}>
         <EntypoAddUser style={{ marginTop: "4px" }} />{" "}
         {!isFollowed ? "Suivre" : "Ne plus suivre"}
       </Button>
@@ -66,7 +68,7 @@ function ActionsProfil({
         onClick={(e) => {
           setMessageBoxIsOpen(true);
         }}
-        disabled={!authProfile.valide}
+        disabled={authProfile == null || !authProfile.valide}
       >
         <EntypoMail style={{ marginTop: "4px" }} />
         &nbsp;Envoyer un message

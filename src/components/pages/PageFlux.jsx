@@ -70,24 +70,25 @@ function PageFlux() {
     setFormNotificationMessage: setSbMsg,
   };
 
-  const tabs = [
-    {
-      name: "Suivis",
-      propsFlux: {
-        ...commonProps,
-        fetchPostsPromise: firstFetchFollow,
-        fetchMorePostsPromise: timestampFetchFollow,
-      },
+  const followsTab = {
+    name: "Suivis",
+    propsFlux: {
+      ...commonProps,
+      fetchPostsPromise: firstFetchFollow,
+      fetchMorePostsPromise: timestampFetchFollow,
     },
-    {
-      name: "Global",
-      propsFlux: {
-        ...commonProps,
-        fetchPostsPromise: firstFetch,
-        fetchMorePostsPromise: timestampFetch,
-      },
+  };
+
+  const globalTab = {
+    name: "Global",
+    propsFlux: {
+      ...commonProps,
+      fetchPostsPromise: firstFetch,
+      fetchMorePostsPromise: timestampFetch,
     },
-  ];
+  };
+
+  const tabs = authPayload != null ? [followsTab, globalTab] : [globalTab];
 
   return (
     <BasePage

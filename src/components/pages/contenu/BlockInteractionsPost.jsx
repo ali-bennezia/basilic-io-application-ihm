@@ -32,6 +32,8 @@ function BlockInteractionsPost({ postData, postResponses = true, style }) {
 
   //Callbacks.
   const sendActivityRequest = (nature) => {
+    if (authPayload == null) return;
+
     axios
       .post(
         `${config.applicationServerURL}posts/activities/create/${postData._id}&${nature}`,
@@ -66,6 +68,8 @@ function BlockInteractionsPost({ postData, postResponses = true, style }) {
   };
 
   const sendActivityDeletionRequest = () => {
+    if (authPayload == null) return;
+
     axios
       .delete(
         `${config.applicationServerURL}posts/activities/delete/${postData._id}`,
@@ -106,13 +110,19 @@ function BlockInteractionsPost({ postData, postResponses = true, style }) {
       <button
         style={buttonStyle}
         onMouseEnter={(e) => {
+          if (authPayload == null) return;
+
           setDislikeOver(true);
         }}
         onMouseLeave={(e) => {
+          if (authPayload == null) return;
+
           setDislikeOver(false);
         }}
         onClick={(e) => {
           e.preventDefault();
+          if (authPayload == null) return;
+
           if (dislikePar === true) {
             sendActivityDeletionRequest();
             return;
@@ -179,13 +189,20 @@ function BlockInteractionsPost({ postData, postResponses = true, style }) {
       <button
         style={buttonStyle}
         onMouseEnter={(e) => {
+          if (authPayload == null) return;
+
           setLikeOver(true);
         }}
         onMouseLeave={(e) => {
+          if (authPayload == null) return;
+
           setLikeOver(false);
         }}
         onClick={(e) => {
           e.preventDefault();
+
+          if (authPayload == null) return;
+
           if (likePar === true) {
             sendActivityDeletionRequest();
             return;
