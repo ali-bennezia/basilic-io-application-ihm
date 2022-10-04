@@ -284,3 +284,11 @@ button.MuiButtonBase-root {
 .link p:hover {
   text-decoration: underline;
 }
+
+.text-link {
+  color: #1f883b;
+}
+
+.text-link:hover {
+  color: #27be4f;
+}

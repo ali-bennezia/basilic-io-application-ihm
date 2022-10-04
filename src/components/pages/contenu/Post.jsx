@@ -19,7 +19,7 @@ function Post({
       className="inner-page-block"
       style={{ height: "auto", padding: "30px", marginTop: "-20px" }}
     >
-      <Link to={`/profil/${postData.auteur.nomUtilisateur}`}>
+      <Link to={`/profil/${postData.auteur.id}`}>
         <div className="block-part" style={{ width: "280px", height: "40px" }}>
           <AvatarProfil
             profile={postData.auteur}

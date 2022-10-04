@@ -100,7 +100,7 @@ function PageProfil() {
       : null;
 
     return axios.get(
-      `${config.applicationServerURL}profiles/posts/${viewedUserId}&${nature}&10`,
+      `${config.applicationServerURL}profiles/posts/${viewedAuthProfile.id}&${nature}&10`,
       {
         headers:
           authPayload != null
@@ -118,7 +118,7 @@ function PageProfil() {
       : null;
 
     return axios.get(
-      `${config.applicationServerURL}profiles/posts/${viewedUserId}&${nature}&${timestamp}&10`,
+      `${config.applicationServerURL}profiles/posts/${viewedAuthProfile.id}&${nature}&${timestamp}&10`,
       { headers: { authorization: `Bearer ${authPayload.token}` } }
     );
   };
@@ -153,6 +153,7 @@ function PageProfil() {
     axios
       .get(`${config.applicationServerURL}profiles/get/${viewedUserId}`, cfg)
       .then((data) => {
+        setViewedAuthProfile(data.data);
         setPageState(
           "profilPublic" in data.data &&
             "domaineVisible" in data.data &&
@@ -160,7 +161,6 @@ function PageProfil() {
             ? PageState.Private
             : PageState.Visible
         );
-        setViewedAuthProfile(data.data);
       })
       .catch((err) => {
         console.log(err);

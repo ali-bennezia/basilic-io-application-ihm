@@ -30,6 +30,7 @@ const emailFormat = /^[\w-\.]+@[\w-\.]+$/;
 */
 
 function validateEmail(val) {
+  console.log("email: " + val);
   //Sanitation.
   if (isObjectNullOrUndefined(val) || !isObjectString(val))
     return { result: false, err: "val" };
@@ -49,6 +50,7 @@ function validateEmail(val) {
 }
 
 function validatePhoneNumber(val) {
+  console.log("phone: " + val);
   //Sanitation.
   if (isObjectNullOrUndefined(val) || !isObjectString(val))
     return { result: false, err: "val" };
@@ -68,6 +70,7 @@ function validatePhoneNumber(val) {
 }
 
 function validateUsername(val) {
+  console.log("usrn: " + val);
   //Sanitation.
   if (isObjectNullOrUndefined(val) || !isObjectString(val))
     return { result: false, err: "val" };

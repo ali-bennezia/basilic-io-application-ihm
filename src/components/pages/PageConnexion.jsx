@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import AuthentificationContext from "../../contexts/AuthentificationContext";
 
 import Form from "react-bootstrap/Form";
@@ -167,7 +167,11 @@ function PageConnexion() {
             <Form.Text className="form-error-label">{passwordError}</Form.Text>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formRememberMe">
+          <Form.Group
+            className="mb-3"
+            controlId="formRememberMe"
+            style={{ display: "inline-block" }}
+          >
             <Form.Check
               type="checkbox"
               label="Rester connecté(e)"
@@ -175,13 +179,22 @@ function PageConnexion() {
               onInput={(e) => {
                 setRememberMe((val) => e.target.checked);
               }}
+              style={{ display: "inline-block" }}
             />
           </Form.Group>
+          <Link to="/oubli">
+            <p
+              style={{ display: "inline-block", float: "right" }}
+              className="text-link"
+            >
+              Mot de passe oublié ?
+            </p>
+          </Link>
 
           <Button variant="secondary" onClick={onClickAnnuler}>
             Annuler
           </Button>
-          <Button variant="primary" type="submit" disabled={!canConfirm}>
+          <Button variant="primary" disabled={!canConfirm} type="submit">
             Confirmer
           </Button>
           <p className="form-error-label">{formError}</p>
