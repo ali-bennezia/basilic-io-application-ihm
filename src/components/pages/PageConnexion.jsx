@@ -131,7 +131,7 @@ function PageConnexion() {
     >
       <AuthentifiedRedirection to="/flux" />
       <img
-        src="img/basilic_titre_mid_res.png"
+        src="/img/basilic_titre_mid_res.png"
         id="main-page-title-img"
         alt="Basilic"
       />

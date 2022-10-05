@@ -36,6 +36,8 @@ function PageOubli() {
 
   const [meanState, setMeanState] = useState(true); //False = SMS, sinon E-mail.
 
+  const [smsCode, setSMSCode] = useState("");
+
   const [fetching, setFetching] = useState(false);
   const [showPostSendMessage, setShowPostSendMessage] = useState(false);
 
@@ -49,7 +51,6 @@ function PageOubli() {
     let infoArr = ["nomUtilisateur", "numeroTelephone", "email"];
     let body = {};
     body[infoArr[parseInt(infoSelect) - 1]] = infoValue;
-    console.log(body);
 
     axios
       .post(
@@ -66,6 +67,10 @@ function PageOubli() {
         setInfoError("Confirmation du code impossible.");
         setFetching(false);
       });
+  };
+
+  const requestProcessSMSCode = () => {
+    navigate(`/entree/${parseInt(infoSelect) - 1}&${infoValue}&${smsCode}`);
   };
 
   const refreshValidationData = () => {
@@ -117,7 +122,7 @@ function PageOubli() {
     >
       <AuthentifiedRedirection to="/flux" />
       <img
-        src="img/basilic_titre_mid_res.png"
+        src="/img/basilic_titre_mid_res.png"
         id="main-page-title-img"
         alt="Basilic"
       />
@@ -126,22 +131,50 @@ function PageOubli() {
           <>
             {" "}
             <h2>Mot de passe oublié</h2>
-            <p>
-              <br />
-              Vous devriez très bientôt recevoir un lien de réinitialisation qui
-              <br />
-              vous permettra de modifier votre mot de passe.
-              <br />
-              <br />
-              Si vous avez choisi un SMS comme moyen de réinitialisation, vous
-              <br />
-              recevrez une clé. Si c'est le cas,{" "}
-              <Link to="/cleeauth">
-                <span className="text-link" style={{ textDecoration: "none" }}>
-                  cliquez ici.
-                </span>
-              </Link>
-            </p>
+            <br />
+            {meanState === true ? (
+              <p>
+                Vous devriez d'ici peu recevoir votre lien de confirmation via
+                e-mail.
+              </p>
+            ) : (
+              <Form
+                className="basic-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  requestProcessSMSCode();
+                }}
+              >
+                <Form.Group className="mb-3" style={{ marginTop: "20px" }}>
+                  <Form.Label>Code SMS recu</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Entrez le code recu ..."
+                    onInput={(e) => {
+                      setSMSCode(e.target.value);
+                    }}
+                    value={smsCode}
+                  />
+                  <Form.Text className="form-error-label">{}</Form.Text>
+                </Form.Group>
+
+                <Button
+                  variant="secondary"
+                  onClick={(e) => {
+                    navigate("/connexion");
+                  }}
+                >
+                  Annuler
+                </Button>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={smsCode.length === 0}
+                >
+                  Confirmer
+                </Button>
+              </Form>
+            )}
           </>
         ) : (
           <Form

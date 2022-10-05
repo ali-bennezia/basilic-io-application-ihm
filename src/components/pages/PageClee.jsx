@@ -17,93 +17,50 @@ import config from "../../config/config.json";
 import "./commun/PagesCommun.css";
 
 function PageClee() {
+  //Params.
+  const { identifierType, identifier, code } = useParams();
+
   //Variables d'état.
-  const [infoSelect, setInfoSelect] = useState("1");
+  const [formError, setFormError] = useState("");
 
-  const [infoLabel, setInfoLabel] = useState("Nom d'utilisateur");
-  const [infoPlaceholder, setInfoPlaceholder] = useState(
-    "Entrez ici votre nom d'utilisateur ..."
-  );
-  const [infoValue, setInfoValue] = useState("");
-  const [infoValidation, setInfoValidation] = useState({ result: false });
-  const [infoValidationResult, setInfoValidationResult] = useState(false);
-  const [infoError, setInfoError] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [meanState, setMeanState] = useState(true); //False = SMS, sinon E-mail.
+  const [isAFieldEmpty, setIsAFieldEmpty] = useState(true);
+  const [doPasswordFieldsCheck, setDoPasswordFieldsCheck] = useState(false);
 
   const [fetching, setFetching] = useState(false);
-  const [showPostSendMessage, setShowPostSendMessage] = useState(false);
+  const [successState, setSuccessState] = useState(false);
 
   //Navigate.
   const navigate = useNavigate();
 
   //Callbacks.
-  const requestSendCode = () => {
+  const sendRequest = () => {
     setFetching(true);
-
-    let infoArr = ["nomUtilisateur", "numeroTelephone", "email"];
-    let body = {};
-    body[infoArr[parseInt(infoSelect) - 1]] = infoValue;
-    console.log(body);
-
     axios
       .post(
-        `${config.applicationServerURL}auth/recpwd/send&${
-          meanState === true ? 0 : 1
-        }`,
-        body
+        `${config.applicationServerURL}auth/recpwd/reinit/${identifierType}&${identifier}&${code}`,
+        { newPassword: confirmPassword }
       )
       .then((data) => {
         setFetching(false);
-        setShowPostSendMessage(true);
+        setSuccessState(true);
       })
       .catch((err) => {
-        setInfoError("Confirmation du code impossible.");
         setFetching(false);
+        setFormError("Erreur. Réinitialisation impossible.");
       });
   };
 
-  const refreshValidationData = () => {
-    switch (infoSelect) {
-      case "1":
-        setInfoValidation(validateUsername(infoValue));
-        break;
-      case "2":
-        setInfoValidation(validatePhoneNumber(infoValue));
-        break;
-      default:
-        setInfoValidation(validateEmail(infoValue));
-        break;
-    }
-  };
-
   //Effets.
-  useEffect(
-    (e) => {
-      switch (infoSelect) {
-        case "1":
-          setInfoLabel("Nom d'utilisateur");
-          setInfoPlaceholder("Entrez ici votre nom d'utilisateur ...");
-          break;
-        case "2":
-          setInfoLabel("Numéro de téléphone");
-          setInfoPlaceholder("Entrez ici votre numéro de téléphone ...");
-          break;
-        default:
-          setInfoLabel("Adresse e-mail");
-          setInfoPlaceholder("Entrez ici votre adresse e-mail ...");
-          break;
-      }
-      refreshValidationData();
-    },
-    [infoSelect]
-  );
-
-  useEffect(refreshValidationData, [infoValue]);
+  useEffect(() => {
+    setIsAFieldEmpty(password.trim() === "" || confirmPassword.trim() === "");
+  }, [password, confirmPassword]);
 
   useEffect(() => {
-    setInfoValidationResult(infoValidation.result);
-  }, [infoValidation]);
+    setDoPasswordFieldsCheck(password === confirmPassword);
+  }, [password, confirmPassword]);
 
   return (
     <div
@@ -112,101 +69,69 @@ function PageClee() {
     >
       <AuthentifiedRedirection to="/flux" />
       <img
-        src="img/basilic_titre_mid_res.png"
+        src="/img/basilic_titre_mid_res.png"
         id="main-page-title-img"
         alt="Basilic"
       />
       <div className="form-container">
-        {showPostSendMessage ? (
+        <h2>Réinitialisation</h2>
+
+        {successState ? (
           <>
-            {" "}
-            <h2>Mot de passe oublié</h2>
             <p>
               <br />
-              Vous devriez très bientôt recevoir un lien de réinitialisation qui
+              Votre mot de passe a été réinitialisé avec succès.
               <br />
-              vous permettra de modifier votre mot de passe.
+              Vous pouvez dès maintenant vous connecter à l'aide
               <br />
-              <br />
-              Si vous avez choisi un SMS comme moyen de réinitialisation, vous
-              <br />
-              recevrez une clé. Si c'est le cas,{" "}
-              <Link to="/cleeauth">
-                <span className="text-link" style={{ textDecoration: "none" }}>
-                  cliquez ici.
-                </span>
-              </Link>
+              de votre nouveau mot de passe.
             </p>
+            <br />
+            <span
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                onClick={() => {
+                  navigate("/connexion");
+                }}
+                className="standard-button"
+                style={{ boxShadow: "none" }}
+              >
+                Aller à la page de connexion
+              </Button>
+            </span>
           </>
         ) : (
           <Form
             className="basic-form"
             onSubmit={(e) => {
               e.preventDefault();
-              requestSendCode();
+              sendRequest();
             }}
           >
-            <h2>Mot de passe oublié</h2>
-
-            <p>
-              Selectionnez une information afin de pouvoir identifier votre
-              compte, choisissez où recevoir le code, puis cliquez sur
-              Confirmer.
-              <br />
-              <br />
-              Si les informations sont correctes, vous devriez recevoir un code
-              par le moyen spécifié (SMS/E-mail).
-            </p>
-
-            <Form.Group style={{ marginTop: "20px" }}>
-              <Form.Label>Identifier mon compte par</Form.Label>
-              <Form.Select
-                value={infoSelect}
-                onChange={(e) => {
-                  setInfoSelect(e.target.value);
-                }}
-              >
-                <option>Sélectionnez une option</option>
-                <option value="1">Mon nom d'utilisateur</option>
-                <option value="2">Mon numéro de téléphone</option>
-                <option value="3">Mon adresse e-mail</option>
-              </Form.Select>
-            </Form.Group>
-
             <Form.Group className="mb-3" style={{ marginTop: "20px" }}>
-              <Form.Label>{infoLabel}</Form.Label>
+              <Form.Label>Nouveau mot de passe</Form.Label>
               <Form.Control
-                type="text"
-                placeholder={infoPlaceholder}
+                type="password"
+                placeholder="Entrez votre mot de passe ..."
+                value={password}
                 onInput={(e) => {
-                  setInfoValue(e.target.value);
+                  setPassword(e.target.value);
                 }}
-                value={infoValue}
               />
-              <Form.Text className="form-error-label">{}</Form.Text>
             </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Recevoir le code par</Form.Label>
-              <br />
-              <Form.Check
-                inline
-                label="SMS"
-                type="radio"
-                name="mean"
-                checked={!meanState}
-                onChange={(e) => {
-                  setMeanState(false);
-                }}
-              />
-              <Form.Check
-                inline
-                label="E-mail"
-                type="radio"
-                name="mean"
-                checked={meanState === true}
-                onChange={(e) => {
-                  setMeanState(true);
+            <Form.Group className="mb-3" style={{ marginTop: "20px" }}>
+              <Form.Label>Confirmation du nouveau mot de passe</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Confirmez votre mot de passe ..."
+                value={confirmPassword}
+                onInput={(e) => {
+                  setConfirmPassword(e.target.value);
                 }}
               />
             </Form.Group>
@@ -223,7 +148,7 @@ function PageClee() {
             <Button
               variant="primary"
               type="submit"
-              disabled={fetching || !infoValidationResult}
+              disabled={isAFieldEmpty || !doPasswordFieldsCheck || fetching}
             >
               Confirmer
             </Button>
@@ -231,9 +156,9 @@ function PageClee() {
               className="alert alert-danger"
               role="alert"
               style={{ padding: "4px" }}
-              hidden={infoError == ""}
+              hidden={formError == ""}
             >
-              {infoError}
+              {formError}
             </div>
           </Form>
         )}
