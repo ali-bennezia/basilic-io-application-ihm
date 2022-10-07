@@ -1,18 +1,18 @@
+//React & routage
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthentificationContext from "../../contexts/AuthentificationContext";
 
+//Componsantes packages:
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
-import "./commun/PagesCommun.css";
-
-import axios from "axios";
+import Reaptcha from "reaptcha";
 
 //Configuration:
 import config from "../../config/config.json";
+import privateConfig from "../../config/privateConfig.json";
 
-//Utilitaires:
+//Packages & utilitaires:
 import {
   validateEmail,
   validateUsername,
@@ -23,6 +23,11 @@ import {
 
 import { generatePayloadFromSessionData } from "../../utils/authentification";
 import { AuthentifiedRedirection } from "../redirection/AuthentifiedRedirection";
+
+import axios from "axios";
+
+//Style
+import "./commun/PagesCommun.css";
 
 function PageConnexion() {
   //Contexte d'authentification:
@@ -46,6 +51,9 @@ function PageConnexion() {
 
   const [formError, setFormError] = useState("");
 
+  //Réponse captcha
+  const [captchaValue, setCaptchaValue] = useState("");
+
   //Callbacks:
   const onClickAnnuler = (e) => {
     e.preventDefault();
@@ -62,6 +70,7 @@ function PageConnexion() {
       .post(`${config.applicationServerURL}users/signin`, {
         nomUtilisateur: username,
         motDePasse: password,
+        captcha: captchaValue,
       })
       .then((data) => {
         updateConfirmButtonAccess(true);
@@ -73,6 +82,9 @@ function PageConnexion() {
       })
       .catch((err) => {
         switch (err.response.data) {
+          case "Unprocessable Entity":
+            setFormError("Vérification incorrecte.");
+            break;
           case "Bad Request":
           case "Incorrect Password":
           case "Not Found":
@@ -123,6 +135,10 @@ function PageConnexion() {
   //Lien callback mise à jour du boutton à chaque input.
 
   useEffect(updateConfirmButtonAccess, [username, password]);
+
+  //Chargement initialisation.
+
+  useEffect(() => {}, []);
 
   return (
     <div
@@ -197,6 +213,12 @@ function PageConnexion() {
           <Button variant="primary" disabled={!canConfirm} type="submit">
             Confirmer
           </Button>
+          <Reaptcha
+            sitekey={privateConfig.captchaSiteKey}
+            onVerify={(val) => {
+              setCaptchaValue(val);
+            }}
+          />
           <p className="form-error-label">{formError}</p>
         </Form>
       </div>

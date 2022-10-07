@@ -1,21 +1,21 @@
+//React et routage
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+//Composantes
+import BasePage from "./commun/BasePage";
+import { AuthentifiedRedirection } from "../redirection/AuthentifiedRedirection";
+
+//Composantes packages
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
-import BasePage from "./commun/BasePage";
-
-import "./commun/PagesCommun.css";
-
-import axios from "axios";
-
-import { AuthentifiedRedirection } from "../redirection/AuthentifiedRedirection";
+import Reaptcha from "reaptcha";
 
 //Configuration:
 import config from "./../../config/config.json";
+import privateConfig from "./../../config/privateConfig.json";
 
-//Utilitaires:
+//Packages & utilitaires
 import {
   validateEmail,
   validateUsername,
@@ -23,6 +23,10 @@ import {
   validatePassword,
   getValidationErrorMessage,
 } from "./../../utils/validation";
+import axios from "axios";
+
+//Style
+import "./commun/PagesCommun.css";
 
 function PageInscription() {
   //Navigation:
@@ -47,6 +51,9 @@ function PageInscription() {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const [formError, setFormError] = useState("");
+
+  //Réponse captcha
+  const [captchaValue, setCaptchaValue] = useState("");
 
   //Callbacks:
   const onClickAnnuler = (e) => {
@@ -74,6 +81,9 @@ function PageInscription() {
       })
       .catch((err) => {
         switch (err.response.data) {
+          case "Unprocessable Entity":
+            setFormError("Vérification incorrecte.");
+            break;
           case "Non-Unique User Data":
             setFormError(
               "Email, nom d'utilisateur ou numéro de téléphone déjà utilisé(es) par un autre utilisateur."
@@ -265,6 +275,12 @@ function PageInscription() {
           <Button variant="primary" type="submit" disabled={!canConfirm}>
             Confirmer
           </Button>
+          <Reaptcha
+            sitekey={privateConfig.captchaSiteKey}
+            onVerify={(val) => {
+              setCaptchaValue(val);
+            }}
+          />
           <p className="form-error-label">{formError}</p>
         </Form>
       </div>
