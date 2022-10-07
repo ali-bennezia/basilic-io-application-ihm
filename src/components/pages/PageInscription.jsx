@@ -73,6 +73,7 @@ function PageInscription() {
         nomUtilisateur: username,
         numeroTelephone: phoneNumber,
         motDePasse: password,
+        captcha: captchaValue,
       })
       .then((data) => {
         updateConfirmButtonAccess(true);

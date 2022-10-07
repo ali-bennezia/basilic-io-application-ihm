@@ -17,6 +17,7 @@ import {
   EntypoLogin,
   EntypoTextDocument,
   EntypoCheck,
+  EntypoTools,
 } from "react-entypo";
 
 import { useNavigate } from "react-router-dom";
@@ -87,7 +88,7 @@ function BlockCompte() {
       >
         <div id="navbar-account-block">
           <div>
-            <AvatarProfil profile={profile} />
+            <AvatarProfil profile={profile} borderRadius={14} />
           </div>
           <div
             style={{ width: "100px", marginLeft: "-40px", marginTop: "-10px" }}
@@ -111,6 +112,15 @@ function BlockCompte() {
             </p>
           </div>
         </div>
+
+        {authProps.authPayload.admin ? (
+          <p className="text-tag">
+            {" "}
+            <EntypoTools style={{ fontSize: "20px", marginTop: "1px" }} />{" "}
+            Administrateur
+          </p>
+        ) : null}
+
         <Button
           variant="contained"
           style={{
@@ -128,7 +138,7 @@ function BlockCompte() {
         >
           <EntypoLogOut /> &nbsp; Se déconnecter
         </Button>
-        {!authProps.authProfile.valide ? invalidAccountElement : <></>}
+        {!authProps.authProfile.valide ? invalidAccountElement : null}
       </div>
     );
   else

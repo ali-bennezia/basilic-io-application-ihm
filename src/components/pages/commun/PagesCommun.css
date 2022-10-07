@@ -294,3 +294,14 @@ button.MuiButtonBase-root {
 .text-link:hover {
   color: #27be4f;
 }
+
+.text-tag {
+  background-color: rgb(241, 157, 0);
+  color: rgb(255, 255, 255);
+  border: rgb(189, 123, 0) solid 1px;
+
+  border-radius: 10px;
+
+  padding-left: 14px;
+  padding-right: 14px;
+}
