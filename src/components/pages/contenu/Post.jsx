@@ -13,6 +13,7 @@ function Post({
   setMediaDialogueIsOpen,
   setMediaDialogueSource,
   setMediaDialogueIsVideo,
+  onPostDeleted,
 }) {
   return (
     <div
@@ -97,6 +98,7 @@ function Post({
         <BlockInteractionsPost
           postData={postData}
           postResponses={postResponses}
+          onPostDeleted={onPostDeleted}
         />
       </div>
     </div>

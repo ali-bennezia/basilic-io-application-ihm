@@ -221,6 +221,9 @@ const FluxPosts = forwardRef((props, ref) => {
           setMediaDialogueIsOpen={setMediaDialogueIsOpen}
           setMediaDialogueSource={setLastSelectedMediaSource}
           setMediaDialogueIsVideo={setLastSelectedMediaIsVideo}
+          onPostDeleted={(postId) => {
+            setPosts((val) => val.filter((p) => p._id != postId));
+          }}
         />
       ))}
       {fetchingNewerPosts ? <MoonLoader color="green" /> : <></>}

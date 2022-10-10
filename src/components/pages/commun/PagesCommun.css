@@ -295,13 +295,28 @@ button.MuiButtonBase-root {
   color: #27be4f;
 }
 
-.text-tag {
-  background-color: rgb(241, 157, 0);
+.text-admin {
+  background-color: rgb(255, 176, 29);
   color: rgb(255, 255, 255);
-  border: rgb(189, 123, 0) solid 1px;
+  border: rgb(248, 176, 42) solid 1px;
 
-  border-radius: 10px;
+  border-radius: 4px;
 
   padding-left: 14px;
   padding-right: 14px;
+
+  text-shadow: rgba(128, 128, 128, 0.404) 0px 0px 2px;
+}
+
+.text-selectable {
+  background: none;
+  border: none;
+  color: grey;
+  text-decoration: none;
+}
+
+.text-selectable:hover {
+  background: none;
+  border: none;
+  text-decoration: underline;
 }

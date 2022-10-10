@@ -7,6 +7,9 @@ import { EntypoThumbsUp, EntypoThumbsDown, EntypoChat } from "react-entypo";
 import axios from "axios";
 import config from "./../../../config/config.json";
 
+import "./../commun/PagesCommun.css";
+import PostSupprimerAction from "./PostSupprimerAction";
+
 const textStyle = { display: "inline-block", fontWeight: "bold" };
 const iconStyle = {
   fontSize: "22px",
@@ -16,9 +19,15 @@ const iconStyle = {
 };
 const buttonStyle = { border: "none", padding: "0", margin: "0" };
 
-function BlockInteractionsPost({ postData, postResponses = true, style }) {
+function BlockInteractionsPost({
+  postData,
+  postResponses = true,
+  style,
+  onPostDeleted,
+}) {
   //Variables de contexte.
   const { authPayload } = useContext(AuthentificationContext);
+  console.log(postData);
 
   //Variables d'état.
   const [dislikeOver, setDislikeOver] = useState(false);
@@ -93,6 +102,14 @@ function BlockInteractionsPost({ postData, postResponses = true, style }) {
 
   return (
     <div style={style}>
+      {postData != null &&
+      "_id" in postData &&
+      (postData.admin ||
+        (authPayload != null &&
+          postData != null &&
+          authPayload.userId === postData.auteur.id)) ? (
+        <PostSupprimerAction postId={postData._id} onDeleted={onPostDeleted} />
+      ) : null}
       {postResponses ? (
         <Link
           className="link"

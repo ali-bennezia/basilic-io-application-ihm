@@ -28,6 +28,7 @@ function BlockCompte() {
   const navigate = useNavigate();
 
   let authProps = useContext(AuthentificationContext);
+  const { authPayload } = authProps;
   let profile = authProps.authProfile;
 
   const invalidAccountElement = (
@@ -109,17 +110,24 @@ function BlockCompte() {
             </p>
             <p className="navbar-subtext" style={{ marginTop: "-20px" }}>
               {`@${profile.nomUtilisateur}`}
+              {"admin" in authPayload && authPayload.admin === true ? (
+                <span style={{ fontSize: "12px" }}>
+                  <br />
+                  <EntypoTools style={{ fontSize: "14px", marginTop: "0px" }} />
+                  <span
+                    style={{
+                      display: "inline-block",
+                      marginTop: "6px",
+                      marginLeft: "4px",
+                    }}
+                  >
+                    Administrateur
+                  </span>
+                </span>
+              ) : null}
             </p>
           </div>
         </div>
-
-        {authProps.authPayload.admin ? (
-          <p className="text-tag">
-            {" "}
-            <EntypoTools style={{ fontSize: "20px", marginTop: "1px" }} />{" "}
-            Administrateur
-          </p>
-        ) : null}
 
         <Button
           variant="contained"
