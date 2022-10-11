@@ -1,5 +1,5 @@
 //React & routage
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthentificationContext from "../../contexts/AuthentificationContext";
 
@@ -30,6 +30,9 @@ import axios from "axios";
 import "./commun/PagesCommun.css";
 
 function PageConnexion() {
+  //Ref
+  const captchaRef = useRef();
+
   //Contexte d'authentification:
   const authContextProps = useContext(AuthentificationContext);
 
@@ -81,6 +84,7 @@ function PageConnexion() {
         navigate("/flux");
       })
       .catch((err) => {
+        captchaRef.current.reset();
         switch (err.response.data) {
           case "Unprocessable Entity":
             setFormError("Vérification incorrecte.");
@@ -218,6 +222,7 @@ function PageConnexion() {
             onVerify={(val) => {
               setCaptchaValue(val);
             }}
+            ref={captchaRef}
           />
           <p className="form-error-label">{formError}</p>
         </Form>

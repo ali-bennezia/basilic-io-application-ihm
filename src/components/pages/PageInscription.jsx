@@ -1,5 +1,5 @@
 //React et routage
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 //Composantes
@@ -29,6 +29,9 @@ import axios from "axios";
 import "./commun/PagesCommun.css";
 
 function PageInscription() {
+  //Ref:
+  const captchaRef = useRef();
+
   //Navigation:
   const navigate = useNavigate();
 
@@ -81,6 +84,7 @@ function PageInscription() {
         navigate("/connexion");
       })
       .catch((err) => {
+        captchaRef.current.reset();
         switch (err.response.data) {
           case "Unprocessable Entity":
             setFormError("Vérification incorrecte.");
@@ -281,6 +285,7 @@ function PageInscription() {
             onVerify={(val) => {
               setCaptchaValue(val);
             }}
+            ref={captchaRef}
           />
           <p className="form-error-label">{formError}</p>
         </Form>
