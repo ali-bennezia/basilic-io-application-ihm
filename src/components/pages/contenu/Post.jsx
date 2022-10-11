@@ -14,6 +14,8 @@ function Post({
   setMediaDialogueSource,
   setMediaDialogueIsVideo,
   onPostDeleted,
+  setSnackbarIsOpen,
+  setSnackbarMessage,
 }) {
   return (
     <div
@@ -99,6 +101,8 @@ function Post({
           postData={postData}
           postResponses={postResponses}
           onPostDeleted={onPostDeleted}
+          setSnackbarIsOpen={setSnackbarIsOpen}
+          setSnackbarMessage={setSnackbarMessage}
         />
       </div>
     </div>

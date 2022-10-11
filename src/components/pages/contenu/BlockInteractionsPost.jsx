@@ -24,6 +24,8 @@ function BlockInteractionsPost({
   postResponses = true,
   style,
   onPostDeleted,
+  setSnackbarIsOpen,
+  setSnackbarMessage,
 }) {
   //Variables de contexte.
   const { authPayload } = useContext(AuthentificationContext);
@@ -108,7 +110,12 @@ function BlockInteractionsPost({
         (authPayload != null &&
           postData != null &&
           authPayload.userId === postData.auteur.id)) ? (
-        <PostSupprimerAction postId={postData._id} onDeleted={onPostDeleted} />
+        <PostSupprimerAction
+          postId={postData._id}
+          onDeleted={onPostDeleted}
+          setSnackbarIsOpen={setSnackbarIsOpen}
+          setSnackbarMessage={setSnackbarMessage}
+        />
       ) : null}
       {postResponses ? (
         <Link

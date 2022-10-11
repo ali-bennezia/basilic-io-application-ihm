@@ -15,6 +15,7 @@ import "./../commun/PagesCommun.css";
 
 import Button from "react-bootstrap/Button";
 import MoonLoader from "react-spinners/MoonLoader";
+import { Snackbar } from "@mui/material";
 
 import { EntypoCcw } from "react-entypo";
 
@@ -55,6 +56,9 @@ const FluxPosts = forwardRef((props, ref) => {
   const [latestPostTimestamp, setLatestPostTimestamp] = useState(null);
 
   const [hasScrollLoaded, setHasScrollLoaded] = useState(false);
+
+  const [snackbarIsOpen, setSnackbarIsOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   //Fonctions et callbacks.
   const appendNewPosts = (newestPosts) => {
@@ -224,6 +228,8 @@ const FluxPosts = forwardRef((props, ref) => {
           onPostDeleted={(postId) => {
             setPosts((val) => val.filter((p) => p._id != postId));
           }}
+          setSnackbarIsOpen={setSnackbarIsOpen}
+          setSnackbarMessage={setSnackbarMessage}
         />
       ))}
       {fetchingNewerPosts ? <MoonLoader color="green" /> : <></>}
@@ -242,6 +248,14 @@ const FluxPosts = forwardRef((props, ref) => {
         />{" "}
         {loadMoreMsg ? loadMoreMsg : "Charger plus de posts"}
       </Button>
+      <Snackbar
+        autoHideDuration={6000}
+        open={snackbarIsOpen}
+        onClose={() => {
+          setSnackbarIsOpen(false);
+        }}
+        message={snackbarMessage}
+      />
     </div>
   );
 });

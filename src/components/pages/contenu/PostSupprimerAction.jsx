@@ -15,7 +15,12 @@ import axios from "axios";
 //Configuration.
 import config from "./../../../config/config.json";
 
-function PostSupprimerAction({ postId, onDeleted }) {
+function PostSupprimerAction({
+  postId,
+  onDeleted,
+  setSnackbarMessage,
+  setSnackbarIsOpen,
+}) {
   //Variables de contexte.
   const { authPayload } = useContext(AuthentificationContext);
 
@@ -40,6 +45,11 @@ function PostSupprimerAction({ postId, onDeleted }) {
       .catch((err) => {
         console.log(err);
         setIsFetching(false);
+
+        if (setSnackbarIsOpen != undefined && setSnackbarIsOpen != undefined) {
+          setSnackbarMessage("Suppression impossible.");
+          setSnackbarIsOpen(true);
+        }
       });
   };
 
