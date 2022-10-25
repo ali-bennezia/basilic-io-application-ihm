@@ -74,8 +74,6 @@ const FluxPosts = forwardRef((props, ref) => {
 
   const ceaseLoading = () => {
     if (latestFetchPromise != null) {
-      if (latestFetchPromise.isPending())
-        latestFetchPromise.reject("Chargement annulé.");
       setLatestFetchPromise(null);
       setFetchingNewerPosts(false);
     }

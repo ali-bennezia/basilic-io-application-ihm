@@ -113,10 +113,6 @@ function OngletParamsSupprimer({ tabIndex }) {
       .then((data) => {
         setWaitingAJAXResponse(false);
 
-        /*setFormNotificationMessage(
-          "Données confidentielles mises à jour avec succès."
-        );
-        setFormNotificationOpen(true);*/
         logout(setAuthPayload, setAuthProfile);
         navigate("/connexion");
       })

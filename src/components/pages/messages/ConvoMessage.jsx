@@ -20,9 +20,7 @@ function ConvoMessage({
   const [medias, setMedias] = useState(messageData.medias);
 
   //Constantes.
-  const isSelf = messageData.auteur === authProfile.userId;
-
-  console.log(messageData);
+  const isSelf = messageData.auteur == authProfile.id;
 
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
