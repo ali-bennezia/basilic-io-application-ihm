@@ -1,6 +1,6 @@
 {
-  "applicationServerURL": "http://170.187.188.67:5000/api/",
-  "mediaServerURL": "http://170.187.188.67:5001/api/",
+  "applicationServerURL": "http://basilic-io.fr:5000/api/",
+  "mediaServerURL": "http://basilic-io.fr:5001/api/",
   "token": {
     "defaultLifetimeDays": "4",
     "longLifetimeDays": "8"

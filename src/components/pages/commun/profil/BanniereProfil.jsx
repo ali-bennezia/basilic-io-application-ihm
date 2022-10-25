@@ -15,41 +15,41 @@ function BanniereProfil({ profile }) {
     banniereProfilData === "" ? true : false
   );
 
-  return isLoaded ? (
-    profile != null ? (
-      <img
-        className="profile-banner"
+  return (
+    <>
+      {profile != null ? (
+        <img
+          className="profile-banner"
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "125px",
+            left: "0px",
+            top: "0px",
+          }}
+          src={
+            profile != null && "banniereProfil" in profile && banniereProfilData
+              ? `${config.mediaServerURL}medias/${banniereProfilData[0]}/get/${banniereProfilData[1]}`
+              : config.defaultBanner
+          }
+          hidden={!isLoaded}
+          onLoad={() => {
+            setIsLoaded(true);
+          }}
+        />
+      ) : null}
+      <div
         style={{
-          position: "absolute",
+          display: "flex",
           width: "100%",
-          height: "125px",
-          left: "0px",
-          top: "0px",
+          justifyContent: "center",
+          paddingTop: "50px",
         }}
-        src={
-          profile != null && "banniereProfil" in profile && banniereProfilData
-            ? `${config.mediaServerURL}medias/${banniereProfilData[0]}/get/${banniereProfilData[1]}`
-            : config.defaultBanner
-        }
-        hidden={!isLoaded}
-        onLoad={() => {
-          setIsLoaded(true);
-        }}
-      />
-    ) : (
-      <></>
-    )
-  ) : (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        justifyContent: "center",
-        paddingTop: "50px",
-      }}
-    >
-      <MoonLoader color="green" />
-    </div>
+        hidden={isLoaded}
+      >
+        <MoonLoader color="green" />
+      </div>
+    </>
   );
 }
 
