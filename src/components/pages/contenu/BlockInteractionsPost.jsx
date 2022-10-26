@@ -109,7 +109,8 @@ function BlockInteractionsPost({
       (postData.admin ||
         (authPayload != null &&
           postData != null &&
-          authPayload.userId === postData.auteur.id)) ? (
+          authPayload.userId === postData.auteur.id) ||
+        ("admin" in authPayload && authPayload.admin == true)) ? (
         <PostSupprimerAction
           postId={postData._id}
           onDeleted={onPostDeleted}

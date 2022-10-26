@@ -69,7 +69,10 @@ function PostSupprimerAction({
         <Button
           variant="warning"
           className={`${
-            authPayload != null && authPayload.admin ? "text-selectable" : ""
+            authPayload != null &&
+            (!"admin" in authPayload || authPayload.admin == false)
+              ? "text-selectable"
+              : ""
           }`}
           style={{ marginRight: "16px", marginTop: "-2px" }}
           disabled={isFetching}

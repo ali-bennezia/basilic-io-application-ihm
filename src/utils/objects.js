@@ -15,13 +15,15 @@ const mths = [
 
 exports.formatTimestampNumeral = (num) => {
   if (num < 10) return `0${num}`;
-  else return num;
+  else return `${num}`;
 };
 
 exports.parseTimestamp = (timestamp) => {
   let dt = new Date(timestamp);
 
-  return `le ${this.formatTimestampNumeral(dt.getDay())} ${mths[dt.getMonth()]} 
+  return `le ${this.formatTimestampNumeral(dt.getDate())} ${
+    mths[dt.getMonth()]
+  } 
           ${dt.getFullYear()} à ${this.formatTimestampNumeral(
     dt.getHours()
   )}h${this.formatTimestampNumeral(dt.getMinutes())}`;
