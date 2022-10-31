@@ -1,6 +1,6 @@
 {
-  "applicationServerURL": "http://170.187.188.67:5000/api/",
-  "mediaServerURL": "http://170.187.188.67:5001/api/",
+  "applicationServerURL": "https://170.187.188.67:5443/api/",
+  "mediaServerURL": "https://170.187.188.67:5444/api/",
   "token": {
     "defaultLifetimeDays": "4",
     "longLifetimeDays": "8"
